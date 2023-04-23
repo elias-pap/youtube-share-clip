@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "es2022",
+    "target": "es6",
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "moduleResolution": "nodenext"
+  },
+  "include": ["src/**/*"]
+}

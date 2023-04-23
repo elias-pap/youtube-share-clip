@@ -1,0 +1,39 @@
+{
+  "name": "youtube-share-clip",
+  "version": "0.1.6",
+  "description": "Share sections of Youtube videos.",
+  "author": "Elias Papavasileiou",
+  "license": "ISC",
+  "type": "module",
+  "main": "src/extension.js",
+  "scripts": {
+    "prepare": "husky install",
+    "test:headless": "npm run bundle:prod && playwright test",
+    "test:ui": "npm run bundle:prod && playwright test --ui",
+    "deps:clean": "rimraf package-lock.json node_modules",
+    "deps:install": "npm i",
+    "deps:check": "ncu",
+    "deps:update": "ncu -u",
+    "bundle:clean": "rimraf build",
+    "bundle:copy-files": "mkdir -p build && cp -r images build && cp manifest.json build",
+    "bundle:dev": "npm run bundle:clean && npm run bundle:copy-files && esbuild src/extension.js --watch --bundle --outfile=build/content.js",
+    "bundle:prod": "npm run bundle:clean && npm run bundle:copy-files && esbuild src/extension.js --minify --bundle --outfile=build/content.js",
+    "bundle:release": "npm run bundle:prod && ./scripts/createArtifact.js"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.3",
+    "@commitlint/config-conventional": "^17.6.3",
+    "@playwright/test": "^1.33.0",
+    "archiver": "^5.3.1",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "esbuild": "0.17.18",
+    "eslint": "^8.40.0",
+    "eslint-plugin-jsdoc": "^43.2.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
+    "npm-check-updates": "^16.10.9",
+    "prettier": "2.8.8",
+    "rimraf": "^5.0.0"
+  }
+}
