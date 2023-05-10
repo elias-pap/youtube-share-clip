@@ -5,18 +5,23 @@ import {
   sleepTime,
   startAtContainerID,
 } from "../constants/utils/queries.js";
-import {
-  // @ts-ignore
-  ElementGetter,
-  // @ts-ignore
-  InputElementGetter,
-  // @ts-ignore
-  CheckboxElementGetter,
-} from "../types/utils/queries.js";
 
 /**
- * @param {ElementGetter} elementGetter
- * @returns {Promise<Element?>}
+ * @typedef {import("../types/utils/queries.js").InputElementGetter} InputElementGetter
+ */
+
+/**
+ * @typedef {import("../types/utils/queries.js").CheckboxElementGetter} CheckboxElementGetter
+ */
+
+/**
+ * @typedef {import("../types/utils/queries.js").ElementGetter} ElementGetter
+ */
+
+/**
+ * @template T
+ * @param {() => T?} elementGetter
+ * @returns {Promise<T?>}
  */
 const pollForElement = async (elementGetter) => {
   const pollsPerSecond = 1000 / sleepTime;
@@ -36,35 +41,45 @@ const pollForElement = async (elementGetter) => {
 /**
  * @type {InputElementGetter}
  */
-export const getStartAtInputElement = () =>
-  document.querySelector(`#${startAtContainerID} input`);
+export const getStartAtInputElement = async () =>
+  await pollForElement(() =>
+    document.querySelector(`#${startAtContainerID} input`)
+  );
 
 /**
  * @type {InputElementGetter}
  */
-export const getEndAtInputElement = () =>
-  document.querySelector(`#${endAtContainerID} input`);
+export const getEndAtInputElement = async () =>
+  await pollForElement(() =>
+    document.querySelector(`#${endAtContainerID} input`)
+  );
 
 /**
  * @type {CheckboxElementGetter}
  */
-export const getStartAtCheckboxElement = () =>
-  document.querySelector(`#${startAtContainerID} #start-at-checkbox`);
+export const getStartAtCheckboxElement = async () =>
+  await pollForElement(() =>
+    document.querySelector(`#${startAtContainerID} #start-at-checkbox`)
+  );
 
 /**
  * @type {CheckboxElementGetter}
  */
-export const getEndAtCheckboxElement = () =>
-  document.querySelector(`#${endAtContainerID} #start-at-checkbox`);
+export const getEndAtCheckboxElement = async () =>
+  await pollForElement(() =>
+    document.querySelector(`#${endAtContainerID} #start-at-checkbox`)
+  );
 
 /**
  * @type {InputElementGetter}
  */
-export const getShareURLElement = () =>
-  /** @type {HTMLInputElement} */ (document.getElementById("share-url"));
+export const getShareURLElement = async () =>
+  await pollForElement(
+    () => /** @type {HTMLInputElement} */ (document.getElementById("share-url"))
+  );
 
 /**
- * @returns {Promise<Element?>}
+ * @type {ElementGetter}
  */
 export const getStartAtContainer = async () =>
   await pollForElement(() =>
@@ -75,16 +90,19 @@ export const getStartAtContainer = async () =>
 
 /**
  * @param {Element} startAtContainer
- * @returns {Element?}
+ * @returns {Promise<Element?>}
  */
-export const getStartAtCloneLabelElement = (startAtContainer) => {
+export const getStartAtCloneLabelElement = async (startAtContainer) => {
   let nextElement = startAtContainer.nextElementSibling;
   if (!nextElement) return logElementNotFoundError("next of start");
-  return nextElement.querySelector("#checkboxLabel yt-formatted-string");
+  return await pollForElement(() =>
+    // @ts-ignore
+    nextElement.querySelector("#checkboxLabel yt-formatted-string")
+  );
 };
 
 /**
- * @returns {Promise<Element?>}
+ * @type {ElementGetter}
  */
 export const getShareDialog = async () =>
   await pollForElement(() =>
@@ -92,7 +110,7 @@ export const getShareDialog = async () =>
   );
 
 /**
- * @returns {Promise<Element?>}
+ * @type {ElementGetter}
  */
 export const getShareButton = async () =>
   await pollForElement(() =>

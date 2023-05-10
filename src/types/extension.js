@@ -6,12 +6,12 @@
 
 /**
  * @callback IsAtCheckboxChecked
- * @returns {boolean?}
+ * @returns {Promise<boolean?>}
  */
 
 /**
  * @callback OnStateChange
- * @returns {void?}
+ * @returns {Promise<void?>}
  */
 
 /**

@@ -15,24 +15,34 @@ import {
   getShareDialog,
   getStartAtCloneLabelElement,
 } from "./utils/queries.js";
-import {
-  // @ts-ignore
-  URLs,
-  // @ts-ignore
-  IsAtCheckboxChecked,
-  // @ts-ignore
-  OnStateChange,
-  // @ts-ignore
-  StateElements,
-  // @ts-ignore
-  NavigateEvent,
-} from "./types/extension.js";
-import {
-  // @ts-ignore
-  InputElementGetter,
-  // @ts-ignore
-  CheckboxElementGetter,
-} from "./types/utils/queries.js";
+
+/**
+ * @typedef {import("./types/extension.js").URLs} URLs
+ */
+
+/**
+ * @typedef {import("./types/utils/queries.js").InputElementGetter} InputElementGetter
+ */
+
+/**
+ * @typedef {import("./types/utils/queries.js").CheckboxElementGetter} CheckboxElementGetter
+ */
+
+/**
+ * @typedef {import("./types/extension.js").IsAtCheckboxChecked} IsAtCheckboxChecked
+ */
+
+/**
+ * @typedef {import("./types/extension.js").OnStateChange} OnStateChange
+ */
+
+/**
+ * @typedef {import("./types/extension.js").StateElements} StateElements
+ */
+
+/**
+ * @typedef {import("./types/extension.js").NavigateEvent} NavigateEvent
+ */
 
 /**
  * @returns {URLs?}
@@ -76,20 +86,20 @@ const computeShareURL = (startSeconds, endSeconds) => {
 
 /**
  * @param {InputElementGetter} getAtInputElement
- * @returns {number?}
+ * @returns {Promise<number?>}
  */
-const getAtSeconds = (getAtInputElement) => {
-  let atInputEl = getAtInputElement();
+const getAtSeconds = async (getAtInputElement) => {
+  let atInputEl = await getAtInputElement();
   if (!atInputEl) return logElementNotFoundError("at input");
   return timeToSeconds(atInputEl.value);
 };
 
 /**
  * @param {CheckboxElementGetter} getAtCheckboxElement
- * @returns {boolean?}
+ * @returns {Promise<boolean?>}
  */
-const isAtCheckboxChecked = (getAtCheckboxElement) => {
-  let atCheckbox = getAtCheckboxElement();
+const isAtCheckboxChecked = async (getAtCheckboxElement) => {
+  let atCheckbox = await getAtCheckboxElement();
   if (!atCheckbox) return logElementNotFoundError("at checkbox");
   return atCheckbox.hasAttribute("checked");
 };
@@ -109,23 +119,26 @@ const isEndAtCheckboxChecked = () =>
 /**
  * @param {IsAtCheckboxChecked} isAtCheckboxChecked
  * @param {InputElementGetter} getAtInputElement
- * @returns {number?}
+ * @returns {Promise<number?>}
  */
-const getAtSecondsIfChecked = (isAtCheckboxChecked, getAtInputElement) => {
-  if (isAtCheckboxChecked()) {
+const getAtSecondsIfChecked = async (
+  isAtCheckboxChecked,
+  getAtInputElement
+) => {
+  if (await isAtCheckboxChecked()) {
     return getAtSeconds(getAtInputElement);
   }
   return null;
 };
 
 /**
- * @returns {number?}
+ * @returns {Promise<number?>}
  */
-const getStartAtSecondsIfChecked = () =>
-  getAtSecondsIfChecked(isStartAtCheckboxChecked, getStartAtInputElement);
+const getStartAtSecondsIfChecked = async () =>
+  await getAtSecondsIfChecked(isStartAtCheckboxChecked, getStartAtInputElement);
 
 /**
- * @returns {number?}
+ * @returns {Promise<number?>}
  */
 const getEndAtSecondsIfChecked = () =>
   getAtSecondsIfChecked(isEndAtCheckboxChecked, getEndAtInputElement);
@@ -133,14 +146,14 @@ const getEndAtSecondsIfChecked = () =>
 /**
  * @type {OnStateChange}
  */
-const onStateChange = () => {
-  let shareURLElement = getShareURLElement();
+const onStateChange = async () => {
+  let shareURLElement = await getShareURLElement();
   if (!shareURLElement) {
     return logElementNotFoundError("share url");
   }
 
-  let startSeconds = getStartAtSecondsIfChecked();
-  let endSeconds = getEndAtSecondsIfChecked();
+  let startSeconds = await getStartAtSecondsIfChecked();
+  let endSeconds = await getEndAtSecondsIfChecked();
 
   let shareURL = computeShareURL(startSeconds, endSeconds);
   if (!shareURL) return;
@@ -150,10 +163,10 @@ const onStateChange = () => {
 
 /**
  * @param {OnStateChange} onStateChange
- * @returns {void|null}
+ * @returns {Promise<void?>}
  */
-const addOnStateChangeListeners = (onStateChange) => {
-  let stateElements = getStateElements();
+const addOnStateChangeListeners = async (onStateChange) => {
+  let stateElements = await getStateElements();
   if (!stateElements) {
     return logElementNotFoundError("at least one state");
   }
@@ -166,22 +179,22 @@ const addOnStateChangeListeners = (onStateChange) => {
 };
 
 /**
- * @returns {StateElements?}
+ * @returns {Promise<StateElements?>}
  */
-const getStateElements = () => {
-  let startAtInput = getStartAtInputElement();
+const getStateElements = async () => {
+  let startAtInput = await getStartAtInputElement();
   if (!startAtInput) {
     return logElementNotFoundError("start at input");
   }
-  let startAtCheckbox = getStartAtCheckboxElement();
+  let startAtCheckbox = await getStartAtCheckboxElement();
   if (!startAtCheckbox) {
     return logElementNotFoundError("start at checkbox");
   }
-  let endAtInput = getEndAtInputElement();
+  let endAtInput = await getEndAtInputElement();
   if (!endAtInput) {
     return logElementNotFoundError("end at input");
   }
-  let endAtCheckbox = getEndAtCheckboxElement();
+  let endAtCheckbox = await getEndAtCheckboxElement();
   if (!endAtCheckbox) {
     return logElementNotFoundError("end at checkbox");
   }
@@ -208,11 +221,13 @@ const cloneStartAtContainer = (startAtContainer) => {
 
 /**
  * @param {Element} startAtContainer
- * @returns {void|null}
+ * @returns {Promise<void?>}
  */
-const addEndAtCheckboxAndInput = (startAtContainer) => {
+const addEndAtCheckboxAndInput = async (startAtContainer) => {
   cloneStartAtContainer(startAtContainer);
-  let startAtCloneLabelElement = getStartAtCloneLabelElement(startAtContainer);
+  let startAtCloneLabelElement = await getStartAtCloneLabelElement(
+    startAtContainer
+  );
   if (!startAtCloneLabelElement) {
     return logElementNotFoundError("start at clone label");
   }
@@ -220,7 +235,7 @@ const addEndAtCheckboxAndInput = (startAtContainer) => {
 };
 
 const onShareButtonClick = async () => {
-  let shareDialog = getShareDialog();
+  let shareDialog = await getShareDialog();
   if (!shareDialog) {
     return logElementNotFoundError("share dialog");
   }
@@ -233,8 +248,8 @@ const onShareButtonClick = async () => {
   let nextElement = startAtContainer.nextElementSibling;
   if (nextElement?.getAttribute("id") === endAtContainerID) return;
 
-  addEndAtCheckboxAndInput(startAtContainer);
-  addOnStateChangeListeners(onStateChange);
+  await addEndAtCheckboxAndInput(startAtContainer);
+  await addOnStateChangeListeners(onStateChange);
 };
 
 const addOnShareButtonClickListener = async () => {
@@ -248,10 +263,10 @@ const addOnShareButtonClickListener = async () => {
 /**
  * @param {NavigateEvent} event
  */
-const onURLChanged = (event) => {
+const onURLChanged = async (event) => {
   let url = new URL(event.destination.url);
   if (url.pathname === "/watch") {
-    addOnShareButtonClickListener();
+    await addOnShareButtonClickListener();
   }
 };
 
