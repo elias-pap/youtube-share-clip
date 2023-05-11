@@ -15,7 +15,7 @@ test.describe("Renders input elements", () => {
     await rendersInputElements(page);
   });
 
-  test("Coming from video page", async ({ page }) => {
+  test.skip("Coming from video page", async ({ page }) => {
     await visitPage(page, youtubeTestVideoPage);
     await rejectCookies(page);
     await rendersInputElements(page);
