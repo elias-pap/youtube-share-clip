@@ -1,16 +1,16 @@
 /**
  * @callback ElementGetter
- * @returns {Element?}
+ * @returns {Promise<Element?>}
  */
 
 /**
  * @callback InputElementGetter
- * @returns {HTMLInputElement?}
+ * @returns {Promise<HTMLInputElement?>}
  */
 
 /**
  * @callback CheckboxElementGetter
- * @returns {Element?}
+ * @returns {Promise<Element?>}
  */
 
 export const unused = {};

@@ -1,6 +1,6 @@
 {
   "name": "youtube-share-clip",
-  "version": "0.1.8",
+  "version": "0.2.8",
   "description": "Share sections of Youtube videos.",
   "author": "Elias Papavasileiou",
   "license": "ISC",
@@ -29,10 +29,10 @@
     "cz-conventional-changelog": "^3.3.0",
     "esbuild": "0.17.18",
     "eslint": "^8.40.0",
-    "eslint-plugin-jsdoc": "^43.2.0",
-    "husky": "^8.0.0",
+    "eslint-plugin-jsdoc": "^44.2.2",
+    "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
-    "npm-check-updates": "^16.10.9",
+    "npm-check-updates": "^16.10.12",
     "prettier": "2.8.8",
     "rimraf": "^5.0.0"
   }
