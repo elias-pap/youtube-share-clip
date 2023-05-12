@@ -33,8 +33,8 @@ export const rejectCookies = async (page) => {
 /**
  * @param {Page} page
  */
-export const clickOnFirstVideo = async (page) => {
-  await page.locator("#thumbnail").nth(1).click();
+export const clickOnAVideo = async (page) => {
+  await page.locator("#thumbnail").nth(3).click();
 };
 
 /**
