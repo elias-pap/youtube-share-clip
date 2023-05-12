@@ -17,6 +17,7 @@ export const visitPage = async (page, url) => {
  * @param {Page} page
  */
 export const rejectCookies = async (page) => {
+  if (process.env.CI) return;
   const rejectButton = page.getByRole("button", {
     name: "Reject the use of cookies and other data for the purposes described",
   });
