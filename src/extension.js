@@ -261,19 +261,32 @@ const addOnShareButtonClickListener = async () => {
 };
 
 /**
+ * @param {URL} url
+ */
+const addListenerOnVideoPage = async (url) => {
+  if (url.pathname === "/watch") {
+    await addOnShareButtonClickListener();
+  }
+};
+
+/**
  * @param {NavigateEvent} event
  */
 const onURLChanged = async (event) => {
   let url = new URL(event.destination.url);
-  if (url.pathname === "/watch") {
-    await addOnShareButtonClickListener();
-  }
+  await addListenerOnVideoPage(url);
+};
+
+const onPageLoad = async () => {
+  let url = new URL(window.location.href);
+  await addListenerOnVideoPage(url);
 };
 
 const main = () => {
   // @ts-ignore
   // eslint-disable-next-line no-undef
   navigation.addEventListener("navigate", onURLChanged);
+  window.addEventListener("load", onPageLoad);
 };
 
 main();
