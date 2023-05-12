@@ -1,3 +1,4 @@
+import { errors } from "@playwright/test";
 import { expect } from "./fixtures.js";
 
 /**
@@ -19,8 +20,13 @@ export const rejectCookies = async (page) => {
   const rejectButton = page.getByRole("button", {
     name: "Reject the use of cookies and other data for the purposes described",
   });
-  if (await rejectButton.isVisible()) {
-    await rejectButton.click();
+  try {
+    await rejectButton.click({
+      timeout: 5000,
+    });
+  } catch (error) {
+    if (error instanceof errors.TimeoutError)
+      console.info("Reject cookies button not found.");
   }
 };
 
