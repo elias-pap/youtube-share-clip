@@ -17,7 +17,7 @@ jobs:
           path: |
             node_modules
             ~/.cache/ms-playwright
-          key: dependencies-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
@@ -42,7 +42,7 @@ jobs:
           path: |
             node_modules
             ~/Library/Caches/ms-playwright
-          key: dependencies-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
@@ -67,12 +67,14 @@ jobs:
           path: |
             node_modules
             %USERPROFILE%\AppData\Local\ms-playwright
-          key: dependencies-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Install Playwright Browsers
+      - name: Install Playwright browsers and browser deps
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium chrome
+        run: npx playwright install chromium chrome
+      - name: Install Playwright browser deps
+        run: npx playwright install-deps chromium chrome
       - name: Run e2e tests
         run: npm run test:headless
