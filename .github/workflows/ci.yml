@@ -71,10 +71,12 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Install Playwright browsers
+      - name: Install chrome
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npx playwright install chromium chrome
-      - name: Install Playwright browser deps
-        run: npx playwright install-deps chromium chrome
+        run: npx playwright install chrome
+      - name: Install chromium and Playwright browser deps
+        run: |
+          npx playwright install chromium
+          npx playwright install-deps chromium chrome
       - name: Run e2e tests
         run: npm run test:headless
