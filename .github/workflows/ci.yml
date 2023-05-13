@@ -21,7 +21,7 @@ jobs:
         run: echo "PLAYWRIGHT_CACHE_PATH=~/Library/Caches/ms-playwright" >> $GITHUB_ENV
       - name: Set Playwright cache path on Windows
         if: ${{ matrix.os == 'windows-2022' }}
-        run: echo "PLAYWRIGHT_CACHE_PATH=C:\Users\runneradmin\AppData\Local\ms-playwright" >> $GITHUB_ENV
+        run: echo "PLAYWRIGHT_CACHE_PATH=C:\Users\runneradmin\AppData\Local\ms-playwright" >> $env:$GITHUB_ENV
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
