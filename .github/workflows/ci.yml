@@ -18,7 +18,7 @@ jobs:
         run: |
           if [ ${{ matrix.os }} == 'ubuntu-22.04' ]; then
             echo "PLAYWRIGHT_CACHE_PATH=~/.cache/ms-playwright" >> $GITHUB_ENV
-          elif [ ${{ matrix.os }} == 'macos-13' ]; then
+          elif [ ${{ matrix.os }} == 'macos-12' ]; then
             echo "PLAYWRIGHT_CACHE_PATH=~/Library/Caches/ms-playwright" >> $GITHUB_ENV
           elif [ ${{ matrix.os }} == 'windows-2023' ]; then
             echo "PLAYWRIGHT_CACHE_PATH=C:\Users\runneradmin\AppData\Local\ms-playwright" >> $GITHUB_ENV
