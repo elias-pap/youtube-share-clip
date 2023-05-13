@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Install Playwright Browsers
+      - name: Install Playwright browsers and browser deps
         if: steps.cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps chromium chrome
       - name: Run e2e tests
@@ -46,7 +46,7 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Install Playwright Browsers
+      - name: Install Playwright browsers and browser deps
         if: steps.cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps chromium chrome
       - name: Run e2e tests
@@ -71,7 +71,7 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Install Playwright browsers and browser deps
+      - name: Install Playwright browsers
         if: steps.cache.outputs.cache-hit != 'true'
         run: npx playwright install chromium chrome
       - name: Install Playwright browser deps
