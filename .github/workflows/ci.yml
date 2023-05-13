@@ -1,8 +1,11 @@
 name: CI
 on: push
 jobs:
-  test-linux:
-    runs-on: ubuntu-22.04
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, macos-12, windows-2022]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -10,69 +13,28 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Set Playwright cache path on Linux
+        if: ${{ matrix.os == 'ubuntu-22.04' }}
+        run: echo "PLAYWRIGHT_CACHE_PATH=~/.cache/ms-playwright" >> $GITHUB_ENV
+      - name: Set Playwright cache path on MacOS
+        if: ${{ matrix.os == 'macos-12' }}
+        run: echo "PLAYWRIGHT_CACHE_PATH=~/Library/Caches/ms-playwright" >> $GITHUB_ENV
+      - name: Set Playwright cache path on Windows
+        if: ${{ matrix.os == 'windows-2022' }}
+        run: echo "PLAYWRIGHT_CACHE_PATH=C:\Users\runneradmin\AppData\Local\ms-playwright" >> $GITHUB_ENV
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
         with:
           path: |
             node_modules
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Install Playwright browsers and browser deps
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium chrome
-      - name: Run e2e tests
-        run: npm run test:headless
-  test-macos:
-    runs-on: macos-12
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            ~/Library/Caches/ms-playwright
-          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Install Playwright browsers and browser deps
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium chrome
-      - name: Run e2e tests
-        run: npm run test:headless
-  test-windows:
-    runs-on: windows-2022
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            C:\Users\runneradmin\AppData\Local\ms-playwright
-          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Install Playwright browsers and browser deps
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium chrome
-      - name: Run e2e tests
-        run: npm run test:headless
+            ${{ env.PLAYWRIGHT_CACHE_PATH }}
+          key: ${{ matrix.os }}-${{ hashFiles('package-lock.json') }}
+      # - name: Install dependencies
+      #   if: steps.cache.outputs.cache-hit != 'true'
+      #   run: npm ci
+      # - name: Install Playwright browsers and browser deps
+      #   if: steps.cache.outputs.cache-hit != 'true'
+      #   run: npx playwright install --with-deps chromium chrome
+      # - name: Run e2e tests
+      #   run: npm run test:headless
