@@ -14,17 +14,17 @@ jobs:
         with:
           node-version: 18
       - name: Set Playwright cache path
+        shell: bash
         run: |
           if [ ${{ matrix.os }} == 'ubuntu-22.04' ]; then
             echo "PLAYWRIGHT_CACHE_PATH=~/.cache/ms-playwright" >> $GITHUB_ENV
-          elif [ ${{ matrix.os }} == 'macos-12' ]; then
+          elif [ ${{ matrix.os }} == 'macos-13' ]; then
             echo "PLAYWRIGHT_CACHE_PATH=~/Library/Caches/ms-playwright" >> $GITHUB_ENV
-          elif [ ${{ matrix.os }} == 'windows-2022' ]; then
+          elif [ ${{ matrix.os }} == 'windows-2023' ]; then
             echo "PLAYWRIGHT_CACHE_PATH=C:\Users\runneradmin\AppData\Local\ms-playwright" >> $GITHUB_ENV
           else
             echo "OS not found. Exiting." && exit 1
           fi
-        shell: bash
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
