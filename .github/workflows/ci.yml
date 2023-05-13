@@ -68,7 +68,6 @@ jobs:
             node_modules
             %USERPROFILE%\AppData\Local\ms-playwright
           key: dependencies-${{ hashFiles('package-lock.json') }}
-          enableCrossOsArchive: true
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
