@@ -75,7 +75,4 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps chromium chrome
       - name: Run e2e tests
-        run: |
-          echo USERPROFILE:
-          echo %USERPROFILE%
-          npm run test:headless
+        run: npm run test:headless
