@@ -1,11 +1,8 @@
 name: CI
 on: push
 jobs:
-  test:
-    strategy:
-      matrix:
-        os: [ubuntu-22.04, windows-2022, macos-12]
-    runs-on: ${{ matrix.os }}
+  test-linux:
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -13,10 +10,69 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: npm
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/ms-playwright
+          key: dependencies-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Install Playwright Browsers
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium chrome
+      - name: Run e2e tests
+        run: npm run test:headless
+  test-macos:
+    runs-on: macos-12
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/Library/Caches/ms-playwright
+          key: dependencies-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Install Playwright Browsers
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium chrome
+      - name: Run e2e tests
+        run: npm run test:headless
+  test-windows:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            %USERPROFILE%\AppData\Local\ms-playwright
+          key: dependencies-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Install Playwright Browsers
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps chromium chrome
       - name: Run e2e tests
         run: npm run test:headless
