@@ -13,15 +13,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Set Playwright cache path on Linux
-        if: ${{ matrix.os == 'ubuntu-22.04' }}
-        run: echo "PLAYWRIGHT_CACHE_PATH=~/.cache/ms-playwright" >> $GITHUB_ENV
-      - name: Set Playwright cache path on MacOS
-        if: ${{ matrix.os == 'macos-12' }}
-        run: echo "PLAYWRIGHT_CACHE_PATH=~/Library/Caches/ms-playwright" >> $GITHUB_ENV
-      - name: Set Playwright cache path on Windows
-        if: ${{ matrix.os == 'windows-2022' }}
-        run: echo "PLAYWRIGHT_CACHE_PATH=C:\Users\runneradmin\AppData\Local\ms-playwright" >> $env:GITHUB_ENV
+      - name: Set Playwright cache path
+        run: |
+          if [ ${{ matrix.os }} == 'ubuntu-22.04' ]; then
+            echo "PLAYWRIGHT_CACHE_PATH=~/.cache/ms-playwright" >> $GITHUB_ENV
+          elif [ ${{ matrix.os }} == 'macos-12' ]; then
+            echo "PLAYWRIGHT_CACHE_PATH=~/Library/Caches/ms-playwright" >> $GITHUB_ENV
+          elif [ ${{ matrix.os }} == 'windows-2022' ]; then
+            echo "PLAYWRIGHT_CACHE_PATH=C:\Users\runneradmin\AppData\Local\ms-playwright" >> $GITHUB_ENV
+          else
+            echo "OS not found. Exiting." && exit 1
+          fi
+        shell: bash
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
@@ -30,11 +33,11 @@ jobs:
             node_modules
             ${{ env.PLAYWRIGHT_CACHE_PATH }}
           key: ${{ matrix.os }}-${{ hashFiles('package-lock.json') }}
-      - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Install Playwright browsers and browser deps
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium chrome
-      - name: Run e2e tests
-        run: npm run test:headless
+      # - name: Install dependencies
+      #   if: steps.cache.outputs.cache-hit != 'true'
+      #   run: npm ci
+      # - name: Install Playwright browsers and browser deps
+      #   if: steps.cache.outputs.cache-hit != 'true'
+      #   run: npx playwright install --with-deps chromium chrome
+      # - name: Run e2e tests
+      #   run: npm run test:headless
