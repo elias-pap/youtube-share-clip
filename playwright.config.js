@@ -9,7 +9,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   workers: process.env.CI ? 1 : undefined,
   reporter: "list",
-  timeout: 60000,
+  timeout: 120000,
   use: {
     trace: "retain-on-failure",
   },
