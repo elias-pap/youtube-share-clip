@@ -67,7 +67,7 @@ jobs:
           path: |
             node_modules
             C:\Users\runneradmin\AppData\Local\ms-playwright
-          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
