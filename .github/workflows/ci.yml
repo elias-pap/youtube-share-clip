@@ -1,9 +1,12 @@
 name: CI
+
+on: push
+
 env:
   linux: ubuntu-22.04
   macos: macos-12
   windows: windows-2022
-on: push
+
 jobs:
   test:
     strategy:
