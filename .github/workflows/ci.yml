@@ -1,11 +1,11 @@
 name: CI
-env:
-  linux: ubuntu-22.04
-  macos: macos-12
-  windows: windows-2022
 on: push
 jobs:
   test:
+    env:
+      linux: ubuntu-22.04
+      macos: macos-12
+      windows: windows-2022
     strategy:
       matrix:
         os: ["${{ env.linux }}", "${{ env.macos }}", "${{ env.windows }}"]
