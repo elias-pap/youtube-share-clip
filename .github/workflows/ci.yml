@@ -1,10 +1,14 @@
 name: CI
 on: push
+env:
+  linux: ubuntu-22.04
+  macos: macos-12
+  windows: windows-2022
 jobs:
   test:
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-12, windows-2022]
+        os: ["${{ env.linux }}", "${{ env.macos }}", "${{ env.windows }}"]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
@@ -16,11 +20,11 @@ jobs:
       - name: Set Playwright cache path
         shell: bash
         run: |
-          if [ ${{ matrix.os }} == 'ubuntu-22.04' ]; then
+          if [ ${{ matrix.os }} == ${{ env.linux }} ]; then
             echo "PLAYWRIGHT_CACHE_PATH=~/.cache/ms-playwright" >> $GITHUB_ENV
-          elif [ ${{ matrix.os }} == 'macos-12' ]; then
+          elif [ ${{ matrix.os }} == ${{ env.macos }} ]; then
             echo "PLAYWRIGHT_CACHE_PATH=~/Library/Caches/ms-playwright" >> $GITHUB_ENV
-          elif [ ${{ matrix.os }} == 'windows-2022' ]; then
+          elif [ ${{ matrix.os }} == ${{ env.windows }} ]; then
             echo "PLAYWRIGHT_CACHE_PATH=C:\Users\runneradmin\AppData\Local\ms-playwright" >> $GITHUB_ENV
           else
             echo "OS not found. Exiting." && exit 1
