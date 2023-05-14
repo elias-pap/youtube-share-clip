@@ -16,11 +16,11 @@ jobs:
       - name: Set Playwright cache path
         shell: bash
         run: |
-          if [ ${{ matrix.os }} == 'ubuntu-22.04' ]; then
+          if [ ${{ runner.os }} == Linux ]; then
             echo "PLAYWRIGHT_CACHE_PATH=~/.cache/ms-playwright" >> $GITHUB_ENV
-          elif [ ${{ matrix.os }} == 'macos-12' ]; then
+          elif [ ${{ runner.os }} == macOS ]; then
             echo "PLAYWRIGHT_CACHE_PATH=~/Library/Caches/ms-playwright" >> $GITHUB_ENV
-          elif [ ${{ matrix.os }} == 'windows-2022' ]; then
+          elif [ ${{ runner.os }} == Windows ]; then
             echo "PLAYWRIGHT_CACHE_PATH=C:\Users\runneradmin\AppData\Local\ms-playwright" >> $GITHUB_ENV
           else
             echo "OS not found. Exiting." && exit 1
@@ -32,7 +32,7 @@ jobs:
           path: |
             node_modules
             ${{ env.PLAYWRIGHT_CACHE_PATH }}
-          key: ${{ matrix.os }}-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
