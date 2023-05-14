@@ -16,11 +16,11 @@ jobs:
       - name: Set Playwright cache path
         shell: bash
         run: |
-          if [ ${{ runner.os }} == 'Linux' ]; then
+          if [ ${{ runner.os }} == Linux ]; then
             echo "PLAYWRIGHT_CACHE_PATH=~/.cache/ms-playwright" >> $GITHUB_ENV
-          elif [ ${{ runner.os }} == 'macOS' ]; then
+          elif [ ${{ runner.os }} == macOS ]; then
             echo "PLAYWRIGHT_CACHE_PATH=~/Library/Caches/ms-playwright" >> $GITHUB_ENV
-          elif [ ${{ runner.os }} == 'Windows' ]; then
+          elif [ ${{ runner.os }} == Windows ]; then
             echo "PLAYWRIGHT_CACHE_PATH=C:\Users\runneradmin\AppData\Local\ms-playwright" >> $GITHUB_ENV
           else
             echo "OS not found. Exiting." && exit 1
