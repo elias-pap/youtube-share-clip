@@ -22,14 +22,4 @@
  * @property {Element} endAtCheckbox
  */
 
-/**
- * @typedef {object} Destination
- * @property {string} url
- */
-
-/**
- * @typedef {object} NavigateEvent
- * @property {Destination} destination
- */
-
 export const unused = {};

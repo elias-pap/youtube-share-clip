@@ -110,3 +110,9 @@ export const getShareButton = async () =>
   await pollForElement(() =>
     document.querySelector("#actions-inner button[aria-label='Share']")
   );
+
+/**
+ * @type {ElementGetter}
+ */
+export const getBody = async () =>
+  await pollForElement(() => document.querySelector("body"));
