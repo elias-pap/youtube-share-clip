@@ -18,29 +18,11 @@ import {
 
 /**
  * @typedef {import("./types/extension.js").URLs} URLs
- */
-
-/**
  * @typedef {import("./types/utils/queries.js").InputElementGetter} InputElementGetter
- */
-
-/**
  * @typedef {import("./types/utils/queries.js").CheckboxElementGetter} CheckboxElementGetter
- */
-
-/**
  * @typedef {import("./types/extension.js").IsAtCheckboxChecked} IsAtCheckboxChecked
- */
-
-/**
  * @typedef {import("./types/extension.js").OnStateChange} OnStateChange
- */
-
-/**
  * @typedef {import("./types/extension.js").StateElements} StateElements
- */
-
-/**
  * @typedef {import("./types/extension.js").NavigateEvent} NavigateEvent
  */
 

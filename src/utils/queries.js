@@ -8,13 +8,7 @@ import {
 
 /**
  * @typedef {import("../types/utils/queries.js").InputElementGetter} InputElementGetter
- */
-
-/**
  * @typedef {import("../types/utils/queries.js").CheckboxElementGetter} CheckboxElementGetter
- */
-
-/**
  * @typedef {import("../types/utils/queries.js").ElementGetter} ElementGetter
  */
 
