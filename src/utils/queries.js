@@ -8,13 +8,7 @@ import {
 
 /**
  * @typedef {import("../types/utils/queries.js").InputElementGetter} InputElementGetter
- */
-
-/**
  * @typedef {import("../types/utils/queries.js").CheckboxElementGetter} CheckboxElementGetter
- */
-
-/**
  * @typedef {import("../types/utils/queries.js").ElementGetter} ElementGetter
  */
 
@@ -116,3 +110,9 @@ export const getShareButton = async () =>
   await pollForElement(() =>
     document.querySelector("#actions-inner button[aria-label='Share']")
   );
+
+/**
+ * @type {ElementGetter}
+ */
+export const getBody = async () =>
+  await pollForElement(() => document.querySelector("body"));

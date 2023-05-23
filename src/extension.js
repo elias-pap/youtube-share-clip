@@ -1,5 +1,6 @@
 import { endAtContainerID } from "./constants/utils/queries.js";
 import {
+  getCurrentURL,
   logElementNotFoundError,
   logNotFoundError,
   timeToSeconds,
@@ -14,34 +15,16 @@ import {
   getShareButton,
   getShareDialog,
   getStartAtCloneLabelElement,
+  getBody,
 } from "./utils/queries.js";
 
 /**
  * @typedef {import("./types/extension.js").URLs} URLs
- */
-
-/**
  * @typedef {import("./types/utils/queries.js").InputElementGetter} InputElementGetter
- */
-
-/**
  * @typedef {import("./types/utils/queries.js").CheckboxElementGetter} CheckboxElementGetter
- */
-
-/**
  * @typedef {import("./types/extension.js").IsAtCheckboxChecked} IsAtCheckboxChecked
- */
-
-/**
  * @typedef {import("./types/extension.js").OnStateChange} OnStateChange
- */
-
-/**
  * @typedef {import("./types/extension.js").StateElements} StateElements
- */
-
-/**
- * @typedef {import("./types/extension.js").NavigateEvent} NavigateEvent
  */
 
 /**
@@ -148,9 +131,7 @@ const getEndAtSecondsIfChecked = () =>
  */
 const onStateChange = async () => {
   let shareURLElement = await getShareURLElement();
-  if (!shareURLElement) {
-    return logElementNotFoundError("share url");
-  }
+  if (!shareURLElement) return logElementNotFoundError("share url");
 
   let startSeconds = await getStartAtSecondsIfChecked();
   let endSeconds = await getEndAtSecondsIfChecked();
@@ -167,9 +148,8 @@ const onStateChange = async () => {
  */
 const addOnStateChangeListeners = async (onStateChange) => {
   let stateElements = await getStateElements();
-  if (!stateElements) {
-    return logElementNotFoundError("at least one state");
-  }
+  if (!stateElements) return logElementNotFoundError("at least one state");
+
   let { startAtInput, startAtCheckbox, endAtInput, endAtCheckbox } =
     stateElements;
   startAtCheckbox.addEventListener("click", onStateChange);
@@ -183,21 +163,16 @@ const addOnStateChangeListeners = async (onStateChange) => {
  */
 const getStateElements = async () => {
   let startAtInput = await getStartAtInputElement();
-  if (!startAtInput) {
-    return logElementNotFoundError("start at input");
-  }
+  if (!startAtInput) return logElementNotFoundError("start at input");
+
   let startAtCheckbox = await getStartAtCheckboxElement();
-  if (!startAtCheckbox) {
-    return logElementNotFoundError("start at checkbox");
-  }
+  if (!startAtCheckbox) return logElementNotFoundError("start at checkbox");
+
   let endAtInput = await getEndAtInputElement();
-  if (!endAtInput) {
-    return logElementNotFoundError("end at input");
-  }
+  if (!endAtInput) return logElementNotFoundError("end at input");
+
   let endAtCheckbox = await getEndAtCheckboxElement();
-  if (!endAtCheckbox) {
-    return logElementNotFoundError("end at checkbox");
-  }
+  if (!endAtCheckbox) return logElementNotFoundError("end at checkbox");
 
   return { startAtInput, startAtCheckbox, endAtInput, endAtCheckbox };
 };
@@ -228,22 +203,18 @@ const addEndAtCheckboxAndInput = async (startAtContainer) => {
   let startAtCloneLabelElement = await getStartAtCloneLabelElement(
     startAtContainer
   );
-  if (!startAtCloneLabelElement) {
+  if (!startAtCloneLabelElement)
     return logElementNotFoundError("start at clone label");
-  }
+
   createEndAtElement(startAtCloneLabelElement);
 };
 
 const onShareButtonClick = async () => {
   let shareDialog = await getShareDialog();
-  if (!shareDialog) {
-    return logElementNotFoundError("share dialog");
-  }
+  if (!shareDialog) return logElementNotFoundError("share dialog");
 
   let startAtContainer = await getStartAtContainer();
-  if (!startAtContainer) {
-    return logElementNotFoundError("start at container");
-  }
+  if (!startAtContainer) return logElementNotFoundError("start at container");
 
   let nextElement = startAtContainer.nextElementSibling;
   if (nextElement?.getAttribute("id") === endAtContainerID) return;
@@ -254,38 +225,45 @@ const onShareButtonClick = async () => {
 
 const addOnShareButtonClickListener = async () => {
   let shareButton = await getShareButton();
-  if (!shareButton) {
-    return logElementNotFoundError("share button");
-  }
+  if (!shareButton) return logElementNotFoundError("share button");
+
   shareButton.addEventListener("click", onShareButtonClick);
 };
 
 /**
- * @param {URL} url
+ * @param {string} href
  */
-const addListenerOnVideoPage = async (url) => {
+const addListenerOnVideoPage = async (href) => {
+  let url = new URL(href);
   if (url.pathname === "/watch") {
     await addOnShareButtonClickListener();
   }
 };
 
-/**
- * @param {NavigateEvent} event
- */
-const onURLChanged = async (event) => {
-  let url = new URL(event.destination.url);
-  await addListenerOnVideoPage(url);
+const onPageLoad = async () => {
+  await addListenerOnVideoPage(getCurrentURL());
 };
 
-const onPageLoad = async () => {
-  let url = new URL(window.location.href);
-  await addListenerOnVideoPage(url);
+const observeURLChange = async () => {
+  let oldURL = getCurrentURL();
+  let body = await getBody();
+  if (!body) return logElementNotFoundError("body");
+
+  let observer = new MutationObserver((mutations) => {
+    mutations.forEach(async () => {
+      let newURL = getCurrentURL();
+      if (oldURL !== newURL) {
+        oldURL = newURL;
+        await addListenerOnVideoPage(newURL);
+      }
+    });
+  });
+
+  observer.observe(body, { childList: true, subtree: true });
 };
 
 const main = () => {
-  // @ts-ignore
-  // eslint-disable-next-line no-undef
-  navigation.addEventListener("navigate", onURLChanged);
+  observeURLChange();
   window.addEventListener("load", onPageLoad);
 };
 

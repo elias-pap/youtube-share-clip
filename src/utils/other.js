@@ -48,3 +48,5 @@ export const logNotFoundError = (name) => {
   console.error(`${name} not found.`);
   return null;
 };
+
+export const getCurrentURL = () => window.location.href;
