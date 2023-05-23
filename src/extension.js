@@ -254,7 +254,7 @@ const addListenerOnVideoPage = async (url) => {
 /**
  * @param {NavigateEvent} event
  */
-const onURLChanged = async (event) => {
+const onURLChange = async (event) => {
   let url = new URL(event.destination.url);
   await addListenerOnVideoPage(url);
 };
@@ -266,7 +266,7 @@ const onPageLoad = async () => {
 
 const main = () => {
   // @ts-ignore
-  window.navigation.addEventListener("navigate", onURLChanged);
+  window.navigation.addEventListener("navigate", onURLChange);
   window.addEventListener("load", onPageLoad);
 };
 
