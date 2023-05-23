@@ -15,7 +15,7 @@
     "deps:check": "ncu",
     "deps:update": "ncu -u",
     "bundle:clean": "rimraf build",
-    "bundle:copy-files": "mkdir -p build && cp -r images build && cp manifest.json build",
+    "bundle:copy-files": "mkdir -p build && cp -r images manifest.json build",
     "bundle:dev": "npm run bundle:clean && npm run bundle:copy-files && esbuild src/extension.js --watch --bundle --outfile=build/content.js",
     "bundle:prod": "npm run bundle:clean && npm run bundle:copy-files && esbuild src/extension.js --minify --bundle --outfile=build/content.js",
     "bundle:release": "npm run bundle:prod && ./scripts/createArtifact.js"
