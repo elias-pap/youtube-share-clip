@@ -266,8 +266,7 @@ const onPageLoad = async () => {
 
 const main = () => {
   // @ts-ignore
-  // eslint-disable-next-line no-undef
-  navigation.addEventListener("navigate", onURLChanged);
+  window.navigation.addEventListener("navigate", onURLChanged);
   window.addEventListener("load", onPageLoad);
 };
 
