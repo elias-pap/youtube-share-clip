@@ -4,13 +4,13 @@ import { defineConfig, devices } from "@playwright/test";
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  testDir: "./src/tests",
+  testDir: "src/tests",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   workers: process.env.CI ? 1 : undefined,
   reporter: [["html", { open: "never" }]],
   use: {
-    trace: "on",
+    trace: "retain-on-failure",
   },
   projects: [
     {
