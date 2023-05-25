@@ -8,10 +8,9 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   workers: process.env.CI ? 1 : undefined,
-  reporter: "list",
-  timeout: 120000,
+  reporter: [["html", { open: "never" }]],
   use: {
-    trace: "retain-on-failure",
+    trace: "on",
   },
   projects: [
     {
