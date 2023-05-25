@@ -10,6 +10,7 @@
     "prepare": "husky install",
     "test:headless": "npm run bundle:prod && playwright test",
     "test:ui": "npm run bundle:prod && playwright test --ui",
+    "test:report": "playwright show-report",
     "deps:clean": "rimraf package-lock.json node_modules",
     "deps:install": "npm i",
     "deps:check": "ncu",
