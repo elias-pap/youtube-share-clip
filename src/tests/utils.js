@@ -35,7 +35,12 @@ export const rejectCookies = async (page) => {
  * @param {Page} page
  */
 export const clickOnAVideo = async (page) => {
-  await page.locator("#video-title").nth(0).click();
+  let nonLiveVideoMetas = page.locator("#meta", {
+    hasNotText: "LIVE",
+  });
+  let firstVideoMeta = nonLiveVideoMetas.nth(0);
+  let videoTitle = firstVideoMeta.locator("#video-title");
+  await videoTitle.click();
 };
 
 /**
