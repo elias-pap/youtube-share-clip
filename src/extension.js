@@ -3,6 +3,7 @@ import {
   getCurrentURL,
   logElementNotFoundError,
   logNotFoundError,
+  sleep,
   timeToSeconds,
 } from "./utils/other.js";
 import {
@@ -210,6 +211,10 @@ const addEndAtCheckboxAndInput = async (startAtContainer) => {
 };
 
 const onShareButtonClick = async () => {
+  // This delay is used because this part of the DOM is changed by YouTube as well.
+  // Allow some time for Youtube's changes to be applied first.
+  await sleep(200);
+
   let shareDialog = await getShareDialog();
   if (!shareDialog) return logElementNotFoundError("share dialog");
 
@@ -217,7 +222,17 @@ const onShareButtonClick = async () => {
   if (!startAtContainer) return logElementNotFoundError("start at container");
 
   let nextElement = startAtContainer.nextElementSibling;
-  if (nextElement?.getAttribute("id") === endAtContainerID) return;
+
+  let endAtContainerExists =
+    nextElement?.getAttribute("id") === endAtContainerID;
+  if (endAtContainerExists) {
+    nextElement?.remove();
+  }
+
+  let startAtElementsExist = startAtContainer.children.length !== 0;
+  if (!startAtElementsExist) {
+    return;
+  }
 
   await addEndAtCheckboxAndInput(startAtContainer);
   await addOnStateChangeListeners(onStateChange);
