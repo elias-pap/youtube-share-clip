@@ -22,7 +22,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Run pre-commit hooks
-        run: npx lint-staged --diff="origin/main...origin/run-pre-commit-on-ci"
+        run: npx lint-staged -v --diff="origin/main...origin/run-pre-commit-on-ci"
   test:
     needs: pre-commit
     strategy:
