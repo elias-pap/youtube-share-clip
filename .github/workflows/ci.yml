@@ -1,7 +1,30 @@
 name: CI
 on: push
 jobs:
+  pre-commit:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: Linux-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Run pre-commit hooks
+        run: |
+          prBranch=$(git symbolic-ref --short HEAD)
+          npx lint-staged --diff="main...$prBranch"
   test:
+    needs: pre-commit
     strategy:
       matrix:
         os: [ubuntu-22.04, macos-12, windows-2022]
