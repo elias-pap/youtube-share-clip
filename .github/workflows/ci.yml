@@ -22,7 +22,7 @@ jobs:
       - name: Run pre-commit hooks
         run: |
           prBranch=$(git symbolic-ref --short HEAD)
-          npx lint-staged --diff="main...$prBranch"
+          npx lint-staged --diff="main...${prBranch}"
   test:
     needs: pre-commit
     strategy:
