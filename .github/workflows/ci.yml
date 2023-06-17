@@ -24,7 +24,8 @@ jobs:
       - name: Run pre-commit hooks
         run: |
           git -v
-          git diff --diff-filter=ACMR --name-only main...run-pre-commit-on-ci
+          git branch
+          git diff --diff-filter=ACMR --name-only origin/main...origin/run-pre-commit-on-ci
           npx lint-staged -v --diff="origin/main...origin/run-pre-commit-on-ci"
   test:
     needs: pre-commit
