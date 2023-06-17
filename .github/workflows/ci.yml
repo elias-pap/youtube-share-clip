@@ -20,9 +20,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Run pre-commit hooks
-        run: |
-          prBranch=$(git symbolic-ref --short HEAD)
-          npx lint-staged --diff="main...${prBranch}"
+        run: npx lint-staged --diff="${GITHUB_BASE_REF}...${GITHUB_HEAD_REF}"
   test:
     needs: pre-commit
     strategy:
