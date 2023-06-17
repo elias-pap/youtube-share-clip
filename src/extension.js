@@ -236,6 +236,9 @@ const onShareButtonClick = async () => {
 
   await addEndAtCheckboxAndInput(startAtContainer);
   await addOnStateChangeListeners(onStateChange);
+
+  if (true) {
+  }
 };
 
 const addOnShareButtonClickListener = async () => {
