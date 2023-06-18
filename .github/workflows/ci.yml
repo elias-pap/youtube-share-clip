@@ -22,7 +22,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Run pre-commit hooks
-        run: npx lint-staged --no-stash --diff=${{ github.event.repository.default_branch }}...${{ github.ref_name }}
+        run: npx lint-staged --no-stash --diff=origin/${{ github.event.repository.default_branch }}...origin/${{ github.ref_name }}
   test:
     needs: pre-commit
     strategy:
