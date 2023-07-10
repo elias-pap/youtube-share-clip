@@ -16,11 +16,9 @@
     "deps:check": "ncu",
     "deps:update": "ncu -u",
     "bundle:clean": "rimraf build && mkdir build",
-    "bundle:code": "esbuild content=src/extension.js popup=src/popup.html images/icon-16.png images/icon-32.png images/icon-48.png images/icon-128.png manifest.json --bundle --loader:.html=copy --loader:.png=copy --loader:.json=copy --outdir=build",
-    "bundle:code-dev": "npm run bundle:code -- --watch",
-    "bundle:code-prod": "npm run bundle:code -- --minify",
-    "bundle:dev": "npm run bundle:clean && npm run bundle:code-dev",
-    "bundle:prod": "npm run bundle:clean && npm run bundle:code-prod",
+    "bundle:code": "npm run bundle:clean && esbuild content=src/extension.js popup=src/popup.html images/icon-16.png images/icon-32.png images/icon-48.png images/icon-128.png manifest.json --bundle --loader:.html=copy --loader:.png=copy --loader:.json=copy --outdir=build",
+    "bundle:dev": "npm run bundle:code -- --watch",
+    "bundle:prod": "npm run bundle:code -- --minify",
     "bundle:release": "npm run bundle:prod && ./scripts/createArtifact.js"
   },
   "devDependencies": {
