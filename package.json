@@ -16,7 +16,7 @@
     "deps:check": "ncu",
     "deps:update": "ncu -u",
     "bundle:clean": "rimraf build",
-    "bundle:non-code": "npm run bundle:clean && mkdir -p build && cp -r images manifest.json build",
+    "bundle:non-code": "npm run bundle:clean && mkdir -p build && cp -r images manifest.json src/popup.html build",
     "bundle:code-dev": "esbuild src/extension.js --watch --bundle --outfile=build/content.js",
     "bundle:code-prod": "esbuild src/extension.js --minify --bundle --outfile=build/content.js",
     "bundle:dev": "npm run bundle:non-code && npm run bundle:code-dev",
