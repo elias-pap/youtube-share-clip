@@ -1,5 +1,8 @@
 name: CI
-on: push
+on:
+  push:
+    tags-ignore:
+      - "**"
 jobs:
   pre-commit:
     runs-on: ubuntu-22.04
