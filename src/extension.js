@@ -107,7 +107,7 @@ const isEndAtCheckboxChecked = () =>
  */
 const getAtSecondsIfChecked = async (
   isAtCheckboxChecked,
-  getAtInputElement
+  getAtInputElement,
 ) => {
   if (await isAtCheckboxChecked()) {
     return getAtSeconds(getAtInputElement);
@@ -202,7 +202,7 @@ const cloneStartAtContainer = (startAtContainer) => {
 const addEndAtCheckboxAndInput = async (startAtContainer) => {
   cloneStartAtContainer(startAtContainer);
   let startAtCloneLabelElement = await getStartAtCloneLabelElement(
-    startAtContainer
+    startAtContainer,
   );
   if (!startAtCloneLabelElement)
     return logElementNotFoundError("start at clone label");

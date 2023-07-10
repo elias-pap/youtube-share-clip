@@ -29,7 +29,7 @@ export const timeToSeconds = (timestamp) => {
   return digitsArray.reduceRight(
     (prev, curr, idx) =>
       prev +
-      curr * secondsPerDigit[idx + secondsPerDigit.length - digitsArray.length]
+      curr * secondsPerDigit[idx + secondsPerDigit.length - digitsArray.length],
   );
 };
 
