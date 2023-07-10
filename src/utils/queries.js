@@ -37,7 +37,7 @@ const pollForElement = async (elementGetter) => {
  */
 export const getStartAtInputElement = async () =>
   await pollForElement(() =>
-    document.querySelector(`#${startAtContainerID} input`)
+    document.querySelector(`#${startAtContainerID} input`),
   );
 
 /**
@@ -45,7 +45,7 @@ export const getStartAtInputElement = async () =>
  */
 export const getEndAtInputElement = async () =>
   await pollForElement(() =>
-    document.querySelector(`#${endAtContainerID} input`)
+    document.querySelector(`#${endAtContainerID} input`),
   );
 
 /**
@@ -53,7 +53,7 @@ export const getEndAtInputElement = async () =>
  */
 export const getStartAtCheckboxElement = async () =>
   await pollForElement(() =>
-    document.querySelector(`#${startAtContainerID} #start-at-checkbox`)
+    document.querySelector(`#${startAtContainerID} #start-at-checkbox`),
   );
 
 /**
@@ -61,7 +61,7 @@ export const getStartAtCheckboxElement = async () =>
  */
 export const getEndAtCheckboxElement = async () =>
   await pollForElement(() =>
-    document.querySelector(`#${endAtContainerID} #start-at-checkbox`)
+    document.querySelector(`#${endAtContainerID} #start-at-checkbox`),
   );
 
 /**
@@ -69,7 +69,8 @@ export const getEndAtCheckboxElement = async () =>
  */
 export const getShareURLElement = async () =>
   await pollForElement(
-    () => /** @type {HTMLInputElement} */ (document.getElementById("share-url"))
+    () =>
+      /** @type {HTMLInputElement} */ (document.getElementById("share-url")),
   );
 
 /**
@@ -78,8 +79,8 @@ export const getShareURLElement = async () =>
 export const getStartAtContainer = async () =>
   await pollForElement(() =>
     document.querySelector(
-      `ytd-popup-container #contents #${startAtContainerID}`
-    )
+      `ytd-popup-container #contents #${startAtContainerID}`,
+    ),
   );
 
 /**
@@ -91,7 +92,7 @@ export const getStartAtCloneLabelElement = async (startAtContainer) => {
   if (!nextElement) return logElementNotFoundError("next of start");
   return await pollForElement(() =>
     // @ts-ignore
-    nextElement.querySelector("#checkboxLabel yt-formatted-string")
+    nextElement.querySelector("#checkboxLabel yt-formatted-string"),
   );
 };
 
@@ -100,7 +101,7 @@ export const getStartAtCloneLabelElement = async (startAtContainer) => {
  */
 export const getShareDialog = async () =>
   await pollForElement(() =>
-    document.querySelector("ytd-popup-container #contents")
+    document.querySelector("ytd-popup-container #contents"),
   );
 
 /**
@@ -108,7 +109,7 @@ export const getShareDialog = async () =>
  */
 export const getShareButton = async () =>
   await pollForElement(() =>
-    document.querySelector("#actions-inner button[aria-label='Share']")
+    document.querySelector("#actions-inner button[aria-label='Share']"),
   );
 
 /**
