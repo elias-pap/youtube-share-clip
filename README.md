@@ -10,21 +10,21 @@ Get it on [Chrome Web Store.](https://chrome.google.com/webstore/detail/youtube-
 
 This extension adds an "End at" checkbox and input under the "Start at" one in Share dialog.
 
-This way you can get a link to a section of a YouTube video, by selecting "Start at" and "End at" timestamps.
+This way you can get a link to a section of a YouTube video, by selecting "Start at" and "End at" times.
 
 ### Steps
 
 Click the Share button which can be found under the video.
 
-![](https://lh3.googleusercontent.com/PTOEOGu2j9A7e5uvjpTgAKbn-1HSbNevmrPGRl7i_kMlArPQ-cd4tVbB6w_-k_iBWwo-WcmspwtSOzk5jIIKyBlL=w640-h400-e365-rj-sc0x00ffffff)
+![](https://lh3.googleusercontent.com/An_8ihxFI8PBljWgLx0TZJ93Q8UIsjgNbMOm3DLrn63gMtbJaDz9gaYzGPIfqcjLWO5BEBYOoBACZhBs3tMBzoSS6g=w640-h400-e365-rj-sc0x00ffffff)
 
-Set Start and End timestamps.
+Set Start and End times.
 
-![](https://lh3.googleusercontent.com/3IPHs3OA33F9-pecNt2LBqxyo68Y_ejlFwYk9236RtcUXqKM0kxtkKx67dul6uNBezIIql5XBTs9ALjP1_Zy9h7riQ=w640-h400-e365-rj-sc0x00ffffff)
+![](https://lh3.googleusercontent.com/ZPHP8dbvKJvXZULpeqoDJ3EsmU_T7pYLzd8toAF_de9V8nnWNecNdtzGvteJzqGB7nDvSCCAZi0fIsVDhuieyNm1=w640-h400-e365-rj-sc0x00ffffff)
 
-Copy the generated URL. This is a link to the same video which will start and stop at the timestamps you selected.
+Copy the generated URL. This is a link to the same video which will start and stop at the times you have selected.
 
-![](https://lh3.googleusercontent.com/dzI9tD9OhHZj5rnc2Fn5QlwuQ77iGrzLxD1SeueBR0PBmNd47VE_RKILoSraqLj8hfR6lO-aeUvqAJkbfuCgQTDM=w640-h400-e365-rj-sc0x00ffffff)
+![](https://lh3.googleusercontent.com/8BQwzyYzOrnhvDFjWd-uICLhI3Sg7440xlf9qOUvwgwzJdHKHyCrRs2r8azzfQdeQFyUrZ3SIdV0ai09KPpE-LUvug=w640-h400-e365-rj-sc0x00ffffff)
 
 Enjoy sharing YouTube clips ! 🎉
 
