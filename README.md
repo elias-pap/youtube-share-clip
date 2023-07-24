@@ -2,6 +2,19 @@
 
 Share sections of Youtube videos.
 
+Advantages over YouTube Clip feature:
+
+- There is no need to have a YouTube creator (google) account and to be logged in to create a clip.
+- There is no 5-60 seconds restriction on clip duration. The clip can be however short or long you like.
+
+Disadvantages:
+
+- Does not work if the creator has deactivated embedding for the video.
+
+Limitations:
+
+- Does not work on Premiere and Live videos.
+
 ## 📦 Installation
 
 Get it on [Chrome Web Store.](https://chrome.google.com/webstore/detail/youtube-share-clip/jknkoohnhhnlnojgddpjgibniodllhae)
