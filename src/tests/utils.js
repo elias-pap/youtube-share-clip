@@ -1,5 +1,9 @@
 import { errors } from "@playwright/test";
 import { expect } from "./fixtures.js";
+import {
+  endAtContainerID,
+  startAtContainerID,
+} from "../constants/utils/queries.js";
 
 /**
  * @typedef {import("@playwright/test").Page} Page
@@ -62,8 +66,9 @@ const muteVideo = async (page) => {
  */
 const clickShareButton = async (page) => {
   await page
-    .locator("#actions-inner")
-    .getByRole("button", { name: "Share" })
+    .locator(
+      "#actions-inner #top-level-buttons-computed ytd-button-renderer button",
+    )
     .click();
 };
 
@@ -71,7 +76,9 @@ const clickShareButton = async (page) => {
  * @param {Page} page
  */
 const rendersStartAtCheckboxAndInput = async (page) => {
-  await expect(page.getByRole("checkbox", { name: "Start at" })).toBeVisible();
+  await expect(
+    page.locator(`#${startAtContainerID} #start-at-checkbox`),
+  ).toBeVisible();
   await expect(page.locator("#input-1").getByRole("textbox")).toBeVisible();
 };
 
@@ -79,7 +86,9 @@ const rendersStartAtCheckboxAndInput = async (page) => {
  * @param {Page} page
  */
 const rendersEndAtCheckboxAndInput = async (page) => {
-  await expect(page.getByRole("checkbox", { name: "End at" })).toBeVisible();
+  await expect(
+    page.locator(`#${endAtContainerID} #start-at-checkbox`),
+  ).toBeVisible();
   await expect(page.locator("#input-2").getByRole("textbox")).toBeVisible();
 };
 
