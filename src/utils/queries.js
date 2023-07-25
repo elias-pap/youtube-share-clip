@@ -109,7 +109,9 @@ export const getShareDialog = async () =>
  */
 export const getShareButton = async () =>
   await pollForElement(() =>
-    document.querySelector("#actions-inner button[aria-label='Share']"),
+    document.querySelector(
+      "#actions-inner #top-level-buttons-computed ytd-button-renderer button",
+    ),
   );
 
 /**
