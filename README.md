@@ -33,7 +33,7 @@ Click the Share button which can be found under the video.
 
 Set Start and End times.
 
-![](https://lh3.googleusercontent.com/ZPHP8dbvKJvXZULpeqoDJ3EsmU_T7pYLzd8toAF_de9V8nnWNecNdtzGvteJzqGB7nDvSCCAZi0fIsVDhuieyNm1=w640-h400-e365-rj-sc0x00ffffff)
+![](https://lh3.googleusercontent.com/1_lH0DpH4XvUarTuQMySt_uQ4J28huBi11mdHJ03WgMvWDG_khM06THeGTM7SETO02MoY4O1SPTS3N6tTzNjYxrebFU=w640-h400-e365-rj-sc0x00ffffff)
 
 Copy the generated URL. This is a link to the same video which will start and stop at the times you have selected.
 
