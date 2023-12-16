@@ -1,10 +1,13 @@
 <html>
   <head>
     <style>
-      #feedback-button {
+      body {
+        background-color: hsl(0 0% 0% / 0.9);
+      }
+
+      .button {
         height: 2.5rem;
         width: 10rem;
-        background-color: #ba3b0a;
         color: white;
         border-radius: 1rem;
         border-width: 0;
@@ -12,12 +15,20 @@
         transition: background-color 0.5s;
       }
 
-      #feedback-button:hover {
-        background-color: #da450c;
+      #feedback-button {
+        background-color: hsl(17 90% 38%);
       }
 
-      body {
-        background-color: black;
+      #feedback-button:hover {
+        background-color: hsl(17 90% 38% / 0.5);
+      }
+
+      #rate-button {
+        background-color: hsl(101 89% 35%);
+      }
+
+      #rate-button:hover {
+        background-color: hsl(101 89% 35% / 0.5);
       }
     </style>
   </head>
@@ -27,7 +38,18 @@
       target="_blank"
       rel="noopener noreferrer"
       underline="none"
-      ><button id="feedback-button">Send me your feedback</button></a
+      ><button id="feedback-button" class="button">
+        Send your feedback
+      </button></a
+    >
+    <br />
+    <br />
+    <a
+      href="https://chromewebstore.google.com/detail/youtube-share-clip/jknkoohnhhnlnojgddpjgibniodllhae"
+      target="_blank"
+      rel="noopener noreferrer"
+      underline="none"
+      ><button id="rate-button" class="button">Rate the extension</button></a
     >
   </body>
 </html>
