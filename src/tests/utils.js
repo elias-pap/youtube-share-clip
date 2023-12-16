@@ -53,7 +53,7 @@ export const searchForVideo = async (page) => {
 export const clickOnAVideo = async (page) => {
   let videoTitles = page.locator("#video-title");
   let firstVideoTitle = videoTitles.nth(0);
-  await firstVideoTitle.click();
+  await firstVideoTitle.click({ force: true });
 };
 
 /**
