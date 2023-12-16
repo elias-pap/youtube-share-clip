@@ -53,9 +53,7 @@ export const searchForVideo = async (page) => {
 export const clickOnAVideo = async (page) => {
   let videoTitles = page.locator("#video-title");
   let firstVideoTitle = videoTitles.nth(0);
-  await page.waitForTimeout(10000);
   await firstVideoTitle.click();
-  await page.waitForTimeout(10000);
 };
 
 /**
