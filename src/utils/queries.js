@@ -2,6 +2,7 @@ import { logElementNotFoundError, sleep } from "./other.js";
 import {
   endAtContainerID,
   pollingTimeoutInSeconds,
+  shareButtonSelector,
   sleepTime,
   startAtContainerID,
 } from "../constants/utils/queries.js";
@@ -108,11 +109,7 @@ export const getShareDialog = async () =>
  * @type {ElementGetter}
  */
 export const getShareButton = async () =>
-  await pollForElement(() =>
-    document.querySelector(
-      "#actions-inner #top-level-buttons-computed ytd-button-renderer button",
-    ),
-  );
+  await pollForElement(() => document.querySelector(shareButtonSelector));
 
 /**
  * @type {ElementGetter}

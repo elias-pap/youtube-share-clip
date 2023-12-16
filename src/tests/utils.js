@@ -2,9 +2,10 @@ import { errors } from "@playwright/test";
 import { expect } from "./fixtures.js";
 import {
   endAtContainerID,
+  shareButtonSelector,
   startAtContainerID,
 } from "../constants/utils/queries.js";
-import { testVideoSearchTerm } from "./constants.js";
+import { testVideoSearchTerm, testVideoTitle } from "./constants.js";
 
 /**
  * @typedef {import("@playwright/test").Page} Page
@@ -45,13 +46,14 @@ export const searchForVideo = async (page) => {
   let searchButton = page.getByRole("button", { name: "Search", exact: true });
   await searchButton.click();
   await searchButton.click();
+  await searchButton.click();
 };
 
 /**
  * @param {Page} page
  */
 export const clickOnAVideo = async (page) => {
-  let videoTitles = page.locator("#video-title");
+  let videoTitles = page.getByRole("link", { name: testVideoTitle });
   let firstVideoTitle = videoTitles.nth(0);
   await firstVideoTitle.click();
 };
@@ -74,11 +76,7 @@ const muteVideo = async (page) => {
  * @param {Page} page
  */
 const clickShareButton = async (page) => {
-  await page
-    .locator(
-      "#actions-inner #top-level-buttons-computed ytd-button-renderer button",
-    )
-    .click();
+  await page.locator(shareButtonSelector).click();
 };
 
 /**

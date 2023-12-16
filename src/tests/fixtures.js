@@ -10,10 +10,6 @@ export const test = baseTest.extend({
     const pathToExtension = path.join(__dirname, "../../build");
     const context = await chromium.launchPersistentContext("", {
       headless: false,
-      viewport: {
-        width: 3840,
-        height: 2160,
-      },
       args: [
         `--headless=new`,
         `--disable-extensions-except=${pathToExtension}`,
