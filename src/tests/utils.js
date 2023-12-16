@@ -4,6 +4,7 @@ import {
   endAtContainerID,
   startAtContainerID,
 } from "../constants/utils/queries.js";
+import { testVideoSearchTerm } from "./constants.js";
 
 /**
  * @typedef {import("@playwright/test").Page} Page
@@ -38,13 +39,21 @@ export const rejectCookies = async (page) => {
 /**
  * @param {Page} page
  */
+export const searchForVideo = async (page) => {
+  let searchBar = page.getByPlaceholder("Search");
+  await searchBar.fill(testVideoSearchTerm);
+  let searchButton = page.getByRole("button", { name: "Search", exact: true });
+  await searchButton.click();
+  await searchButton.click();
+};
+
+/**
+ * @param {Page} page
+ */
 export const clickOnAVideo = async (page) => {
-  let nonLiveVideoMetas = page.locator("#meta", {
-    hasNotText: "LIVE",
-  });
-  let firstVideoMeta = nonLiveVideoMetas.nth(0);
-  let videoTitle = firstVideoMeta.locator("#video-title");
-  await videoTitle.click();
+  let videoTitles = page.locator("#video-title");
+  let firstVideoTitle = videoTitles.nth(0);
+  await firstVideoTitle.click();
 };
 
 /**
