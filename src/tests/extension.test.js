@@ -15,23 +15,28 @@ test.beforeEach(async ({ page }, { title }) => {
 });
 
 test.describe("Renders input elements", () => {
-  test("Coming from home page", async ({ page }) => {
+  test("Coming from home page and refresh", async ({ page }) => {
     for (const language of [null, "English (US)", "Ελληνικά"]) {
       await visitPage(page, youtubeLandingPage);
-      if (!language) await rejectCookies(page);
-      await switchLanguage(page, language);
+
+      if (language) {
+        await switchLanguage(page, language);
+      } else {
+        await rejectCookies(page);
+      }
+
       await searchForVideo(page);
       await clickOnAVideo(page);
+      await rendersInputElements(page);
+
+      await visitPage(page, youtubeTestVideoPage);
       await rendersInputElements(page);
     }
   });
 
   test("On video page", async ({ page }) => {
-    for (const language of [null, "English (US)", "Ελληνικά"]) {
-      await visitPage(page, youtubeTestVideoPage);
-      if (!language) await rejectCookies(page);
-      await switchLanguage(page, language);
-      await rendersInputElements(page);
-    }
+    await visitPage(page, youtubeTestVideoPage);
+    await rejectCookies(page);
+    await rendersInputElements(page);
   });
 });

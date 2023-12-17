@@ -126,10 +126,9 @@ export const rendersInputElements = async (page) => {
 
 /**
  * @param {Page} page
- * @param {string?} language
+ * @param {string} language
  */
 export const switchLanguage = async (page, language) => {
-  if (!language) return;
   let menuButtonParent = page.locator("ytd-topbar-menu-button-renderer");
   let menuButton = menuButtonParent.locator("button", {
     has: page.locator(menuIconPathSelector),
