@@ -9,10 +9,10 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   workers: process.env.CI ? 1 : undefined,
   reporter: [["html", { open: "never" }]],
-  timeout: 120000,
-  use: {
-    trace: "retain-on-failure",
-  },
+  timeout: 60000,
+  // use: {
+  //   trace: "retain-on-failure",
+  // },
   projects: [
     {
       name: "chromium",

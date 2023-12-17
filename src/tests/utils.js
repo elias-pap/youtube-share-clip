@@ -6,11 +6,34 @@ import {
   shareIconPathSelector,
   startAtContainerID,
 } from "../constants/utils/queries.js";
-import { testVideoSearchTerm, testVideoTitle } from "./constants.js";
+import {
+  languageIconPathSelector,
+  maxRetries,
+  menuIconPathSelector,
+  searchIconPathSelector,
+  testVideoSearchTerm,
+  testVideoTitle,
+} from "./constants.js";
+import { sleep } from "../utils/other.js";
 
 /**
  * @typedef {import("@playwright/test").Page} Page
  */
+
+/**
+ * @param {() => Promise<void>} callback
+ * @param {() => boolean} condition
+ */
+const doUntil = async (callback, condition) => {
+  let retriesLeft = maxRetries;
+  while (!condition() && retriesLeft > 0) {
+    await callback();
+    retriesLeft--;
+    sleep(4000);
+  }
+  if (!condition() && retriesLeft === 0)
+    console.warn("No retries left and condition is not satisfied.");
+};
 
 /**
  * @param {Page} page
@@ -42,20 +65,40 @@ export const rejectCookies = async (page) => {
  * @param {Page} page
  */
 export const searchForVideo = async (page) => {
-  let searchBar = page.getByPlaceholder("Search");
+  let searchBar = page.locator('input[id="search"]');
   await searchBar.fill(testVideoSearchTerm);
-  let searchButton = page.getByRole("button", { name: "Search", exact: true });
-  await searchButton.click();
-  await searchButton.click();
-  await searchButton.click();
+  let searchButton = page.locator("button", {
+    has: page.locator(searchIconPathSelector),
+  });
+  await doUntil(
+    async () => {
+      await searchButton.click();
+    },
+    () => page.url().startsWith("https://www.youtube.com/results"),
+  );
+};
+
+/**
+ * @param {Page} page
+ * @param {string} pathPrefix
+ */
+const isOnPage = async (page, pathPrefix) => {
+  await page.waitForURL((url) => url.pathname.startsWith(pathPrefix));
+  await page.waitForTimeout(5000);
 };
 
 /**
  * @param {Page} page
  */
 const isOnResultsPage = async (page) => {
-  await page.waitForURL((url) => url.pathname.startsWith("/results"));
-  await page.waitForTimeout(4000);
+  await isOnPage(page, "/results");
+};
+
+/**
+ * @param {Page} page
+ */
+const isOnWatchPage = async (page) => {
+  await isOnPage(page, "/watch");
 };
 
 /**
@@ -66,14 +109,6 @@ export const clickOnAVideo = async (page) => {
   let videoTitles = page.getByRole("link", { name: testVideoTitle });
   let firstVideoTitle = videoTitles.nth(0);
   await firstVideoTitle.click();
-};
-
-/**
- * @param {Page} page
- */
-const isOnWatchPage = async (page) => {
-  await page.waitForURL((url) => url.pathname.startsWith("/watch"));
-  await page.waitForTimeout(4000);
 };
 
 /**
@@ -115,4 +150,24 @@ export const rendersInputElements = async (page) => {
   await clickShareButton(page);
   await rendersStartAtCheckboxAndInput(page);
   await rendersEndAtCheckboxAndInput(page);
+};
+
+/**
+ * @param {Page} page
+ * @param {string} language
+ */
+export const switchLanguage = async (page, language) => {
+  let menuButtonParent = page.locator("ytd-topbar-menu-button-renderer");
+  let menuButton = menuButtonParent.locator("button", {
+    has: page.locator(menuIconPathSelector),
+  });
+  await menuButton.click();
+  let selectLanguageButton = page.locator("a", {
+    has: page.locator(languageIconPathSelector),
+  });
+  await selectLanguageButton.click();
+  let languageButton = page.locator("a", {
+    hasText: language,
+  });
+  await languageButton.click();
 };
