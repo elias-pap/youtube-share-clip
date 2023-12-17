@@ -15,15 +15,14 @@ test.beforeEach(async ({ page }, { title }) => {
 });
 
 test.describe("Renders input elements", () => {
-  test("Coming from home page and refresh", async ({ page }) => {
-    for (const language of [null, "English (US)", "Ελληνικά"]) {
+  for (const language of [null, "English (US)", "Ελληνικά"]) {
+    test(`Coming from home page and refresh - language: ${
+      language ?? "default"
+    }`, async ({ page }) => {
       await visitPage(page, youtubeLandingPage);
 
-      if (language) {
-        await switchLanguage(page, language);
-      } else {
-        await rejectCookies(page);
-      }
+      await rejectCookies(page);
+      if (language) await switchLanguage(page, language);
 
       await searchForVideo(page);
       await clickOnAVideo(page);
@@ -31,8 +30,8 @@ test.describe("Renders input elements", () => {
 
       await visitPage(page, youtubeTestVideoPage);
       await rendersInputElements(page);
-    }
-  });
+    });
+  }
 
   test("On video page", async ({ page }) => {
     await visitPage(page, youtubeTestVideoPage);
