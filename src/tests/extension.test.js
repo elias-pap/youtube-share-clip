@@ -8,6 +8,11 @@ import {
   visitPage,
 } from "./utils.js";
 
+test.beforeEach(async ({ page }, { title }) => {
+  console.info(`Running ${title}`);
+  page.on("console", (msg) => console.info(msg.text()));
+});
+
 test.describe("Renders input elements", () => {
   test("Coming from home page", async ({ page }) => {
     await visitPage(page, youtubeLandingPage);

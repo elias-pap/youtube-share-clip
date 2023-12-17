@@ -77,13 +77,6 @@ const isOnWatchPage = (page) => {
 /**
  * @param {Page} page
  */
-const muteVideo = async (page) => {
-  await page.keyboard.press("M");
-};
-
-/**
- * @param {Page} page
- */
 const clickShareButton = async (page) => {
   let shareIconParent = page.locator(shareIconParentSelector);
   let shareButton = shareIconParent.locator("button", {
@@ -117,7 +110,6 @@ const rendersEndAtCheckboxAndInput = async (page) => {
  */
 export const rendersInputElements = async (page) => {
   isOnWatchPage(page);
-  await muteVideo(page);
   await clickShareButton(page);
   await rendersStartAtCheckboxAndInput(page);
   await rendersEndAtCheckboxAndInput(page);
