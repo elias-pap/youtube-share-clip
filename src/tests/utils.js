@@ -53,15 +53,15 @@ export const searchForVideo = async (page) => {
 /**
  * @param {Page} page
  */
-const isOnResultsPage = (page) => {
-  expect(page.url().startsWith("https://www.youtube.com/results")).toBe(true);
+const isOnResultsPage = async (page) => {
+  await page.waitForURL((url) => url.pathname.startsWith("/results"));
 };
 
 /**
  * @param {Page} page
  */
 export const clickOnAVideo = async (page) => {
-  isOnResultsPage(page);
+  await isOnResultsPage(page);
   let videoTitles = page.getByRole("link", { name: testVideoTitle });
   let firstVideoTitle = videoTitles.nth(0);
   await firstVideoTitle.click();
@@ -70,8 +70,8 @@ export const clickOnAVideo = async (page) => {
 /**
  * @param {Page} page
  */
-const isOnWatchPage = (page) => {
-  expect(page.url().startsWith("https://www.youtube.com/watch")).toBe(true);
+const isOnWatchPage = async (page) => {
+  await page.waitForURL((url) => url.pathname.startsWith("/watch"));
 };
 
 /**
@@ -109,7 +109,7 @@ const rendersEndAtCheckboxAndInput = async (page) => {
  * @param {Page} page
  */
 export const rendersInputElements = async (page) => {
-  isOnWatchPage(page);
+  await isOnWatchPage(page);
   await clickShareButton(page);
   await rendersStartAtCheckboxAndInput(page);
   await rendersEndAtCheckboxAndInput(page);

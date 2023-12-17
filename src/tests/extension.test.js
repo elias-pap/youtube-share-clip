@@ -9,7 +9,7 @@ import {
 } from "./utils.js";
 
 test.beforeEach(async ({ page }, { title }) => {
-  console.info(`Running ${title}`);
+  console.info(`Running ${title} test...`);
   page.on("console", (msg) => console.info(msg.text()));
 });
 
