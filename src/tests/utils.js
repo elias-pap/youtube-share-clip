@@ -6,7 +6,13 @@ import {
   shareIconPathSelector,
   startAtContainerID,
 } from "../constants/utils/queries.js";
-import { testVideoSearchTerm, testVideoTitle } from "./constants.js";
+import {
+  languageIconPathSelector,
+  menuIconPathSelector,
+  searchIconPathSelector,
+  testVideoSearchTerm,
+  testVideoTitle,
+} from "./constants.js";
 
 /**
  * @typedef {import("@playwright/test").Page} Page
@@ -42,9 +48,11 @@ export const rejectCookies = async (page) => {
  * @param {Page} page
  */
 export const searchForVideo = async (page) => {
-  let searchBar = page.getByPlaceholder("Search");
+  let searchBar = page.locator('input[id="search"]');
   await searchBar.fill(testVideoSearchTerm);
-  let searchButton = page.getByRole("button", { name: "Search", exact: true });
+  let searchButton = page.locator("button", {
+    has: page.locator(searchIconPathSelector),
+  });
   await searchButton.click();
   await searchButton.click();
   await searchButton.click();
@@ -114,4 +122,25 @@ export const rendersInputElements = async (page) => {
   await clickShareButton(page);
   await rendersStartAtCheckboxAndInput(page);
   await rendersEndAtCheckboxAndInput(page);
+};
+
+/**
+ * @param {Page} page
+ * @param {string?} language
+ */
+export const switchLanguage = async (page, language) => {
+  if (!language) return;
+  let menuButtonParent = page.locator("ytd-topbar-menu-button-renderer");
+  let menuButton = menuButtonParent.locator("button", {
+    has: page.locator(menuIconPathSelector),
+  });
+  await menuButton.click();
+  let selectLanguageButton = page.locator("a", {
+    has: page.locator(languageIconPathSelector),
+  });
+  await selectLanguageButton.click();
+  let languageButton = page.locator("a", {
+    hasText: language,
+  });
+  await languageButton.click();
 };

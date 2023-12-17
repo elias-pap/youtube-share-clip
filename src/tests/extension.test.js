@@ -5,6 +5,7 @@ import {
   rejectCookies,
   rendersInputElements,
   searchForVideo,
+  switchLanguage,
   visitPage,
 } from "./utils.js";
 
@@ -15,16 +16,22 @@ test.beforeEach(async ({ page }, { title }) => {
 
 test.describe("Renders input elements", () => {
   test("Coming from home page", async ({ page }) => {
-    await visitPage(page, youtubeLandingPage);
-    await rejectCookies(page);
-    await searchForVideo(page);
-    await clickOnAVideo(page);
-    await rendersInputElements(page);
+    for (const language of [null, "English (US)", "Ελληνικά"]) {
+      await visitPage(page, youtubeLandingPage);
+      if (!language) await rejectCookies(page);
+      await switchLanguage(page, language);
+      await searchForVideo(page);
+      await clickOnAVideo(page);
+      await rendersInputElements(page);
+    }
   });
 
   test("On video page", async ({ page }) => {
-    await visitPage(page, youtubeTestVideoPage);
-    await rejectCookies(page);
-    await rendersInputElements(page);
+    for (const language of [null, "English (US)", "Ελληνικά"]) {
+      await visitPage(page, youtubeTestVideoPage);
+      if (!language) await rejectCookies(page);
+      await switchLanguage(page, language);
+      await rendersInputElements(page);
+    }
   });
 });
