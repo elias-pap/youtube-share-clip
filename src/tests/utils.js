@@ -84,7 +84,7 @@ export const searchForVideo = async (page) => {
  */
 const isOnPage = async (page, pathPrefix) => {
   await page.waitForURL((url) => url.pathname.startsWith(pathPrefix));
-  await page.waitForTimeout(10000);
+  await page.waitForTimeout(5000);
 };
 
 /**
