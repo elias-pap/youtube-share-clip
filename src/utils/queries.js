@@ -2,7 +2,8 @@ import { logElementNotFoundError, sleep } from "./other.js";
 import {
   endAtContainerID,
   pollingTimeoutInSeconds,
-  shareButtonSelector,
+  shareIconParentSelector,
+  shareIconPathSelector,
   sleepTime,
   startAtContainerID,
 } from "../constants/utils/queries.js";
@@ -109,7 +110,12 @@ export const getShareDialog = async () =>
  * @type {ElementGetter}
  */
 export const getShareButton = async () =>
-  await pollForElement(() => document.querySelector(shareButtonSelector));
+  await pollForElement(() => {
+    const shareIconSelector = `${shareIconParentSelector} ${shareIconPathSelector}`;
+    let shareIcon = document.querySelector(shareIconSelector);
+    if (!shareIcon) return null;
+    return shareIcon.closest("button");
+  });
 
 /**
  * @type {ElementGetter}
