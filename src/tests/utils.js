@@ -80,10 +80,25 @@ export const searchForVideo = async (page) => {
 
 /**
  * @param {Page} page
+ * @param {string} pathPrefix
+ */
+const isOnPage = async (page, pathPrefix) => {
+  await page.waitForURL((url) => url.pathname.startsWith(pathPrefix));
+  await page.waitForTimeout(10000);
+};
+
+/**
+ * @param {Page} page
  */
 const isOnResultsPage = async (page) => {
-  await page.waitForURL((url) => url.pathname.startsWith("/results"));
-  await page.waitForTimeout(4000);
+  await isOnPage(page, "/results");
+};
+
+/**
+ * @param {Page} page
+ */
+const isOnWatchPage = async (page) => {
+  await isOnPage(page, "/watch");
 };
 
 /**
@@ -94,14 +109,6 @@ export const clickOnAVideo = async (page) => {
   let videoTitles = page.getByRole("link", { name: testVideoTitle });
   let firstVideoTitle = videoTitles.nth(0);
   await firstVideoTitle.click();
-};
-
-/**
- * @param {Page} page
- */
-const isOnWatchPage = async (page) => {
-  await page.waitForURL((url) => url.pathname.startsWith("/watch"));
-  await page.waitForTimeout(4000);
 };
 
 /**
