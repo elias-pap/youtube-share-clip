@@ -25,9 +25,7 @@ const pollForElement = async (elementGetter) => {
 
   for (let i = 0; i < numberOfPolls; i++) {
     let element = elementGetter();
-    if (element) {
-      return element;
-    }
+    if (element) return element;
     await sleep(sleepTime);
   }
 
@@ -106,10 +104,11 @@ export const getShareDialog = async () =>
  * @type {ElementGetter}
  */
 export const getShareIcon = async () =>
-  await pollForElement(() => {
-    const shareIconSelector = `${shareIconParentSelector} ${shareIconPathSelector}`;
-    return document.querySelector(shareIconSelector);
-  });
+  await pollForElement(() =>
+    document.querySelector(
+      `${shareIconParentSelector} ${shareIconPathSelector}`,
+    ),
+  );
 
 /**
  * @param {Element} shareIcon

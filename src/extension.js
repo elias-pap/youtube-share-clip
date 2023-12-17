@@ -110,10 +110,8 @@ const getAtSecondsIfChecked = async (
   isAtCheckboxChecked,
   getAtInputElement,
 ) => {
-  if (await isAtCheckboxChecked()) {
-    return getAtSeconds(getAtInputElement);
-  }
-  return null;
+  if (!(await isAtCheckboxChecked())) return null;
+  return getAtSeconds(getAtInputElement);
 };
 
 /**
@@ -213,10 +211,26 @@ const addEndAtCheckboxAndInput = async (startAtContainer) => {
   createEndAtElement(startAtCloneLabelElement);
 };
 
+/**
+ * @param {Element} element
+ * @returns {boolean}
+ */
+const isEndAtContainer = (element) =>
+  element.getAttribute("id") === endAtContainerID;
+
+/**
+ * @param {Element} startAtContainer
+ */
+const removeEndAtContainer = (startAtContainer) => {
+  let nextElement = startAtContainer.nextElementSibling;
+  if (!nextElement || !isEndAtContainer(nextElement)) return;
+  nextElement.remove();
+};
+
 const onShareButtonClick = async () => {
   // This delay is used because this part of the DOM is changed by YouTube as well.
   // Allow some time for Youtube's changes to be applied first.
-  await sleep(200);
+  await sleep(400);
 
   let shareDialog = await getShareDialog();
   if (!shareDialog) return logElementNotFoundError("share dialog");
@@ -224,18 +238,10 @@ const onShareButtonClick = async () => {
   let startAtContainer = await getStartAtContainer();
   if (!startAtContainer) return logElementNotFoundError("start at container");
 
-  let nextElement = startAtContainer.nextElementSibling;
+  removeEndAtContainer(startAtContainer);
 
-  let endAtContainerExists =
-    nextElement?.getAttribute("id") === endAtContainerID;
-  if (endAtContainerExists) {
-    nextElement?.remove();
-  }
-
-  let startAtElementsExist = startAtContainer.children.length !== 0;
-  if (!startAtElementsExist) {
-    return;
-  }
+  let startAtChildrenExist = startAtContainer.children.length !== 0;
+  if (!startAtChildrenExist) return logNotFoundError("start at children");
 
   await addEndAtCheckboxAndInput(startAtContainer);
   await addOnStateChangeListeners(onStateChange);
