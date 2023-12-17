@@ -77,8 +77,8 @@ const muteVideo = async (page) => {
  * @param {Page} page
  */
 const clickShareButton = async (page) => {
-  let actionsInner = page.locator(shareIconParentSelector);
-  let shareButton = actionsInner.locator("button", {
+  let shareIconParent = page.locator(shareIconParentSelector);
+  let shareButton = shareIconParent.locator("button", {
     has: page.locator(shareIconPathSelector),
   });
   await shareButton.click();

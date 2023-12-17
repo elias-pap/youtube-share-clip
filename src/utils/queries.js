@@ -1,4 +1,4 @@
-import { logElementNotFoundError, sleep } from "./other.js";
+import { sleep } from "./other.js";
 import {
   endAtContainerID,
   pollingTimeoutInSeconds,
@@ -86,17 +86,13 @@ export const getStartAtContainer = async () =>
   );
 
 /**
- * @param {Element} startAtContainer
+ * @param {Element} nextElement
  * @returns {Promise<Element?>}
  */
-export const getStartAtCloneLabelElement = async (startAtContainer) => {
-  let nextElement = startAtContainer.nextElementSibling;
-  if (!nextElement) return logElementNotFoundError("next of start");
-  return await pollForElement(() =>
-    // @ts-ignore
+export const getStartAtCloneLabelElement = async (nextElement) =>
+  await pollForElement(() =>
     nextElement.querySelector("#checkboxLabel yt-formatted-string"),
   );
-};
 
 /**
  * @type {ElementGetter}

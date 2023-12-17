@@ -201,9 +201,11 @@ const cloneStartAtContainer = (startAtContainer) => {
  */
 const addEndAtCheckboxAndInput = async (startAtContainer) => {
   cloneStartAtContainer(startAtContainer);
-  let startAtCloneLabelElement = await getStartAtCloneLabelElement(
-    startAtContainer,
-  );
+
+  let nextElement = startAtContainer.nextElementSibling;
+  if (!nextElement) return logElementNotFoundError("next of start");
+
+  let startAtCloneLabelElement = await getStartAtCloneLabelElement(nextElement);
   if (!startAtCloneLabelElement)
     return logElementNotFoundError("start at clone label");
 
