@@ -8,15 +8,32 @@ import {
 } from "../constants/utils/queries.js";
 import {
   languageIconPathSelector,
+  maxRetries,
   menuIconPathSelector,
   searchIconPathSelector,
   testVideoSearchTerm,
   testVideoTitle,
 } from "./constants.js";
+import { sleep } from "../utils/other.js";
 
 /**
  * @typedef {import("@playwright/test").Page} Page
  */
+
+/**
+ * @param {() => Promise<void>} callback
+ * @param {() => boolean} condition
+ */
+const doUntil = async (callback, condition) => {
+  let retriesLeft = maxRetries;
+  while (!condition() && retriesLeft > 0) {
+    await callback();
+    retriesLeft--;
+    sleep(4000);
+  }
+  if (!condition() && retriesLeft === 0)
+    console.warn("No retries left and condition is not satisfied.");
+};
 
 /**
  * @param {Page} page
@@ -53,9 +70,12 @@ export const searchForVideo = async (page) => {
   let searchButton = page.locator("button", {
     has: page.locator(searchIconPathSelector),
   });
-  await searchButton.click();
-  await searchButton.click();
-  await searchButton.click();
+  await doUntil(
+    async () => {
+      await searchButton.click();
+    },
+    () => page.url().startsWith("https://www.youtube.com/results"),
+  );
 };
 
 /**
