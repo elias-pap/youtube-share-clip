@@ -55,7 +55,7 @@ export const searchForVideo = async (page) => {
  */
 const isOnResultsPage = async (page) => {
   await page.waitForURL((url) => url.pathname.startsWith("/results"));
-  await page.waitForLoadState();
+  await page.waitForTimeout(4000);
 };
 
 /**
@@ -73,7 +73,7 @@ export const clickOnAVideo = async (page) => {
  */
 const isOnWatchPage = async (page) => {
   await page.waitForURL((url) => url.pathname.startsWith("/watch"));
-  await page.waitForLoadState();
+  await page.waitForTimeout(4000);
 };
 
 /**
