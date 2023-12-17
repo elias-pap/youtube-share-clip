@@ -105,13 +105,18 @@ export const getShareDialog = async () =>
 /**
  * @type {ElementGetter}
  */
-export const getShareButton = async () =>
+export const getShareIcon = async () =>
   await pollForElement(() => {
     const shareIconSelector = `${shareIconParentSelector} ${shareIconPathSelector}`;
-    let shareIcon = document.querySelector(shareIconSelector);
-    if (!shareIcon) return null;
-    return shareIcon.closest("button");
+    return document.querySelector(shareIconSelector);
   });
+
+/**
+ * @param {Element} shareIcon
+ * @returns {Promise<Element?>}
+ */
+export const getShareButton = async (shareIcon) =>
+  await pollForElement(() => shareIcon.closest("button"));
 
 /**
  * @type {ElementGetter}

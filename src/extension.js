@@ -17,6 +17,7 @@ import {
   getShareDialog,
   getStartAtCloneLabelElement,
   getBody,
+  getShareIcon,
 } from "./utils/queries.js";
 
 /**
@@ -241,7 +242,10 @@ const onShareButtonClick = async () => {
 };
 
 const addOnShareButtonClickListener = async () => {
-  let shareButton = await getShareButton();
+  let shareIcon = await getShareIcon();
+  if (!shareIcon) return logElementNotFoundError("share icon");
+
+  let shareButton = await getShareButton(shareIcon);
   if (!shareButton) return logElementNotFoundError("share button");
 
   shareButton.addEventListener("click", onShareButtonClick);
