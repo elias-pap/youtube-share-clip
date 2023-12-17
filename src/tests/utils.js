@@ -2,8 +2,11 @@ import { errors } from "@playwright/test";
 import { expect } from "./fixtures.js";
 import {
   endAtContainerID,
+  shareIconParentSelector,
+  shareIconPathSelector,
   startAtContainerID,
 } from "../constants/utils/queries.js";
+import { testVideoSearchTerm, testVideoTitle } from "./constants.js";
 
 /**
  * @typedef {import("@playwright/test").Page} Page
@@ -38,38 +41,50 @@ export const rejectCookies = async (page) => {
 /**
  * @param {Page} page
  */
+export const searchForVideo = async (page) => {
+  let searchBar = page.getByPlaceholder("Search");
+  await searchBar.fill(testVideoSearchTerm);
+  let searchButton = page.getByRole("button", { name: "Search", exact: true });
+  await searchButton.click();
+  await searchButton.click();
+  await searchButton.click();
+};
+
+/**
+ * @param {Page} page
+ */
+const isOnResultsPage = async (page) => {
+  await page.waitForURL((url) => url.pathname.startsWith("/results"));
+  await page.waitForTimeout(4000);
+};
+
+/**
+ * @param {Page} page
+ */
 export const clickOnAVideo = async (page) => {
-  let nonLiveVideoMetas = page.locator("#meta", {
-    hasNotText: "LIVE",
-  });
-  let firstVideoMeta = nonLiveVideoMetas.nth(0);
-  let videoTitle = firstVideoMeta.locator("#video-title");
-  await videoTitle.click();
+  await isOnResultsPage(page);
+  let videoTitles = page.getByRole("link", { name: testVideoTitle });
+  let firstVideoTitle = videoTitles.nth(0);
+  await firstVideoTitle.click();
 };
 
 /**
  * @param {Page} page
  */
 const isOnWatchPage = async (page) => {
-  await expect(page).toHaveURL(/watch/);
-};
-
-/**
- * @param {Page} page
- */
-const muteVideo = async (page) => {
-  await page.keyboard.press("M");
+  await page.waitForURL((url) => url.pathname.startsWith("/watch"));
+  await page.waitForTimeout(4000);
 };
 
 /**
  * @param {Page} page
  */
 const clickShareButton = async (page) => {
-  await page
-    .locator(
-      "#actions-inner #top-level-buttons-computed ytd-button-renderer button",
-    )
-    .click();
+  let shareIconParent = page.locator(shareIconParentSelector);
+  let shareButton = shareIconParent.locator("button", {
+    has: page.locator(shareIconPathSelector),
+  });
+  await shareButton.click();
 };
 
 /**
@@ -97,7 +112,6 @@ const rendersEndAtCheckboxAndInput = async (page) => {
  */
 export const rendersInputElements = async (page) => {
   await isOnWatchPage(page);
-  await muteVideo(page);
   await clickShareButton(page);
   await rendersStartAtCheckboxAndInput(page);
   await rendersEndAtCheckboxAndInput(page);

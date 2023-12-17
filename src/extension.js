@@ -17,6 +17,7 @@ import {
   getShareDialog,
   getStartAtCloneLabelElement,
   getBody,
+  getShareIcon,
 } from "./utils/queries.js";
 
 /**
@@ -109,10 +110,8 @@ const getAtSecondsIfChecked = async (
   isAtCheckboxChecked,
   getAtInputElement,
 ) => {
-  if (await isAtCheckboxChecked()) {
-    return getAtSeconds(getAtInputElement);
-  }
-  return null;
+  if (!(await isAtCheckboxChecked())) return null;
+  return getAtSeconds(getAtInputElement);
 };
 
 /**
@@ -201,19 +200,37 @@ const cloneStartAtContainer = (startAtContainer) => {
  */
 const addEndAtCheckboxAndInput = async (startAtContainer) => {
   cloneStartAtContainer(startAtContainer);
-  let startAtCloneLabelElement = await getStartAtCloneLabelElement(
-    startAtContainer,
-  );
+
+  let nextElement = startAtContainer.nextElementSibling;
+  if (!nextElement) return logElementNotFoundError("next of start");
+
+  let startAtCloneLabelElement = await getStartAtCloneLabelElement(nextElement);
   if (!startAtCloneLabelElement)
     return logElementNotFoundError("start at clone label");
 
   createEndAtElement(startAtCloneLabelElement);
 };
 
+/**
+ * @param {Element} element
+ * @returns {boolean}
+ */
+const isEndAtContainer = (element) =>
+  element.getAttribute("id") === endAtContainerID;
+
+/**
+ * @param {Element} startAtContainer
+ */
+const removeEndAtContainer = (startAtContainer) => {
+  let nextElement = startAtContainer.nextElementSibling;
+  if (!nextElement || !isEndAtContainer(nextElement)) return;
+  nextElement.remove();
+};
+
 const onShareButtonClick = async () => {
   // This delay is used because this part of the DOM is changed by YouTube as well.
   // Allow some time for Youtube's changes to be applied first.
-  await sleep(200);
+  await sleep(500);
 
   let shareDialog = await getShareDialog();
   if (!shareDialog) return logElementNotFoundError("share dialog");
@@ -221,25 +238,20 @@ const onShareButtonClick = async () => {
   let startAtContainer = await getStartAtContainer();
   if (!startAtContainer) return logElementNotFoundError("start at container");
 
-  let nextElement = startAtContainer.nextElementSibling;
+  removeEndAtContainer(startAtContainer);
 
-  let endAtContainerExists =
-    nextElement?.getAttribute("id") === endAtContainerID;
-  if (endAtContainerExists) {
-    nextElement?.remove();
-  }
-
-  let startAtElementsExist = startAtContainer.children.length !== 0;
-  if (!startAtElementsExist) {
-    return;
-  }
+  let startAtChildrenExist = startAtContainer.children.length !== 0;
+  if (!startAtChildrenExist) return logNotFoundError("start at children");
 
   await addEndAtCheckboxAndInput(startAtContainer);
   await addOnStateChangeListeners(onStateChange);
 };
 
 const addOnShareButtonClickListener = async () => {
-  let shareButton = await getShareButton();
+  let shareIcon = await getShareIcon();
+  if (!shareIcon) return logElementNotFoundError("share icon");
+
+  let shareButton = await getShareButton(shareIcon);
   if (!shareButton) return logElementNotFoundError("share button");
 
   shareButton.addEventListener("click", onShareButtonClick);

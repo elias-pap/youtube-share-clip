@@ -1,7 +1,9 @@
-import { logElementNotFoundError, sleep } from "./other.js";
+import { sleep } from "./other.js";
 import {
   endAtContainerID,
   pollingTimeoutInSeconds,
+  shareIconParentSelector,
+  shareIconPathSelector,
   sleepTime,
   startAtContainerID,
 } from "../constants/utils/queries.js";
@@ -23,9 +25,7 @@ const pollForElement = async (elementGetter) => {
 
   for (let i = 0; i < numberOfPolls; i++) {
     let element = elementGetter();
-    if (element) {
-      return element;
-    }
+    if (element) return element;
     await sleep(sleepTime);
   }
 
@@ -84,17 +84,13 @@ export const getStartAtContainer = async () =>
   );
 
 /**
- * @param {Element} startAtContainer
+ * @param {Element} nextElement
  * @returns {Promise<Element?>}
  */
-export const getStartAtCloneLabelElement = async (startAtContainer) => {
-  let nextElement = startAtContainer.nextElementSibling;
-  if (!nextElement) return logElementNotFoundError("next of start");
-  return await pollForElement(() =>
-    // @ts-ignore
+export const getStartAtCloneLabelElement = async (nextElement) =>
+  await pollForElement(() =>
     nextElement.querySelector("#checkboxLabel yt-formatted-string"),
   );
-};
 
 /**
  * @type {ElementGetter}
@@ -107,12 +103,19 @@ export const getShareDialog = async () =>
 /**
  * @type {ElementGetter}
  */
-export const getShareButton = async () =>
+export const getShareIcon = async () =>
   await pollForElement(() =>
     document.querySelector(
-      "#actions-inner #top-level-buttons-computed ytd-button-renderer button",
+      `${shareIconParentSelector} ${shareIconPathSelector}`,
     ),
   );
+
+/**
+ * @param {Element} shareIcon
+ * @returns {Promise<Element?>}
+ */
+export const getShareButton = async (shareIcon) =>
+  await pollForElement(() => shareIcon.closest("button"));
 
 /**
  * @type {ElementGetter}
