@@ -15,7 +15,7 @@
   },
   "content_scripts": [
     {
-      "js": ["content.js"],
+      "js": ["youtube-share-clip.js"],
       "matches": ["https://www.youtube.com/*"]
     }
   ]
