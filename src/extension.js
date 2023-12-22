@@ -1,3 +1,7 @@
+import {
+  defaultEndAtLabelText,
+  langToEndAtStringMap,
+} from "./constants/extension.js";
 import { endAtContainerID } from "./constants/utils/queries.js";
 import {
   getCurrentURL,
@@ -178,11 +182,21 @@ const getStateElements = async () => {
 };
 
 /**
+ * @returns {string}
+ */
+const getTranslatedEndAtString = () => {
+  let language = document.documentElement.lang;
+  if (!langToEndAtStringMap.has(language)) return defaultEndAtLabelText;
+  // @ts-ignore the language is checked in the previous line
+  return langToEndAtStringMap.get(language);
+};
+
+/**
  * @param {Element} startAtCloneLabelElement
  */
 const createEndAtElement = (startAtCloneLabelElement) => {
   startAtCloneLabelElement.removeAttribute("is-empty");
-  startAtCloneLabelElement.textContent = "End at";
+  startAtCloneLabelElement.textContent = getTranslatedEndAtString();
 };
 
 /**
