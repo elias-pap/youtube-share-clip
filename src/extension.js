@@ -244,7 +244,7 @@ const removeEndAtContainer = (startAtContainer) => {
 const onShareButtonClick = async () => {
   // This delay is used because this part of the DOM is changed by YouTube as well.
   // Allow some time for Youtube's changes to be applied first.
-  await sleep(500);
+  await sleep(400);
 
   let shareDialog = await getShareDialog();
   if (!shareDialog) return logElementNotFoundError("share dialog");
