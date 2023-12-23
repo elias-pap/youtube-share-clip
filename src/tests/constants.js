@@ -1,6 +1,7 @@
 export const maxRetries = 60;
 export const sleepTime = 4000;
 export const singleActionTimeout = 5000;
+export const pollingTimeoutInSeconds = 30;
 export const youtubeLandingPage = "https://www.youtube.com/";
 export const youtubeTestVideoPage =
   "https://www.youtube.com/watch?v=Czvldzei4DI";
