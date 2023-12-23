@@ -4,3 +4,4 @@ extension.zip
 test-results
 playwright-report
 playwright/.cache
+.DS_Store
