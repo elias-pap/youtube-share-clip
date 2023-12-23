@@ -16,7 +16,7 @@
     "deps:check": "ncu",
     "deps:update": "ncu -u",
     "bundle:clean": "rimraf build && mkdir build",
-    "bundle:code": "npm run bundle:clean && esbuild youtube-share-clip=src/extension.js popup=src/popup.html images/icon-16.png images/icon-32.png images/icon-48.png images/icon-128.png manifest.json --bundle --loader:.html=copy --loader:.png=copy --loader:.json=copy --outdir=build",
+    "bundle:code": "npm run bundle:clean && esbuild youtube-share-clip=src/extension.js popup=src/popup.html images/icon-16.png images/icon-32.png images/icon-48.png images/icon-128.png manifest.json --bundle --loader:.html=copy --loader:.png=copy --loader:.json=copy --target=es6 --outdir=build",
     "bundle:dev": "npm run bundle:code -- --watch",
     "bundle:prod": "npm run bundle:code -- --minify",
     "bundle:release": "npm run bundle:prod && ./scripts/createArtifact.js"
@@ -28,7 +28,7 @@
     "archiver": "^6.0.1",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
-    "esbuild": "^0.19.9",
+    "esbuild": "^0.19.10",
     "eslint": "^8.56.0",
     "eslint-plugin-jsdoc": "^46.9.1",
     "husky": "^8.0.3",
