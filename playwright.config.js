@@ -1,18 +1,20 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const CI = process.env.CI;
+
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
   testDir: "src/tests",
   fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : undefined,
-  workers: process.env.CI ? 1 : undefined,
+  forbidOnly: !!CI,
+  retries: CI ? 1 : undefined,
+  workers: CI ? 1 : undefined,
   reporter: [["html", { open: "never" }]],
-  timeout: process.env.CI ? 120000 : 60000,
+  timeout: CI ? 120000 : 60000,
   use: {
-    trace: "on-first-retry",
+    trace: CI ? "on-first-retry" : "retain-on-failure",
   },
   projects: [
     {
