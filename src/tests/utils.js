@@ -51,9 +51,7 @@ export const rejectCookies = async (page) => {
     name: "Reject the use of cookies and other data for the purposes described",
   });
   try {
-    await rejectButton.click({
-      timeout: 5000,
-    });
+    await rejectButton.click();
   } catch (error) {
     if (error instanceof errors.TimeoutError)
       console.info("Reject cookies button not found.");
@@ -83,7 +81,6 @@ export const searchForVideo = async (page) => {
  */
 const isOnPage = async (page, pathPrefix) => {
   await page.waitForURL((url) => url.pathname.startsWith(pathPrefix));
-  await page.waitForTimeout(5000);
 };
 
 /**
