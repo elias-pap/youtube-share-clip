@@ -1,18 +1,20 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const CI = process.env.CI;
+
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
   testDir: "src/tests",
   fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  workers: process.env.CI ? 1 : undefined,
+  forbidOnly: !!CI,
+  workers: CI ? 1 : undefined,
   reporter: [["html", { open: "never" }]],
-  timeout: 60000,
-  // use: {
-  //   trace: "retain-on-failure",
-  // },
+  timeout: CI ? 120000 : 60000,
+  use: {
+    trace: "retain-on-failure",
+  },
   projects: [
     {
       name: "chromium",

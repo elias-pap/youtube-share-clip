@@ -2,8 +2,8 @@ import { sleep } from "./other.js";
 import {
   endAtContainerID,
   pollingTimeoutInSeconds,
-  shareIconParentSelector,
-  shareIconPathSelector,
+  shareButtonSelector,
+  shareButtonSelector2,
   sleepTime,
   startAtContainerID,
 } from "../constants/utils/queries.js";
@@ -16,14 +16,15 @@ import {
 
 /**
  * @template T
- * @param {() => T?} elementGetter
+ * @param {(() => T?)[]} elementGetters
  * @returns {Promise<T?>}
  */
-const pollForElement = async (elementGetter) => {
+const pollForElement = async (elementGetters) => {
   const pollsPerSecond = 1000 / sleepTime;
   const numberOfPolls = pollsPerSecond * pollingTimeoutInSeconds;
 
   for (let i = 0; i < numberOfPolls; i++) {
+    let elementGetter = elementGetters[i % elementGetters.length];
     let element = elementGetter();
     if (element) return element;
     await sleep(sleepTime);
@@ -36,89 +37,82 @@ const pollForElement = async (elementGetter) => {
  * @type {InputElementGetter}
  */
 export const getStartAtInputElement = async () =>
-  await pollForElement(() =>
-    document.querySelector(`#${startAtContainerID} input`),
-  );
+  await pollForElement([
+    () => document.querySelector(`#${startAtContainerID} input`),
+  ]);
 
 /**
  * @type {InputElementGetter}
  */
 export const getEndAtInputElement = async () =>
-  await pollForElement(() =>
-    document.querySelector(`#${endAtContainerID} input`),
-  );
+  await pollForElement([
+    () => document.querySelector(`#${endAtContainerID} input`),
+  ]);
 
 /**
  * @type {CheckboxElementGetter}
  */
 export const getStartAtCheckboxElement = async () =>
-  await pollForElement(() =>
-    document.querySelector(`#${startAtContainerID} #start-at-checkbox`),
-  );
+  await pollForElement([
+    () => document.querySelector(`#${startAtContainerID} #start-at-checkbox`),
+  ]);
 
 /**
  * @type {CheckboxElementGetter}
  */
 export const getEndAtCheckboxElement = async () =>
-  await pollForElement(() =>
-    document.querySelector(`#${endAtContainerID} #start-at-checkbox`),
-  );
+  await pollForElement([
+    () => document.querySelector(`#${endAtContainerID} #start-at-checkbox`),
+  ]);
 
 /**
  * @type {InputElementGetter}
  */
 export const getShareURLElement = async () =>
-  await pollForElement(
+  await pollForElement([
     () =>
       /** @type {HTMLInputElement} */ (document.getElementById("share-url")),
-  );
+  ]);
 
 /**
  * @type {ElementGetter}
  */
 export const getStartAtContainer = async () =>
-  await pollForElement(() =>
-    document.querySelector(
-      `ytd-popup-container #contents #${startAtContainerID}`,
-    ),
-  );
+  await pollForElement([
+    () =>
+      document.querySelector(
+        `ytd-popup-container #contents #${startAtContainerID}`,
+      ),
+  ]);
 
 /**
  * @param {Element} nextElement
  * @returns {Promise<Element?>}
  */
 export const getStartAtCloneLabelElement = async (nextElement) =>
-  await pollForElement(() =>
-    nextElement.querySelector("#checkboxLabel yt-formatted-string"),
-  );
+  await pollForElement([
+    () => nextElement.querySelector("#checkboxLabel yt-formatted-string"),
+  ]);
 
 /**
  * @type {ElementGetter}
  */
 export const getShareDialog = async () =>
-  await pollForElement(() =>
-    document.querySelector("ytd-popup-container #contents"),
-  );
+  await pollForElement([
+    () => document.querySelector("ytd-popup-container #contents"),
+  ]);
 
 /**
  * @type {ElementGetter}
  */
-export const getShareIcon = async () =>
-  await pollForElement(() =>
-    document.querySelector(
-      `${shareIconParentSelector} ${shareIconPathSelector}`,
-    ),
-  );
-
-/**
- * @param {Element} shareIcon
- * @returns {Promise<Element?>}
- */
-export const getShareButton = async (shareIcon) =>
-  await pollForElement(() => shareIcon.closest("button"));
+export const getShareButton = async () =>
+  await pollForElement([
+    () => document.querySelector(shareButtonSelector),
+    () => document.querySelector(shareButtonSelector2),
+  ]);
 
 /**
  * @type {ElementGetter}
  */
 export const getBody = async () =>
-  await pollForElement(() => document.querySelector("body"));
+  await pollForElement([() => document.querySelector("body")]);
