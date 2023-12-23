@@ -9,12 +9,11 @@ export default defineConfig({
   testDir: "src/tests",
   fullyParallel: true,
   forbidOnly: !!CI,
-  retries: CI ? 1 : undefined,
   workers: CI ? 1 : undefined,
   reporter: [["html", { open: "never" }]],
   timeout: CI ? 120000 : 60000,
   use: {
-    trace: CI ? "on-first-retry" : "retain-on-failure",
+    trace: "retain-on-failure",
   },
   projects: [
     {
