@@ -3,6 +3,7 @@ import { expect } from "./fixtures.js";
 import {
   endAtContainerID,
   shareButtonSelector,
+  shareButtonSelector2,
   startAtContainerID,
 } from "../constants/utils/queries.js";
 import {
@@ -10,6 +11,8 @@ import {
   maxRetries,
   menuIconPathSelector,
   searchIconPathSelector,
+  singleActionTimeout,
+  sleepTime,
   testVideoSearchTerm,
   testVideoTitle,
 } from "./constants.js";
@@ -28,7 +31,7 @@ const doUntil = async (callback, condition) => {
   while (!condition() && retriesLeft > 0) {
     await callback();
     retriesLeft--;
-    sleep(4000);
+    sleep(sleepTime);
   }
   if (!condition() && retriesLeft === 0)
     console.warn("No retries left and condition is not satisfied.");
@@ -51,7 +54,7 @@ export const rejectCookies = async (page) => {
     name: "Reject the use of cookies and other data for the purposes described",
   });
   try {
-    await rejectButton.click();
+    await rejectButton.click({ timeout: singleActionTimeout });
   } catch (error) {
     if (error instanceof errors.TimeoutError)
       console.info("Reject cookies button not found.");
@@ -111,8 +114,30 @@ export const clickOnAVideo = async (page) => {
  * @param {Page} page
  */
 const clickShareButton = async (page) => {
-  let shareButton = page.locator(shareButtonSelector);
-  await shareButton.click();
+  for (;;) {
+    let shareButton = page.locator(shareButtonSelector);
+    try {
+      await shareButton.click({ timeout: singleActionTimeout });
+      return;
+    } catch (error) {
+      if (error instanceof errors.TimeoutError) {
+        console.warn(
+          `Share button not found with selector ${shareButtonSelector}.`,
+        );
+      }
+    }
+    shareButton = page.locator(shareButtonSelector2);
+    try {
+      await shareButton.click({ timeout: singleActionTimeout });
+      return;
+    } catch (error) {
+      if (error instanceof errors.TimeoutError) {
+        console.warn(
+          `Share button not found with selector ${shareButtonSelector2}.`,
+        );
+      }
+    }
+  }
 };
 
 /**
