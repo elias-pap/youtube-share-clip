@@ -19,3 +19,5 @@ export const langToEndAtStringMap = new Map([
   ["pt-BR", "Terminar em"],
   ["tr-TR", "Son:"],
 ]);
+
+export const syncSleepTime = 400;
