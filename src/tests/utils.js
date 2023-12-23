@@ -2,8 +2,7 @@ import { errors } from "@playwright/test";
 import { expect } from "./fixtures.js";
 import {
   endAtContainerID,
-  shareIconParentSelector,
-  shareIconPathSelector,
+  shareButtonSelector,
   startAtContainerID,
 } from "../constants/utils/queries.js";
 import {
@@ -115,10 +114,7 @@ export const clickOnAVideo = async (page) => {
  * @param {Page} page
  */
 const clickShareButton = async (page) => {
-  let shareIconParent = page.locator(shareIconParentSelector);
-  let shareButton = shareIconParent.locator("button", {
-    has: page.locator(shareIconPathSelector),
-  });
+  let shareButton = page.locator(shareButtonSelector);
   await shareButton.click();
 };
 

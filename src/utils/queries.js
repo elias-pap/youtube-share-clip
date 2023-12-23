@@ -2,8 +2,7 @@ import { sleep } from "./other.js";
 import {
   endAtContainerID,
   pollingTimeoutInSeconds,
-  shareIconParentSelector,
-  shareIconPathSelector,
+  shareButtonSelector,
   sleepTime,
   startAtContainerID,
 } from "../constants/utils/queries.js";
@@ -103,19 +102,8 @@ export const getShareDialog = async () =>
 /**
  * @type {ElementGetter}
  */
-export const getShareIcon = async () =>
-  await pollForElement(() =>
-    document.querySelector(
-      `${shareIconParentSelector} ${shareIconPathSelector}`,
-    ),
-  );
-
-/**
- * @param {Element} shareIcon
- * @returns {Promise<Element?>}
- */
-export const getShareButton = async (shareIcon) =>
-  await pollForElement(() => shareIcon.closest("button"));
+export const getShareButton = async () =>
+  await pollForElement(() => document.querySelector(shareButtonSelector));
 
 /**
  * @type {ElementGetter}
