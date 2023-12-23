@@ -10,6 +10,7 @@ import {
   languageIconPathSelector,
   maxRetries,
   menuIconPathSelector,
+  pollingTimeoutInSeconds,
   searchIconPathSelector,
   singleActionTimeout,
   sleepTime,
@@ -21,6 +22,31 @@ import { sleep } from "../utils/other.js";
 /**
  * @typedef {import("@playwright/test").Page} Page
  */
+
+/**
+ * @param {Page} page
+ * @param {string[]} selectors
+ * @returns {Promise<string?>}
+ */
+const pollForSelector = async (page, selectors) => {
+  const pollsPerSecond = 1000 / singleActionTimeout;
+  const numberOfPolls = pollsPerSecond * pollingTimeoutInSeconds;
+
+  for (let i = 0; i < numberOfPolls; i++) {
+    let selector = selectors[i % selectors.length];
+    let element = page.locator(selector);
+    try {
+      await expect(element).toBeVisible({ timeout: singleActionTimeout });
+      return selector;
+    } catch (error) {
+      if (error instanceof errors.TimeoutError)
+        console.warn(`Element not found with selector ${selector}.`);
+    }
+  }
+
+  console.error("Could not find any elements with selectors:", selectors);
+  return null;
+};
 
 /**
  * @param {() => Promise<void>} callback
@@ -114,30 +140,16 @@ export const clickOnAVideo = async (page) => {
  * @param {Page} page
  */
 const clickShareButton = async (page) => {
-  for (;;) {
-    let shareButton = page.locator(shareButtonSelector);
-    try {
-      await shareButton.click({ timeout: singleActionTimeout });
-      return;
-    } catch (error) {
-      if (error instanceof errors.TimeoutError) {
-        console.warn(
-          `Share button not found with selector ${shareButtonSelector}.`,
-        );
-      }
-    }
-    shareButton = page.locator(shareButtonSelector2);
-    try {
-      await shareButton.click({ timeout: singleActionTimeout });
-      return;
-    } catch (error) {
-      if (error instanceof errors.TimeoutError) {
-        console.warn(
-          `Share button not found with selector ${shareButtonSelector2}.`,
-        );
-      }
-    }
+  let selector = await pollForSelector(page, [
+    shareButtonSelector,
+    shareButtonSelector2,
+  ]);
+  if (!selector) {
+    console.error("Could not find share button");
+    return;
   }
+  let shareButton = page.locator(selector);
+  await shareButton.click();
 };
 
 /**
