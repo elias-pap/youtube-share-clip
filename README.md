@@ -47,6 +47,13 @@ Enjoy sharing YouTube clips ! 🎉
 
 There are no production dependencies. Just vanilla JS.
 
+### Contributing
+
+Contributions are very welcome and I'm looking forward to your PRs.
+By contributing, you agree that the author, Elias Papavasileiou,
+obtains and continues to retain all the rights of this project, as described in
+[LICENSE](https://github.com/elias-pap/youtube-share-clip/blob/main/LICENSE) file.
+
 ### Setup
 
 Get the source code and switch to the project directory:
