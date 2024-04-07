@@ -8,3 +8,5 @@ export const shareButtonSelector =
   "#actions-inner #top-level-buttons-computed ytd-button-renderer button";
 export const shareButtonSelector2 =
   "#actions-inner #top-level-buttons-computed yt-button-view-model button";
+export const searchButtonSelector = "#search-icon-legacy";
+export const searchButtonSelector2 = "#search-icon";
