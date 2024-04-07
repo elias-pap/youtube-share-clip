@@ -2,6 +2,8 @@ import { errors } from "@playwright/test";
 import { expect } from "./fixtures.js";
 import {
   endAtContainerID,
+  searchButtonSelector,
+  searchButtonSelector2,
   shareButtonSelector,
   shareButtonSelector2,
   startAtContainerID,
@@ -11,7 +13,6 @@ import {
   maxRetries,
   menuIconPathSelector,
   pollingTimeoutInSeconds,
-  searchIconPathSelector,
   singleActionTimeout,
   sleepTime,
   testVideoSearchTerm,
@@ -90,18 +91,38 @@ export const rejectCookies = async (page) => {
 /**
  * @param {Page} page
  */
-export const searchForVideo = async (page) => {
+const fillSearchBar = async (page) => {
   let searchBar = page.locator('input[id="search"]');
   await searchBar.fill(testVideoSearchTerm);
-  let searchButton = page.locator("button", {
-    has: page.locator(searchIconPathSelector),
-  });
+};
+
+/**
+ * @param {Page} page
+ */
+const clickSearchButton = async (page) => {
+  let selector = await pollForSelector(page, [
+    searchButtonSelector,
+    searchButtonSelector2,
+  ]);
+  if (!selector) {
+    console.error("Could not find search button");
+    return;
+  }
+  let searchButton = page.locator(selector);
   await doUntil(
     async () => {
       await searchButton.click();
     },
     () => page.url().startsWith("https://www.youtube.com/results"),
   );
+};
+
+/**
+ * @param {Page} page
+ */
+export const searchForVideo = async (page) => {
+  await fillSearchBar(page);
+  await clickSearchButton(page);
 };
 
 /**

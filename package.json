@@ -1,6 +1,6 @@
 {
   "name": "youtube-share-clip",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Share sections of Youtube videos.",
   "author": "Elias Papavasileiou",
   "license": "ISC",
@@ -19,25 +19,32 @@
     "bundle:code": "npm run bundle:clean && esbuild youtube-share-clip=src/extension.js popup=src/popup.html images/icon-16.png images/icon-32.png images/icon-48.png images/icon-128.png manifest.json --bundle --loader:.html=copy --loader:.png=copy --loader:.json=copy --target=es6 --outdir=build",
     "bundle:dev": "npm run bundle:code -- --watch",
     "bundle:prod": "npm run bundle:code -- --minify",
-    "bundle:release": "npm run bundle:prod && ./scripts/createArtifact.js"
+    "bundle:release": "npm run bundle:prod && ./scripts/createArtifact.js",
+    "lint:inspect": "eslint --inspect-config",
+    "lint:run": "eslint ."
+  },
+  "dependencies": {
+    "@sentry/browser": "^7.109.0",
+    "@sentry/integrations": "^7.109.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.4.3",
-    "@commitlint/config-conventional": "^18.4.3",
-    "@playwright/test": "^1.40.1",
-    "archiver": "^6.0.1",
+    "@commitlint/cli": "^19.2.1",
+    "@commitlint/config-conventional": "^19.1.0",
+    "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.43.0",
+    "archiver": "^7.0.1",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
-    "esbuild": "^0.19.10",
-    "eslint": "^8.56.0",
-    "eslint-plugin-jsdoc": "^46.9.1",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "npm-check-updates": "^16.14.12",
-    "prettier": "^3.1.1",
+    "esbuild": "^0.20.2",
+    "eslint": "^9.0.0",
+    "eslint-plugin-jsdoc": "^48.2.3",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "npm-check-updates": "^16.14.18",
+    "prettier": "^3.2.5",
     "rimraf": "^5.0.5"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   }
 }
