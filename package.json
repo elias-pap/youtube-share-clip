@@ -42,5 +42,9 @@
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@sentry/browser": "^7.109.0",
+    "@sentry/integrations": "^7.109.0"
   }
 }

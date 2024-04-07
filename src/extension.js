@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/browser";
+import { captureConsoleIntegration } from "@sentry/integrations";
 import {
   defaultEndAtLabelText,
   langToEndAtStringMap,
@@ -305,4 +307,11 @@ const main = () => {
   window.addEventListener("load", onPageLoad);
 };
 
+Sentry.init({
+  dsn: "https://ca0cb03d7d29fbb1b09c52fcba66144d@o4507045965660160.ingest.us.sentry.io/4507046846464000",
+  attachStacktrace: true,
+  release: "0.5.3",
+  environment: process.env.NODE_ENV,
+  integrations: [captureConsoleIntegration({ levels: ["error"] })],
+});
 main();
