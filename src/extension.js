@@ -310,7 +310,7 @@ const main = () => {
 Sentry.init({
   dsn: "https://ca0cb03d7d29fbb1b09c52fcba66144d@o4507045965660160.ingest.us.sentry.io/4507046846464000",
   attachStacktrace: true,
-  release: "0.5.3",
+  release: "0.6.0",
   environment: process.env.NODE_ENV,
   integrations: [captureConsoleIntegration({ levels: ["error"] })],
 });
