@@ -23,6 +23,10 @@
     "lint:inspect": "eslint --inspect-config",
     "lint:run": "eslint ."
   },
+  "dependencies": {
+    "@sentry/browser": "^7.109.0",
+    "@sentry/integrations": "^7.109.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^19.2.1",
     "@commitlint/config-conventional": "^19.1.0",
@@ -42,9 +46,5 @@
   },
   "engines": {
     "node": ">=20.0.0"
-  },
-  "dependencies": {
-    "@sentry/browser": "^7.109.0",
-    "@sentry/integrations": "^7.109.0"
   }
 }
