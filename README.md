@@ -5,7 +5,7 @@ Share sections of Youtube videos.
 Advantages over YouTube Clip feature:
 
 - There is no need to have a YouTube creator (google) account and to be logged in to create a clip.
-- There is no 5-60 seconds restriction on clip duration. The clip can be however short or long you like.
+- There is no 5-60 seconds restriction on clip duration. The clip can be as short or long as you like.
 
 Disadvantages:
 
@@ -21,7 +21,7 @@ Get it on [Chrome Web Store.](https://chrome.google.com/webstore/detail/youtube-
 
 ## 🚀 Usage
 
-This extension adds an "End at" checkbox and input under the "Start at" one in Share dialog.
+This extension adds an "End at" checkbox and input under the "Start at" one in the Share dialog under the YouTube video.
 
 This way you can get a link to a section of a YouTube video, by selecting "Start at" and "End at" times.
 
@@ -45,7 +45,7 @@ Enjoy sharing YouTube clips ! 🎉
 
 ### Dependencies
 
-There are no production dependencies. Just vanilla JS.
+The only dependency is Sentry which is used to monitor production errors.
 
 ### Contributing
 
