@@ -23,7 +23,7 @@ Get it on [Chrome Web Store.](https://chrome.google.com/webstore/detail/youtube-
 
 This extension adds an "End at" checkbox and input under the "Start at" one in the Share dialog under the YouTube video.
 
-This way you can get a link to a section of a YouTube video, by selecting "Start at" and "End at" times.
+This way you can get a link to a section of the YouTube video, by selecting the "Start at" and "End at" times.
 
 ### Steps
 
