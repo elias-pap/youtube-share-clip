@@ -24,6 +24,10 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Run pre-commit hooks
         run: npx lint-staged --diff=origin/${{ github.base_ref }}...origin/${{ github.head_ref }}
   test:
