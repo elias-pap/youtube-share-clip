@@ -1,8 +1,7 @@
 name: CI
 on:
   pull_request:
-  push:
-    branches: ["main"]
+    types: [opened, synchronize, reopened, closed]
 jobs:
   pre-commit:
     runs-on: ubuntu-22.04
@@ -24,7 +23,8 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Run pre-commit hooks
+      - name: Run lint-staged
+        if: ${{ github.event.action != 'closed' || github.event.pull_request.merged == true }}
         run: |
           git remote add headRemote ${{ github.event.pull_request.head.repo.clone_url }}
           git fetch headRemote
