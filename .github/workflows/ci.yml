@@ -24,8 +24,12 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
+      - name: Add head remote ref
+        run: git remote add headRemote ${{ github.event.pull_request.head.repo.clone_url }}
+      - name: Fetch head remote data
+        run: git fetch headRemote
       - name: Run pre-commit hooks
-        run: npx lint-staged --diff=origin/${{ github.base_ref }}...origin/${{ github.head_ref }}
+        run: npx lint-staged --diff=origin/${{ github.base_ref }}...headRemote/${{ github.head_ref }}
   test:
     needs: pre-commit
     strategy:
