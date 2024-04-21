@@ -30,7 +30,7 @@ jobs:
           git remote add headRemote ${{ github.event.pull_request.head.repo.clone_url }}
           git fetch headRemote
           npx lint-staged --diff=origin/${{ github.base_ref }}...headRemote/${{ github.head_ref }}
-      - name: Run lint-staged (PR merge to main)
+      - name: Run lint-staged (push to main)
         if: github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
         run: npx lint-staged --diff=HEAD~...HEAD
   test:
