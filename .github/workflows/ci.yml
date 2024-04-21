@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
 jobs:
-  pre-commit:
+  lint-staged:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
@@ -21,16 +21,19 @@ jobs:
           path: node_modules
           key: Linux-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != true
         run: npm ci
-      - name: Run lint-staged
-        if: ${{ github.event.action != 'closed' || github.event.pull_request.merged == true }}
+      - name: Run lint-staged (PR update)
+        if: github.event.action != 'closed'
         run: |
           git remote add headRemote ${{ github.event.pull_request.head.repo.clone_url }}
           git fetch headRemote
           npx lint-staged --diff=origin/${{ github.base_ref }}...headRemote/${{ github.head_ref }}
+      - name: Run lint-staged (PR merge)
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true
+        run: npx lint-staged --diff=HEAD~...HEAD
   test:
-    needs: pre-commit
+    needs: lint-staged
     strategy:
       matrix:
         os: [ubuntu-22.04, macos-12, windows-2022]
@@ -63,10 +66,10 @@ jobs:
             ${{ env.PLAYWRIGHT_CACHE_PATH }}
           key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != true
         run: npm ci
       - name: Install Playwright browsers and browser deps
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != true
         run: npx playwright install --with-deps chromium chrome
       - name: Run e2e tests
         run: npm run test:headless
