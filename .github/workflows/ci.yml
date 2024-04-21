@@ -17,7 +17,7 @@ jobs:
           node-version: 20
       - name: Cache dependencies
         id: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: Linux-${{ hashFiles('package-lock.json') }}
@@ -60,7 +60,7 @@ jobs:
           fi
       - name: Cache dependencies
         id: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
