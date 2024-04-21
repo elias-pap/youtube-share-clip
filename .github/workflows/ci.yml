@@ -31,7 +31,7 @@ jobs:
           npx lint-staged --diff=origin/${{ github.base_ref }}...headRemote/${{ github.head_ref }}
       - name: Run lint-staged (PR merge)
         if: github.event.action == 'closed' && github.event.pull_request.merged == true
-        run: npx lint-staged --diff=HEAD~ HEAD
+        run: npx lint-staged --diff=HEAD~...HEAD
   test:
     needs: pre-commit
     strategy:
