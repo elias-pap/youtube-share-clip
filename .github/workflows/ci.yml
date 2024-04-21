@@ -24,6 +24,8 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
+      - name: Print remotes
+        run: git remote -v
       - name: Add head remote ref
         run: git remote add headRemote ${{ github.event.pull_request.head.repo.clone_url }}
       - name: Fetch head remote data
