@@ -1,7 +1,8 @@
 name: CI
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+  push:
+    branches: main
 jobs:
   lint-staged:
     runs-on: ubuntu-22.04
@@ -24,13 +25,13 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Run lint-staged (PR update)
-        if: github.event.action != 'closed'
+        if: github.event_name == 'pull_request'
         run: |
           git remote add headRemote ${{ github.event.pull_request.head.repo.clone_url }}
           git fetch headRemote
           npx lint-staged --diff=origin/${{ github.base_ref }}...headRemote/${{ github.head_ref }}
-      - name: Run lint-staged (PR merge)
-        if: github.event.action == 'closed' && github.event.pull_request.merged == 'true'
+      - name: Run lint-staged (push to main)
+        if: github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
         run: npx lint-staged --diff=HEAD~...HEAD
   test:
     needs: lint-staged
