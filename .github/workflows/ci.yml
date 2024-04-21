@@ -23,12 +23,15 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Run lint-staged
-        if: ${{ github.event.action != 'closed' || github.event.pull_request.merged == true }}
+      - name: Run lint-staged (PR update)
+        if: github.event.action != 'closed'
         run: |
           git remote add headRemote ${{ github.event.pull_request.head.repo.clone_url }}
           git fetch headRemote
           npx lint-staged --diff=origin/${{ github.base_ref }}...headRemote/${{ github.head_ref }}
+      - name: Run lint-staged (PR merge)
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true
+        run: npx lint-staged --diff=HEAD~ HEAD
   test:
     needs: pre-commit
     strategy:
