@@ -21,7 +21,7 @@ jobs:
           path: node_modules
           key: Linux-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != true
         run: npm ci
       - name: Run lint-staged (PR update)
         if: github.event.action != 'closed'
@@ -66,10 +66,10 @@ jobs:
             ${{ env.PLAYWRIGHT_CACHE_PATH }}
           key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != true
         run: npm ci
       - name: Install Playwright browsers and browser deps
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != true
         run: npx playwright install --with-deps chromium chrome
       - name: Run e2e tests
         run: npm run test:headless
