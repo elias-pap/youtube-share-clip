@@ -114,7 +114,7 @@ export const getStartAtContainer = async () =>
  * @param {Element} nextElement
  * @returns {Promise<Element?>}
  */
-export const getStartAtCloneLabelElement = async (nextElement) =>
+export const getEndAtLabelElement = async (nextElement) =>
   await pollForElement([
     () => nextElement.querySelector("#checkboxLabel yt-formatted-string"),
   ]);
@@ -123,7 +123,7 @@ export const getStartAtCloneLabelElement = async (nextElement) =>
  * @param {Element} nextElement
  * @returns {Promise<NodeListOf<Element>?>}
  */
-export const getStartAtCloneCheckboxContainerElements = async (nextElement) =>
+export const getEndAtCheckboxContainerElements = async (nextElement) =>
   await pollForElements([
     () => nextElement.querySelectorAll("#checkboxContainer"),
   ]);
@@ -132,14 +132,14 @@ export const getStartAtCloneCheckboxContainerElements = async (nextElement) =>
  * @param {Element} nextElement
  * @returns {Promise<Element?>}
  */
-export const getStartAtCloneInputWrapperElement = async (nextElement) =>
+export const getEndAtInputWrapperElement = async (nextElement) =>
   await pollForElement([() => nextElement.querySelector("tp-yt-paper-input")]);
 
 /**
  * @param {Element} nextElement
  * @returns {Promise<Element?>}
  */
-export const getStartAtCloneLabelWrapperElement = async (nextElement) =>
+export const getEndAtLabelWrapperElement = async (nextElement) =>
   await pollForElement([() => nextElement.querySelector("#checkboxLabel")]);
 
 /**
