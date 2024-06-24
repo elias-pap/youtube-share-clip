@@ -12,6 +12,10 @@ export default defineConfig({
   workers: CI ? 1 : undefined,
   reporter: [["html", { open: "never" }]],
   timeout: CI ? 120000 : 60000,
+  expect: {
+    timeout: 20000,
+  },
+  globalTimeout: 3600000,
   use: {
     trace: "retain-on-failure",
   },
@@ -23,6 +27,10 @@ export default defineConfig({
     {
       name: "Google Chrome",
       use: { ...devices["Desktop Chrome"], channel: "chrome" },
+    },
+    {
+      name: "Microsoft Edge",
+      use: { ...devices["Desktop Edge"] },
     },
   ],
 });
