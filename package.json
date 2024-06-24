@@ -8,6 +8,7 @@
   "main": "src/extension.js",
   "scripts": {
     "prepare": "husky install",
+    "clean-init": "npm run deps:clean && npm run deps:install",
     "test:headless": "npm run bundle:prod && playwright test",
     "test:ui": "npm run bundle:prod && playwright test --ui",
     "test:report": "playwright show-report",
@@ -31,7 +32,7 @@
     "@commitlint/cli": "19.2.1",
     "@commitlint/config-conventional": "19.1.0",
     "@eslint/js": "9.0.0",
-    "@playwright/test": "1.43.0",
+    "@playwright/test": "1.44.1",
     "archiver": "7.0.1",
     "cz-conventional-changelog": "3.3.0",
     "esbuild": "0.20.2",
