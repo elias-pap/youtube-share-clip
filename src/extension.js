@@ -9,6 +9,7 @@ import { endAtContainerID } from "./constants/utils/queries.js";
 import {
   getCurrentURL,
   logElementNotFoundError,
+  logElementsNotFoundError,
   logNotFoundError,
   sleep,
   timeToSeconds,
@@ -24,6 +25,9 @@ import {
   getShareDialog,
   getStartAtCloneLabelElement,
   getBody,
+  getStartAtCloneLabelWrapperElement,
+  getStartAtCloneInputWrapperElement,
+  getStartAtCloneCheckboxContainerElements,
 } from "./utils/queries.js";
 
 /**
@@ -196,9 +200,17 @@ const getTranslatedEndAtString = () => {
 /**
  * @param {Element} startAtCloneLabelElement
  */
-const createEndAtElement = (startAtCloneLabelElement) => {
+const createEndAtLabelElement = (startAtCloneLabelElement) => {
   startAtCloneLabelElement.removeAttribute("is-empty");
   startAtCloneLabelElement.textContent = getTranslatedEndAtString();
+};
+
+/**
+ * @param {Element} startAtCloneInputElement
+ */
+const createEndAtInputElement = (startAtCloneInputElement) => {
+  startAtCloneInputElement.removeAttribute("disabled");
+  startAtCloneInputElement.setAttribute("placeholder", "0:00");
 };
 
 /**
@@ -223,8 +235,25 @@ const addEndAtCheckboxAndInput = async (startAtContainer) => {
   let startAtCloneLabelElement = await getStartAtCloneLabelElement(nextElement);
   if (!startAtCloneLabelElement)
     return logElementNotFoundError("start at clone label");
+  createEndAtLabelElement(startAtCloneLabelElement);
 
-  createEndAtElement(startAtCloneLabelElement);
+  let startAtCloneCheckboxContainerElements =
+    await getStartAtCloneCheckboxContainerElements(nextElement);
+  if (!startAtCloneCheckboxContainerElements)
+    return logElementsNotFoundError("start at clone checkbox container");
+  if (startAtCloneCheckboxContainerElements.length < 2) return;
+
+  let startAtCloneInputElement =
+    await getStartAtCloneInputWrapperElement(nextElement);
+  if (!startAtCloneInputElement)
+    return logElementNotFoundError("start at clone input");
+  createEndAtInputElement(startAtCloneInputElement);
+
+  let startAtCloneLabelWrapperElement =
+    await getStartAtCloneLabelWrapperElement(nextElement);
+  if (!startAtCloneLabelWrapperElement)
+    return logElementNotFoundError("start at clone label wrapper");
+  startAtCloneLabelWrapperElement.replaceChildren(startAtCloneLabelElement);
 };
 
 /**

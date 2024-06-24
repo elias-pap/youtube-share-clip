@@ -17,11 +17,14 @@ export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 export const timeToSeconds = (timestamp) => {
   let digitsArray = timestamp.split(":").map((digit) => parseInt(digit));
   if (![2, 3, 4].includes(digitsArray.length)) {
-    console.error("Invalid timestamp.");
+    // Excluding the initial state case for End at input
+    if (!(digitsArray.length === 1 && isNaN(digitsArray[0]))) {
+      console.warn("Invalid timestamp.");
+    }
     return 0;
   }
   if (digitsArray.some((value) => isNaN(value))) {
-    console.error("Invalid digits in timestamp.");
+    console.warn("Invalid digits in timestamp.");
     return 0;
   }
   let secondsPerDigit = [secondsPerDay, secondsPerHour, secondsPerMinute, 1];
@@ -39,6 +42,13 @@ export const timeToSeconds = (timestamp) => {
  */
 export const logElementNotFoundError = (elementName) =>
   logNotFoundError(`${elementName} element`);
+
+/**
+ * @param {string} elementsName
+ * @returns {null}
+ */
+export const logElementsNotFoundError = (elementsName) =>
+  logNotFoundError(`${elementsName} elements`);
 
 /**
  * @param {string} name
