@@ -15,8 +15,11 @@ import {
   pollingTimeoutInSeconds,
   singleActionTimeout,
   sleepTime,
+  testEndAtTime,
+  testStartAtTime,
   testVideoSearchTerm,
   testVideoTitle,
+  youtubeTestVideoLink,
 } from "./constants.js";
 import { sleep } from "../utils/other.js";
 
@@ -221,4 +224,70 @@ export const switchLanguage = async (page, language) => {
     hasText: language,
   });
   await languageButton.click();
+};
+
+/**
+ * @param {Page} page
+ */
+const clickStartAtCheckbox = async (page) => {
+  let startAtCheckbox = page.locator(
+    `#${startAtContainerID} #checkboxContainer`,
+  );
+  await startAtCheckbox.click();
+};
+
+/**
+ * @param {Page} page
+ */
+const fillStartAtInput = async (page) => {
+  let startAtInput = page.locator(
+    `#${startAtContainerID} #start-at-timestamp input`,
+  );
+  await startAtInput.fill(testStartAtTime);
+};
+
+/**
+ * @param {Page} page
+ */
+const clickEndAtCheckbox = async (page) => {
+  let endAtCheckbox = page.locator(`#${endAtContainerID} #checkboxContainer`);
+  await endAtCheckbox.click();
+};
+
+/**
+ * @param {Page} page
+ */
+const fillEndAtInput = async (page) => {
+  let endAtInput = page.locator(
+    `#${endAtContainerID} #start-at-timestamp input`,
+  );
+  await endAtInput.fill(testEndAtTime);
+};
+
+/**
+ * @param {Page} page
+ */
+const clickCopyLinkButton = async (page) => {
+  let copyLinkButton = page.locator("#copy-link button");
+  await copyLinkButton.click();
+};
+
+/**
+ * @param {Page} page
+ * @returns {Promise<string>}
+ */
+const readClipboard = async (page) =>
+  page.evaluate(() => navigator.clipboard.readText());
+
+/**
+ * @param {Page} page
+ */
+export const gets5SecondsLink = async (page) => {
+  await clickStartAtCheckbox(page);
+  await fillStartAtInput(page);
+  await clickEndAtCheckbox(page);
+  await fillEndAtInput(page);
+  await clickCopyLinkButton(page);
+  const clipboardContents = await readClipboard(page);
+  expect(clipboardContents).toBe(youtubeTestVideoLink);
 };

@@ -2,6 +2,7 @@ import { youtubeLandingPage, youtubeTestVideoPage } from "./constants.js";
 import { test } from "./fixtures.js";
 import {
   clickOnAVideo,
+  gets5SecondsLink,
   rejectCookies,
   rendersInputElements,
   searchForVideo,
@@ -37,5 +38,16 @@ test.describe("Renders input elements", () => {
     await visitPage(page, youtubeTestVideoPage);
     await rejectCookies(page);
     await rendersInputElements(page);
+  });
+});
+
+test.describe("Gets a link to a section of a video", () => {
+  test("Gets link", async ({ page, context }) => {
+    await visitPage(page, youtubeTestVideoPage);
+    await rejectCookies(page);
+    await rendersInputElements(page);
+    await context.grantPermissions(["clipboard-read"]);
+    await gets5SecondsLink(page);
+    await context.clearPermissions();
   });
 });

@@ -5,8 +5,12 @@ export const pollingTimeoutInSeconds = 30;
 export const youtubeLandingPage = "https://www.youtube.com/";
 export const youtubeTestVideoPage =
   "https://www.youtube.com/watch?v=Czvldzei4DI";
+export const youtubeTestVideoLink =
+  "https://www.youtube.com/embed/Czvldzei4DI?start=5&end=10&autoplay=true";
 export const testVideoSearchTerm = "phonodia tourdion";
 export const testVideoTitle = "Tourdion";
+export const testStartAtTime = "0:05";
+export const testEndAtTime = "0:10";
 export const menuIconPathSelector =
   'path[d="M12 16.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zM10.5 12c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5zm0-6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5z"]';
 export const languageIconPathSelector =
