@@ -4,7 +4,7 @@ import js from "@eslint/js";
 
 export default [
   js.configs.recommended,
-  jsdoc.configs["flat/recommended"],
+  jsdoc.configs["flat/recommended-typescript-flavor"],
   {
     rules: {
       "jsdoc/require-param-description": "off",

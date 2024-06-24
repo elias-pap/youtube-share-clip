@@ -9,6 +9,7 @@ import { endAtContainerID } from "./constants/utils/queries.js";
 import {
   getCurrentURL,
   logElementNotFoundError,
+  logElementsNotFoundError,
   logNotFoundError,
   sleep,
   timeToSeconds,
@@ -22,8 +23,11 @@ import {
   getStartAtContainer,
   getShareButton,
   getShareDialog,
-  getStartAtCloneLabelElement,
+  getEndAtLabelElement,
   getBody,
+  getEndAtLabelWrapperElement,
+  getEndAtInputWrapperElement,
+  getEndAtCheckboxContainerElements,
 } from "./utils/queries.js";
 
 /**
@@ -194,11 +198,19 @@ const getTranslatedEndAtString = () => {
 };
 
 /**
- * @param {Element} startAtCloneLabelElement
+ * @param {Element} endAtLabelElement
  */
-const createEndAtElement = (startAtCloneLabelElement) => {
-  startAtCloneLabelElement.removeAttribute("is-empty");
-  startAtCloneLabelElement.textContent = getTranslatedEndAtString();
+const createEndAtLabelElement = (endAtLabelElement) => {
+  endAtLabelElement.removeAttribute("is-empty");
+  endAtLabelElement.textContent = getTranslatedEndAtString();
+};
+
+/**
+ * @param {Element} endAtInputElement
+ */
+const createEndAtInputElement = (endAtInputElement) => {
+  endAtInputElement.removeAttribute("disabled");
+  endAtInputElement.setAttribute("placeholder", "0:00");
 };
 
 /**
@@ -220,11 +232,26 @@ const addEndAtCheckboxAndInput = async (startAtContainer) => {
   let nextElement = startAtContainer.nextElementSibling;
   if (!nextElement) return logElementNotFoundError("next of start");
 
-  let startAtCloneLabelElement = await getStartAtCloneLabelElement(nextElement);
-  if (!startAtCloneLabelElement)
+  let endAtLabelElement = await getEndAtLabelElement(nextElement);
+  if (!endAtLabelElement)
     return logElementNotFoundError("start at clone label");
+  createEndAtLabelElement(endAtLabelElement);
 
-  createEndAtElement(startAtCloneLabelElement);
+  let endAtCheckboxContainerElements =
+    await getEndAtCheckboxContainerElements(nextElement);
+  if (!endAtCheckboxContainerElements)
+    return logElementsNotFoundError("start at clone checkbox container");
+  if (endAtCheckboxContainerElements.length < 2) return;
+
+  let endAtInputElement = await getEndAtInputWrapperElement(nextElement);
+  if (!endAtInputElement)
+    return logElementNotFoundError("start at clone input");
+  createEndAtInputElement(endAtInputElement);
+
+  let endAtLabelWrapperElement = await getEndAtLabelWrapperElement(nextElement);
+  if (!endAtLabelWrapperElement)
+    return logElementNotFoundError("start at clone label wrapper");
+  endAtLabelWrapperElement.replaceChildren(endAtLabelElement);
 };
 
 /**

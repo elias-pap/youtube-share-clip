@@ -15,18 +15,17 @@ import {
  */
 
 /**
- * @template T
- * @param {(() => T?)[]} elementGetters
- * @returns {Promise<T?>}
+ * @param {(() => (Element|NodeListOf<Element>)?)[]} getters
+ * @returns {Promise<Element|null|NodeListOf<Element>>}
  */
-const pollForElement = async (elementGetters) => {
+const pollForElementOrElements = async (getters) => {
   const pollsPerSecond = 1000 / sleepTime;
   const numberOfPolls = pollsPerSecond * pollingTimeoutInSeconds;
 
   for (let i = 0; i < numberOfPolls; i++) {
-    let elementGetter = elementGetters[i % elementGetters.length];
-    let element = elementGetter();
-    if (element) return element;
+    let getter = getters[i % getters.length];
+    let elementOrElements = getter();
+    if (elementOrElements) return elementOrElements;
     await sleep(sleepTime);
   }
 
@@ -34,20 +33,44 @@ const pollForElement = async (elementGetters) => {
 };
 
 /**
+ * @param {(() => Element?)[]} elementGetters
+ * @returns {Promise<Element?>}
+ */
+const pollForElement = async (elementGetters) => {
+  return /** @type {Promise<Element?>} */ (
+    pollForElementOrElements(elementGetters)
+  );
+};
+
+/**
+ * @param {(() => NodeListOf<Element>?)[]} elementsGetters
+ * @returns {Promise<NodeListOf<Element>?>}
+ */
+const pollForElements = async (elementsGetters) => {
+  return /** @type {Promise<NodeListOf<Element>?>} */ (
+    pollForElementOrElements(elementsGetters)
+  );
+};
+
+/**
  * @type {InputElementGetter}
  */
 export const getStartAtInputElement = async () =>
-  await pollForElement([
-    () => document.querySelector(`#${startAtContainerID} input`),
-  ]);
+  /** @type {HTMLInputElement?} */ (
+    await pollForElement([
+      () => document.querySelector(`#${startAtContainerID} input`),
+    ])
+  );
 
 /**
  * @type {InputElementGetter}
  */
 export const getEndAtInputElement = async () =>
-  await pollForElement([
-    () => document.querySelector(`#${endAtContainerID} input`),
-  ]);
+  /** @type {HTMLInputElement?} */ (
+    await pollForElement([
+      () => document.querySelector(`#${endAtContainerID} input`),
+    ])
+  );
 
 /**
  * @type {CheckboxElementGetter}
@@ -69,10 +92,12 @@ export const getEndAtCheckboxElement = async () =>
  * @type {InputElementGetter}
  */
 export const getShareURLElement = async () =>
-  await pollForElement([
-    () =>
-      /** @type {HTMLInputElement} */ (document.getElementById("share-url")),
-  ]);
+  /** @type {HTMLInputElement?} */ (
+    await pollForElement([
+      () =>
+        /** @type {HTMLInputElement} */ (document.getElementById("share-url")),
+    ])
+  );
 
 /**
  * @type {ElementGetter}
@@ -89,10 +114,33 @@ export const getStartAtContainer = async () =>
  * @param {Element} nextElement
  * @returns {Promise<Element?>}
  */
-export const getStartAtCloneLabelElement = async (nextElement) =>
+export const getEndAtLabelElement = async (nextElement) =>
   await pollForElement([
     () => nextElement.querySelector("#checkboxLabel yt-formatted-string"),
   ]);
+
+/**
+ * @param {Element} nextElement
+ * @returns {Promise<NodeListOf<Element>?>}
+ */
+export const getEndAtCheckboxContainerElements = async (nextElement) =>
+  await pollForElements([
+    () => nextElement.querySelectorAll("#checkboxContainer"),
+  ]);
+
+/**
+ * @param {Element} nextElement
+ * @returns {Promise<Element?>}
+ */
+export const getEndAtInputWrapperElement = async (nextElement) =>
+  await pollForElement([() => nextElement.querySelector("tp-yt-paper-input")]);
+
+/**
+ * @param {Element} nextElement
+ * @returns {Promise<Element?>}
+ */
+export const getEndAtLabelWrapperElement = async (nextElement) =>
+  await pollForElement([() => nextElement.querySelector("#checkboxLabel")]);
 
 /**
  * @type {ElementGetter}

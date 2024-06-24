@@ -71,7 +71,7 @@ jobs:
         run: npm ci
       - name: Install Playwright browsers and browser deps
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium chrome
+        run: npx playwright install --with-deps chromium chrome msedge
       - name: Run e2e tests
         run: npm run test:headless
       - name: Upload report
