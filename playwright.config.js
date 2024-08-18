@@ -24,13 +24,13 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-    {
-      name: "Google Chrome",
-      use: { ...devices["Desktop Chrome"], channel: "chrome" },
-    },
-    {
-      name: "Microsoft Edge",
-      use: { ...devices["Desktop Edge"] },
-    },
+    // {
+    //   name: "Google Chrome",
+    //   use: { ...devices["Desktop Chrome"], channel: "chrome" },
+    // },
+    // {
+    //   name: "Microsoft Edge",
+    //   use: { ...devices["Desktop Edge"] },
+    // },
   ],
 });
