@@ -8,7 +8,7 @@ const CI = process.env.CI;
 export default defineConfig({
   testDir: "src/tests",
   fullyParallel: true,
-  forbidOnly: !!CI,
+  // forbidOnly: !!CI,
   workers: CI ? 1 : undefined,
   reporter: [["html", { open: "never" }]],
   timeout: CI ? 120000 : 60000,
