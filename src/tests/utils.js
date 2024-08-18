@@ -179,6 +179,33 @@ const clickShareButton = async (page) => {
 /**
  * @param {Page} page
  */
+export const colouredProgressBarHasCorrectLength = async (page) => {
+  // await for the page to load
+  await expect(
+    page.locator(
+      ".ytp-cued-thumbnail-overlay > .ytp-cued-thumbnail-overlay-image",
+    ),
+  ).toBeVisible();
+
+  await expect(page).toHaveScreenshot({
+    maxDiffPixelRatio: 0.01,
+  });
+};
+
+/**
+ * @param {Page} page
+ */
+export const rendersColouredProgressBar = async (page) => {
+  await expect(
+    page
+      .locator(".ytp-play-progress")
+      .and(page.locator('[style*="background-color: #0f0"]')),
+  ).toBeVisible();
+};
+
+/**
+ * @param {Page} page
+ */
 const rendersStartAtCheckboxAndInput = async (page) => {
   await expect(
     page.locator(`#${startAtContainerID} #start-at-checkbox`),

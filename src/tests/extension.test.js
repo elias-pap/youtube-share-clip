@@ -1,4 +1,8 @@
-import { youtubeLandingPage, youtubeTestVideoPage } from "./constants.js";
+import {
+  youtubeLandingPage,
+  youtubeTestVideoLink,
+  youtubeTestVideoPage,
+} from "./constants.js";
 import { test } from "./fixtures.js";
 import {
   clickOnAVideo,
@@ -8,6 +12,8 @@ import {
   searchForVideo,
   switchLanguage,
   visitPage,
+  rendersColouredProgressBar,
+  colouredProgressBarHasCorrectLength,
 } from "./utils.js";
 
 test.beforeEach(async ({ page }, { title }) => {
@@ -49,5 +55,13 @@ test.describe("Gets a link to a section of a video", () => {
     await context.grantPermissions(["clipboard-read"]);
     await gets5SecondsLink(page);
     await context.clearPermissions();
+  });
+});
+
+test.describe("Colours the played range in progress bar", () => {
+  test("progress bar is coloured", async ({ page }) => {
+    await visitPage(page, youtubeTestVideoLink);
+    await rendersColouredProgressBar(page);
+    await colouredProgressBarHasCorrectLength(page);
   });
 });
