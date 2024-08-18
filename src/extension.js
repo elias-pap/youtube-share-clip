@@ -10,6 +10,7 @@ import {
   getCurrentURL,
   logElementNotFoundError,
   logElementsNotFoundError,
+  logError,
   logNotFoundError,
   sleep,
   timeToSeconds,
@@ -28,6 +29,8 @@ import {
   getEndAtLabelWrapperElement,
   getEndAtInputWrapperElement,
   getEndAtCheckboxContainerElements,
+  getPlayedProgressBarRangeElement,
+  getVideoDurationElement,
 } from "./utils/queries.js";
 
 /**
@@ -214,6 +217,14 @@ const createEndAtInputElement = (endAtInputElement) => {
 };
 
 /**
+ * @param {Element} playedProgressBarRangeElement
+ * @returns {Element}
+ */
+const clonePlayedProgressBarRangeElement = (playedProgressBarRangeElement) => {
+  return /** @type {Element} */ (playedProgressBarRangeElement.cloneNode(true));
+};
+
+/**
  * @param {Element} startAtContainer
  */
 const cloneStartAtContainer = (startAtContainer) => {
@@ -307,8 +318,106 @@ const addListenerOnVideoPage = async (href) => {
   }
 };
 
+/**
+ * @param {string} paramName
+ * @returns {number?}
+ */
+const getTime = (paramName) => {
+  let url = new URL(getCurrentURL());
+  let params = url.searchParams;
+  let timeParam = params.get(paramName);
+  if (!timeParam) return logNotFoundError(`${paramName} param`);
+  let time = parseInt(timeParam);
+  return time;
+};
+
+/**
+ * @returns {number?}
+ */
+const getStartTime = () => getTime("start");
+
+/**
+ * @returns {number?}
+ */
+const getEndTime = () => getTime("end");
+
+/**
+ * @param {number} videoDuration
+ * @returns {number?}
+ */
+const calculateLeftStyle = (videoDuration) => {
+  let startTime = getStartTime();
+  if (startTime == null) return null;
+  return (startTime / videoDuration) * 100;
+};
+
+/**
+ * @param {number} videoDuration
+ * @returns {number?}
+ */
+const calculateScaleXStyle = (videoDuration) => {
+  let endTime = getEndTime();
+  if (endTime == null) return null;
+  let startTime = getStartTime();
+  if (startTime == null) return null;
+  return (endTime - startTime) / videoDuration;
+};
+
+/**
+ * @returns {Promise<number?>}
+ */
+const getVideoDuration = async () => {
+  let videoDurationElement = await getVideoDurationElement();
+  if (!videoDurationElement) return logElementNotFoundError("video duration");
+  let videoDuration = videoDurationElement.textContent;
+  if (!videoDuration) return logNotFoundError("duration string");
+  return timeToSeconds(videoDuration);
+};
+
+/**
+ * @returns {Promise<{left: number, scaleX: number}?>}
+ */
+const calculateSharedProgressBarStartAndEndStyling = async () => {
+  let videoDuration = await getVideoDuration();
+  if (!videoDuration) return logNotFoundError("duration number");
+  let left = calculateLeftStyle(videoDuration);
+  if (left == null) return logError("could not calculate left style");
+  let scaleX = calculateScaleXStyle(videoDuration);
+  if (scaleX == null) return logError("could not calculate scaleX style");
+  return { left, scaleX };
+};
+
+/**
+ * @param {Element} sharedProgressBarRangeElement
+ * @returns {Promise<null|undefined>}
+ */
+const setSharedProgressBarStyle = async (sharedProgressBarRangeElement) => {
+  let style = await calculateSharedProgressBarStartAndEndStyling();
+  if (!style) return logError("could not calculate shared progress bar style");
+  let { left, scaleX } = style;
+  sharedProgressBarRangeElement.setAttribute(
+    "style",
+    `left: ${left}%; transform: scaleX(${scaleX}); z-index:33; background-color: #0f0`,
+  );
+};
+
+const colorSharedProgressBarSection = async () => {
+  let href = getCurrentURL();
+  let url = new URL(href);
+  if (!url.pathname.startsWith("/embed")) return;
+  let playedProgressBarRangeElement = await getPlayedProgressBarRangeElement();
+  if (!playedProgressBarRangeElement)
+    return logElementNotFoundError("played progress bar range");
+  let sharedProgressBarRangeElement = clonePlayedProgressBarRangeElement(
+    playedProgressBarRangeElement,
+  );
+  await setSharedProgressBarStyle(sharedProgressBarRangeElement);
+  playedProgressBarRangeElement.after(sharedProgressBarRangeElement);
+};
+
 const onPageLoad = async () => {
   await addListenerOnVideoPage(getCurrentURL());
+  await colorSharedProgressBarSection();
 };
 
 const observeURLChange = async () => {
