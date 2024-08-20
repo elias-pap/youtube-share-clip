@@ -1,13 +1,8 @@
-import { test as baseTest } from "@playwright/test";
+import { test as baseTest, chromium } from "@playwright/test";
 import path from "path";
 import { fileURLToPath } from "url";
-import { chromium } from "playwright-extra";
-import stealth from "puppeteer-extra-plugin-stealth";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-chromium.use(stealth());
 
 export const test = baseTest.extend({
   // eslint-disable-next-line no-empty-pattern
