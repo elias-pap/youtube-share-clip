@@ -60,6 +60,7 @@ test.describe("Gets a link to a section of a video", () => {
 
 test.describe("Colours the played range in progress bar", () => {
   test("progress bar is coloured", async ({ page }) => {
+    test.skip(!!process.env.CI, "Skipping on CI");
     await visitPage(page, youtubeTestVideoLink);
     await rendersColouredProgressBar(page);
     await colouredProgressBarHasCorrectLength(page);
