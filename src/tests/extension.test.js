@@ -58,7 +58,7 @@ test.describe("Gets a link to a section of a video", () => {
   });
 });
 
-test.describe.only("Colours the played range in progress bar", () => {
+test.describe("Colours the played range in progress bar", () => {
   test("progress bar is coloured", async ({ page }) => {
     await visitPage(page, youtubeTestVideoLink);
     await rendersColouredProgressBar(page);
