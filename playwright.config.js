@@ -7,6 +7,7 @@ const CI = process.env.CI;
  */
 export default defineConfig({
   testDir: "src/tests",
+  retries: CI ? 1 : undefined,
   fullyParallel: true,
   forbidOnly: !!CI,
   workers: CI ? 1 : undefined,
@@ -17,7 +18,7 @@ export default defineConfig({
   },
   globalTimeout: 3600000,
   use: {
-    trace: "retain-on-failure",
+    trace: "on-first-retry",
   },
   projects: [
     {

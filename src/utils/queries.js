@@ -53,6 +53,18 @@ const pollForElements = async (elementsGetters) => {
 };
 
 /**
+ * @returns {Promise<Element?>}
+ */
+export const getVideoDurationElement = async () =>
+  await pollForElement([() => document.querySelector(".ytp-time-duration")]);
+
+/**
+ * @returns {Promise<Element?>}
+ */
+export const getPlayedProgressBarRangeElement = async () =>
+  await pollForElement([() => document.querySelector(".ytp-play-progress")]);
+
+/**
  * @type {InputElementGetter}
  */
 export const getStartAtInputElement = async () =>

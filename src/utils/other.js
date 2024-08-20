@@ -54,8 +54,14 @@ export const logElementsNotFoundError = (elementsName) =>
  * @param {string} name
  * @returns {null}
  */
-export const logNotFoundError = (name) => {
-  console.error(`${name} not found.`);
+export const logNotFoundError = (name) => logError(`${name} not found.`);
+
+/**
+ * @param {string} error
+ * @returns {null}
+ */
+export const logError = (error) => {
+  console.error(error);
   return null;
 };
 

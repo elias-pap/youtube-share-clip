@@ -7,6 +7,8 @@ export const youtubeTestVideoPage =
   "https://www.youtube.com/watch?v=Czvldzei4DI";
 export const youtubeTestVideoLink =
   "https://www.youtube.com/embed/Czvldzei4DI?start=5&end=10&autoplay=true";
+export const youtubeColouredProgressBarTestVideoLink =
+  "https://www.youtube.com/embed/NeYGivrgwJA?start=5&end=10&autoplay=true";
 export const testVideoSearchTerm = "phonodia tourdion";
 export const testVideoTitle = "Tourdion";
 export const testStartAtTime = "0:05";
