@@ -4,6 +4,7 @@ import {
   pollingTimeoutInSeconds,
   shareButtonSelector,
   shareButtonSelector2,
+  shareButtonSelector3,
   sleepTime,
   startAtContainerID,
 } from "../constants/utils/queries.js";
@@ -169,6 +170,7 @@ export const getShareButton = async () =>
   await pollForElement([
     () => document.querySelector(shareButtonSelector),
     () => document.querySelector(shareButtonSelector2),
+    () => document.querySelector(shareButtonSelector3),
   ]);
 
 /**
