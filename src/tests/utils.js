@@ -6,6 +6,7 @@ import {
   searchButtonSelector2,
   shareButtonSelector,
   shareButtonSelector2,
+  shareButtonSelector3,
   startAtContainerID,
 } from "../constants/utils/queries.js";
 import {
@@ -167,6 +168,7 @@ const clickShareButton = async (page) => {
   let selector = await pollForSelector(page, [
     shareButtonSelector,
     shareButtonSelector2,
+    shareButtonSelector3,
   ]);
   if (!selector) {
     console.error("Could not find share button");
