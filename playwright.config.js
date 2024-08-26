@@ -10,7 +10,7 @@ export default defineConfig({
   retries: CI ? 1 : undefined,
   fullyParallel: true,
   forbidOnly: !!CI,
-  workers: CI ? 1 : undefined,
+  workers: CI ? 4 : undefined,
   reporter: [["html", { open: "never" }]],
   timeout: CI ? 120000 : 60000,
   expect: {
