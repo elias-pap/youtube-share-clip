@@ -12,7 +12,7 @@
     "test:headless": "npm run bundle:test && playwright test && npm run coverage:report",
     "test:ui": "npm run bundle:prod && playwright test --ui",
     "test:report": "playwright show-report",
-    "coverage:report": "nyc report -t test-results/coverage/tmp && nyc merge test-results/coverage/tmp test-results/coverage/coverage.json",
+    "coverage:report": "nyc merge test-results/coverage/tmp test-results/coverage/result/coverage.json && nyc report -t test-results/coverage/result",
     "deps:clean": "rimraf package-lock.json node_modules",
     "deps:install": "npm i",
     "deps:check": "ncu",
