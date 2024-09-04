@@ -7,10 +7,10 @@ const CI = process.env.CI;
  */
 export default defineConfig({
   testDir: "src/tests",
-  retries: CI ? 1 : undefined,
+  retries: CI ? 1 : 0,
   fullyParallel: true,
   forbidOnly: !!CI,
-  workers: CI ? 4 : undefined,
+  workers: CI ? "75%" : "25%",
   reporter: [["html", { open: "never" }]],
   timeout: CI ? 120000 : 60000,
   expect: {
@@ -23,15 +23,19 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: { ...devices["Desktop Chrome"], browserName: "chromium" },
     },
-    {
-      name: "Google Chrome",
-      use: { ...devices["Desktop Chrome"], channel: "chrome" },
-    },
-    {
-      name: "Microsoft Edge",
-      use: { ...devices["Desktop Edge"] },
-    },
+    // {
+    //   name: "Google Chrome",
+    //   use: {
+    //     ...devices["Desktop Chrome"],
+    //     channel: "chrome",
+    //     browserName: "chrome",
+    //   },
+    // },
+    // {
+    //   name: "Microsoft Edge",
+    //   use: { ...devices["Desktop Edge"], browserName: "edge" },
+    // },
   ],
 });
