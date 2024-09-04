@@ -85,5 +85,6 @@ jobs:
         if: ${{ runner.os }} == 'Linux'
         uses: codecov/codecov-action@v4
         with:
-          directory: "test-results/coverage/tmp"
+          fail_ci_if_error: true
+          file: test-results/coverage/coverage.json
           token: ${{ secrets.CODECOV_TOKEN }}
