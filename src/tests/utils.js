@@ -1,4 +1,8 @@
+import { mkdirSync, writeFileSync } from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import { errors } from "@playwright/test";
+import v8toIstanbul from "v8-to-istanbul";
 import { expect } from "./fixtures.js";
 import {
   endAtContainerID,
@@ -22,7 +26,88 @@ import {
   testVideoTitle,
   youtubeTestVideoLink,
 } from "./constants.js";
-import { sleep } from "../utils/other.js";
+import { logError, sleep } from "../utils/other.js";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// @param {ReturnType<typeof import('@playwright/test').>} entries
+
+/**
+ * @param {Awaited<ReturnType<import('@playwright/test').Coverage["stopJSCoverage"]>>} entries
+ * @param {string} title
+ * @returns {boolean?}
+ */
+export const isCoverageEntriesValid = (entries, title) => {
+  if (!entries)
+    return logError(`"${title}" test entries not found. Skipping coverage.`);
+  if (entries.length !== 1)
+    return logError(
+      `"${title}" test entries has invalid length. Skipping coverage.`,
+    );
+  let entry = entries[0];
+  if (!entry)
+    return logError(`"${title}" test entry not found. Skipping coverage.`);
+  let { source } = entry;
+  if (!source)
+    return logError(
+      `"${title}" test entry source not found. Skipping coverage.`,
+    );
+  return true;
+};
+
+/**
+ * @param {import('@playwright/test').PlaywrightWorkerOptions["browserName"]} browserName
+ * @returns {boolean}
+ */
+const isCoverageSupported = (browserName) => browserName === "chromium";
+
+/**
+ * @param {import('@playwright/test').PlaywrightWorkerOptions["browserName"]} browserName
+ */
+export const prepareCoverage = async (browserName) => {
+  if (!isCoverageSupported(browserName)) return;
+  mkdirSync("test-results/coverage/tmp", { recursive: true });
+};
+
+/**
+ * @param {import('@playwright/test').Page} page
+ * @param {import('@playwright/test').PlaywrightWorkerOptions["browserName"]} browserName
+ */
+export const startCoverage = async (page, browserName) => {
+  if (!isCoverageSupported(browserName)) return;
+  await page.coverage.startJSCoverage();
+};
+
+/**
+ * @param {import('@playwright/test').Page} page
+ * @param {import('@playwright/test').PlaywrightWorkerOptions["browserName"]} browserName
+ * @param {string} title
+ */
+export const collectCoverage = async (page, browserName, title) => {
+  if (!isCoverageSupported(browserName)) return;
+  const coverage = await page.coverage.stopJSCoverage();
+  let entries = coverage.filter(({ url }) =>
+    url.includes("youtube-share-clip"),
+  );
+  if (!isCoverageEntriesValid(entries, title)) return;
+  let entry = entries[0];
+  let { source, functions } = entry;
+  const converter = v8toIstanbul("", 0, {
+    source: /** @type {string} */ (source),
+  });
+  await converter.load();
+  converter.applyCoverage(functions);
+  let coverageData = converter.toIstanbul();
+  let rootParentFolder = path.join(__dirname, "../../../");
+  let coverageDataWithCorrectPaths = JSON.stringify(coverageData).replaceAll(
+    rootParentFolder,
+    "",
+  );
+  writeFileSync(
+    `test-results/coverage/tmp/${title.replaceAll(" ", "-")}`,
+    coverageDataWithCorrectPaths,
+  );
+};
 
 /**
  * @typedef {import("@playwright/test").Page} Page

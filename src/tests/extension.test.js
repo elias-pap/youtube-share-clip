@@ -16,11 +16,6 @@ import {
   colouredProgressBarHasCorrectLength,
 } from "./utils.js";
 
-test.beforeEach(async ({ page }, { title }) => {
-  console.info(`Running ${title} test...`);
-  page.on("console", (msg) => console.info(msg.text()));
-});
-
 test.describe("Renders input elements", () => {
   for (const language of [null, "English (US)", "Ελληνικά"]) {
     test(`Coming from home page and refresh - language: ${

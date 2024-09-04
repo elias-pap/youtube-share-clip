@@ -1,9 +1,7 @@
 import { test as baseTest, chromium } from "@playwright/test";
-import v8toIstanbul from "v8-to-istanbul";
 import path from "path";
 import { fileURLToPath } from "url";
-import { logError } from "../utils/other";
-import { mkdirSync, writeFileSync } from "fs";
+import { collectCoverage, prepareCoverage, startCoverage } from "./utils";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -25,50 +23,19 @@ export const test = baseTest.extend({
   },
 });
 
-test.beforeAll(() => {
-  mkdirSync("test-results/coverage/tmp", { recursive: true });
+test.beforeAll(({ browserName }) => {
+  prepareCoverage(browserName);
 });
 
 test.beforeEach(async ({ page, browserName }, { title }) => {
-  console.info(`Running "${title}" test...`);
+  console.info(`Test "${title}" started...`);
   page.on("console", (msg) => console.info(msg.text()));
-  if (browserName !== "chromium") return;
-  await page.coverage.startJSCoverage();
+  await startCoverage(page, browserName);
 });
 
 test.afterEach(async ({ page, browserName }, { title }) => {
-  if (browserName !== "chromium") return;
-  const coverage = await page.coverage.stopJSCoverage();
-
-  let entries = coverage.filter(({ url }) =>
-    url.includes("youtube-share-clip"),
-  );
-  if (!entries)
-    return logError(`"${title}" test entries not found. Skipping coverage.`);
-  if (entries.length !== 1)
-    return logError(
-      `"${title}" test entries has invalid length. Skipping coverage.`,
-    );
-  let entry = entries[0];
-  if (!entry)
-    return logError(`"${title}" test entry not found. Skipping coverage.`);
-  let { source, functions } = entry;
-  if (!source)
-    return logError(
-      `"${title}" test entry source not found. Skipping coverage.`,
-    );
-  const converter = v8toIstanbul("", 0, { source });
-  await converter.load();
-  converter.applyCoverage(functions);
-  let coverageData = converter.toIstanbul();
-  let rootParentFolder = path.join(__dirname, "../../../");
-  let coverageDataWithCorrectPaths = JSON.stringify(coverageData).replaceAll(
-    rootParentFolder,
-    "",
-  );
-  writeFileSync(
-    `test-results/coverage/tmp/${title.replaceAll(" ", "-")}`,
-    coverageDataWithCorrectPaths,
-  );
+  await collectCoverage(page, browserName, title);
+  console.info(`Test "${title}" finished.`);
 });
+
 export const expect = test.expect;
