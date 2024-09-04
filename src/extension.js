@@ -451,4 +451,5 @@ Sentry.init({
   environment: process.env.NODE_ENV,
   integrations: [captureConsoleIntegration({ levels: ["error"] })],
 });
+
 main();

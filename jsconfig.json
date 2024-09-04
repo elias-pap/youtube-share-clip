@@ -5,6 +5,7 @@
     "allowJs": true,
     "checkJs": true,
     "strict": true,
+    "lib": ["es2023", "dom"],
     "moduleResolution": "bundler"
   },
   "include": ["src/**/*"]
