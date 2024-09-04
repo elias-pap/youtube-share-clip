@@ -75,9 +75,15 @@ jobs:
         run: npx playwright install --with-deps chromium chrome msedge
       - name: Run e2e tests
         run: npm run test:headless
-      - name: Upload report
+      - name: Upload test report
         uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
           name: playwright-report
           path: playwright-report
+      - name: Upload coverage report
+        if: ${{ runner.os }} == 'Linux'
+        uses: codecov/codecov-action@v4
+        with:
+          directory: "test-results/coverage/tmp"
+          token: ${{ secrets.CODECOV_TOKEN }}
