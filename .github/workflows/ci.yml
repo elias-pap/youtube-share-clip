@@ -76,7 +76,7 @@ jobs:
       - name: Run e2e tests
         run: npm run test:headless
       - name: Upload test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: playwright-report
