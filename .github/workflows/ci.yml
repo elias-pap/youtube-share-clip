@@ -83,7 +83,7 @@ jobs:
           path: playwright-report
       - name: Upload coverage report
         if: ${{ runner.os }} == 'Linux'
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: true
           file: test-results/coverage/result/coverage.json
