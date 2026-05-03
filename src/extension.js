@@ -16,21 +16,19 @@ import {
   timeToSeconds,
 } from "./utils/other.js";
 import {
-  getStartAtInputElement,
-  getEndAtInputElement,
-  getStartAtCheckboxElement,
+  getBody,
+  getEndAtCheckboxContainerElements,
   getEndAtCheckboxElement,
-  getShareURLElement,
-  getStartAtContainer,
+  getEndAtInputElement,
+  getEndAtInputWrapperElement,
+  getEndAtLabelElement,
+  getEndAtLabelWrapperElement,
   getShareButton,
   getShareDialog,
-  getEndAtLabelElement,
-  getBody,
-  getEndAtLabelWrapperElement,
-  getEndAtInputWrapperElement,
-  getEndAtCheckboxContainerElements,
-  // getPlayedProgressBarRangeElement,
-  // getVideoDurationElement,
+  getShareURLElement,
+  getStartAtCheckboxElement,
+  getStartAtContainer,
+  getStartAtInputElement,
 } from "./utils/queries.js";
 
 /**
@@ -448,7 +446,7 @@ Sentry.init({
   dsn: "https://ca0cb03d7d29fbb1b09c52fcba66144d@o4507045965660160.ingest.us.sentry.io/4507046846464000",
   attachStacktrace: true,
   enabled: process.env.NODE_ENV === "production",
-  release: "0.7.2",
+  release: "0.8.0",
   environment: process.env.NODE_ENV,
   integrations: [captureConsoleIntegration({ levels: ["error"] })],
 });
