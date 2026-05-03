@@ -43,7 +43,6 @@ const renderHomePage = () => {
   linkElement.href =
     "https://chromewebstore.google.com/detail/youtube-share-clip/jknkoohnhhnlnojgddpjgibniodllhae?hl=en";
   linkElement.textContent = "Get the extension";
-  linkElement.rel = "noreferrer";
   messageElement.append(linkElement);
 
   app.append(messageElement);
