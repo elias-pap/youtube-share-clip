@@ -23,19 +23,28 @@ const getEmbedUrl = (videoId) => {
 };
 
 /**
- * @param {string} message
  * @returns {void}
  */
-const renderMessage = (message) => {
+const renderHomePage = () => {
   if (!app) {
     return;
   }
 
   app.replaceChildren();
 
-  let messageElement = document.createElement("p");
+  let messageElement = document.createElement("div");
   messageElement.className = "clip-message";
-  messageElement.textContent = message;
+
+  let textElement = document.createElement("p");
+  textElement.textContent = "Want to start sharing YouTube clips for free?";
+  messageElement.append(textElement);
+
+  let linkElement = document.createElement("a");
+  linkElement.href =
+    "https://chromewebstore.google.com/detail/youtube-share-clip/jknkoohnhhnlnojgddpjgibniodllhae?hl=en";
+  linkElement.textContent = "Get the extension";
+  linkElement.rel = "noreferrer";
+  messageElement.append(linkElement);
 
   app.append(messageElement);
 };
@@ -66,7 +75,7 @@ const renderPlayer = (videoId) => {
 let videoId = getVideoId();
 
 if (!videoId) {
-  renderMessage("Missing YouTube video id.");
+  renderHomePage();
 } else {
   renderPlayer(videoId);
 }
