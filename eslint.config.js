@@ -3,6 +3,9 @@ import globals from "globals";
 import js from "@eslint/js";
 
 export default [
+  {
+    ignores: ["build/**", "dist/**", "test-results/**", "playwright-report/**"],
+  },
   js.configs.recommended,
   jsdoc.configs["flat/recommended-typescript-flavor"],
   {
