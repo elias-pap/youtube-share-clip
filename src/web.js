@@ -72,10 +72,14 @@ const renderPlayer = (videoId) => {
   app.append(iframe);
 };
 
-let videoId = getVideoId();
+const main = () => {
+  let videoId = getVideoId();
 
-if (!videoId) {
-  renderHomePage();
-} else {
-  renderPlayer(videoId);
-}
+  if (!videoId) {
+    renderHomePage();
+  } else {
+    renderPlayer(videoId);
+  }
+};
+
+main();
