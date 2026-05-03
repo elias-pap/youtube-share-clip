@@ -16,10 +16,11 @@ const getVideoId = () => {
  */
 const getEmbedUrl = (videoId) => {
   let searchParams = new URLSearchParams(window.location.search);
+  searchParams.set("autoplay", "true");
   let queryString = searchParams.toString();
-  let embedUrl = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
+  let embedUrl = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}?${queryString}`;
 
-  return queryString ? `${embedUrl}?${queryString}` : embedUrl;
+  return embedUrl;
 };
 
 /**
