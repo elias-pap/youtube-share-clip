@@ -50,3 +50,19 @@ body {
   line-height: 1.5;
   text-align: center;
 }
+
+.clip-message p {
+  margin: 0 0 1rem;
+}
+
+.clip-message a {
+  color: #60a5fa;
+  font-weight: 700;
+  text-decoration-color: currentcolor;
+  text-underline-offset: 0.25rem;
+}
+
+.clip-message a:focus,
+.clip-message a:hover {
+  color: #93c5fd;
+}

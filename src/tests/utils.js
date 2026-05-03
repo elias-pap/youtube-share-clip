@@ -1,18 +1,17 @@
+import { errors } from "@playwright/test";
 import { mkdirSync, writeFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { errors } from "@playwright/test";
 import v8toIstanbul from "v8-to-istanbul";
-import { expect } from "./fixtures.js";
 import {
   endAtContainerID,
   searchButtonSelector,
-  searchButtonSelector2,
   shareButtonSelector,
   shareButtonSelector2,
   shareButtonSelector3,
   startAtContainerID,
 } from "../constants/utils/queries.js";
+import { logError, sleep } from "../utils/other.js";
 import {
   languageIconPathSelector,
   maxRetries,
@@ -26,7 +25,7 @@ import {
   testVideoTitle,
   youtubeTestVideoLink,
 } from "./constants.js";
-import { logError, sleep } from "../utils/other.js";
+import { expect } from "./fixtures.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -181,7 +180,7 @@ export const rejectCookies = async (page) => {
  * @param {Page} page
  */
 const fillSearchBar = async (page) => {
-  let searchBar = page.locator('input[id="search"]');
+  let searchBar = page.locator('input[name="search_query"]');
   await searchBar.fill(testVideoSearchTerm);
 };
 
@@ -189,10 +188,7 @@ const fillSearchBar = async (page) => {
  * @param {Page} page
  */
 const clickSearchButton = async (page) => {
-  let selector = await pollForSelector(page, [
-    searchButtonSelector,
-    searchButtonSelector2,
-  ]);
+  let selector = await pollForSelector(page, [searchButtonSelector]);
   if (!selector) {
     console.error("Could not find search button");
     return;

@@ -16,26 +16,35 @@ const getVideoId = () => {
  */
 const getEmbedUrl = (videoId) => {
   let searchParams = new URLSearchParams(window.location.search);
+  searchParams.set("autoplay", "true");
   let queryString = searchParams.toString();
-  let embedUrl = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
+  let embedUrl = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}?${queryString}`;
 
-  return queryString ? `${embedUrl}?${queryString}` : embedUrl;
+  return embedUrl;
 };
 
 /**
- * @param {string} message
  * @returns {void}
  */
-const renderMessage = (message) => {
+const renderHomePage = () => {
   if (!app) {
     return;
   }
 
   app.replaceChildren();
 
-  let messageElement = document.createElement("p");
+  let messageElement = document.createElement("div");
   messageElement.className = "clip-message";
-  messageElement.textContent = message;
+
+  let textElement = document.createElement("p");
+  textElement.textContent = "Want to start sharing YouTube clips for free?";
+  messageElement.append(textElement);
+
+  let linkElement = document.createElement("a");
+  linkElement.href =
+    "https://chromewebstore.google.com/detail/youtube-share-clip/jknkoohnhhnlnojgddpjgibniodllhae?hl=en";
+  linkElement.textContent = "Get the extension";
+  messageElement.append(linkElement);
 
   app.append(messageElement);
 };
@@ -63,10 +72,14 @@ const renderPlayer = (videoId) => {
   app.append(iframe);
 };
 
-let videoId = getVideoId();
+const main = () => {
+  let videoId = getVideoId();
 
-if (!videoId) {
-  renderMessage("Missing YouTube video id.");
-} else {
-  renderPlayer(videoId);
-}
+  if (!videoId) {
+    renderHomePage();
+  } else {
+    renderPlayer(videoId);
+  }
+};
+
+main();
