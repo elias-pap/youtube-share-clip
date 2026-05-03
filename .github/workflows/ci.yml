@@ -2,22 +2,22 @@ name: CI
 on:
   pull_request:
   push:
-    branches: main
+    branches: [main]
 jobs:
   lint-staged:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
       - name: Cache dependencies
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: Linux-${{ hashFiles('package-lock.json') }}
@@ -38,15 +38,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, macos-13, windows-2022]
+        os: [ubuntu-24.04, macos-15, windows-2025]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
       - name: Set Playwright cache path
         shell: bash
         run: |
@@ -61,7 +61,7 @@ jobs:
           fi
       - name: Cache dependencies
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
@@ -76,15 +76,15 @@ jobs:
       - name: Run e2e tests
         run: npm run test:headless
       - name: Upload test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         if: success() || failure()
         with:
           name: playwright-report
           path: playwright-report
       - name: Upload coverage report
-        if: ${{ runner.os }} == 'Linux'
-        uses: codecov/codecov-action@v4
+        if: runner.os == 'Linux'
+        uses: codecov/codecov-action@v6
         with:
           fail_ci_if_error: true
-          file: test-results/coverage/result/coverage.json
+          files: test-results/coverage/result/coverage.json
           token: ${{ secrets.CODECOV_TOKEN }}
