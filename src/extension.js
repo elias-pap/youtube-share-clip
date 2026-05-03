@@ -50,7 +50,7 @@ const getURLs = () => {
   let urlParams = new URLSearchParams(queryString);
   let videoID = urlParams.get("v");
   if (!videoID) return logNotFoundError("videoID (v) parameter");
-  let url = `https://www.youtube.com/embed/${videoID}`;
+  let url = `https://yt-clip.cc/${videoID}`;
   let originalURL = `https://youtu.be/${videoID}`;
   return { url, originalURL };
 };
