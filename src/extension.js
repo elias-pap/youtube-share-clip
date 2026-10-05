@@ -1,5 +1,4 @@
 import * as Sentry from "@sentry/browser";
-import { captureConsoleIntegration } from "@sentry/integrations";
 import {
   defaultEndAtLabelText,
   langToEndAtStringMap,
@@ -103,24 +102,19 @@ const isAtCheckboxChecked = async (getAtCheckboxElement) => {
 /**
  * @type {IsAtCheckboxChecked}
  */
-const isStartAtCheckboxChecked = () =>
-  isAtCheckboxChecked(getStartAtCheckboxElement);
+const isStartAtCheckboxChecked = () => isAtCheckboxChecked(getStartAtCheckboxElement);
 
 /**
  * @type {IsAtCheckboxChecked}
  */
-const isEndAtCheckboxChecked = () =>
-  isAtCheckboxChecked(getEndAtCheckboxElement);
+const isEndAtCheckboxChecked = () => isAtCheckboxChecked(getEndAtCheckboxElement);
 
 /**
  * @param {IsAtCheckboxChecked} isAtCheckboxChecked
  * @param {InputElementGetter} getAtInputElement
  * @returns {Promise<number?>}
  */
-const getAtSecondsIfChecked = async (
-  isAtCheckboxChecked,
-  getAtInputElement,
-) => {
+const getAtSecondsIfChecked = async (isAtCheckboxChecked, getAtInputElement) => {
   if (!(await isAtCheckboxChecked())) return null;
   return getAtSeconds(getAtInputElement);
 };
@@ -161,8 +155,7 @@ const addOnStateChangeListeners = async (onStateChange) => {
   let stateElements = await getStateElements();
   if (!stateElements) return logElementNotFoundError("at least one state");
 
-  let { startAtInput, startAtCheckbox, endAtInput, endAtCheckbox } =
-    stateElements;
+  let { startAtInput, startAtCheckbox, endAtInput, endAtCheckbox } = stateElements;
   startAtCheckbox.addEventListener("click", onStateChange);
   startAtInput.addEventListener("focusout", onStateChange);
   endAtCheckbox.addEventListener("click", onStateChange);
@@ -242,24 +235,20 @@ const addEndAtCheckboxAndInput = async (startAtContainer) => {
   if (!nextElement) return logElementNotFoundError("next of start");
 
   let endAtLabelElement = await getEndAtLabelElement(nextElement);
-  if (!endAtLabelElement)
-    return logElementNotFoundError("start at clone label");
+  if (!endAtLabelElement) return logElementNotFoundError("start at clone label");
   createEndAtLabelElement(endAtLabelElement);
 
-  let endAtCheckboxContainerElements =
-    await getEndAtCheckboxContainerElements(nextElement);
+  let endAtCheckboxContainerElements = await getEndAtCheckboxContainerElements(nextElement);
   if (!endAtCheckboxContainerElements)
     return logElementsNotFoundError("start at clone checkbox container");
   if (endAtCheckboxContainerElements.length < 2) return;
 
   let endAtInputElement = await getEndAtInputWrapperElement(nextElement);
-  if (!endAtInputElement)
-    return logElementNotFoundError("start at clone input");
+  if (!endAtInputElement) return logElementNotFoundError("start at clone input");
   createEndAtInputElement(endAtInputElement);
 
   let endAtLabelWrapperElement = await getEndAtLabelWrapperElement(nextElement);
-  if (!endAtLabelWrapperElement)
-    return logElementNotFoundError("start at clone label wrapper");
+  if (!endAtLabelWrapperElement) return logElementNotFoundError("start at clone label wrapper");
   endAtLabelWrapperElement.replaceChildren(endAtLabelElement);
 };
 
@@ -267,8 +256,7 @@ const addEndAtCheckboxAndInput = async (startAtContainer) => {
  * @param {Element} element
  * @returns {boolean}
  */
-const isEndAtContainer = (element) =>
-  element.getAttribute("id") === endAtContainerID;
+const isEndAtContainer = (element) => element.getAttribute("id") === endAtContainerID;
 
 /**
  * @param {Element} startAtContainer
@@ -448,7 +436,7 @@ Sentry.init({
   enabled: process.env.NODE_ENV === "production",
   release: "0.8.0",
   environment: process.env.NODE_ENV,
-  integrations: [captureConsoleIntegration({ levels: ["error"] })],
+  integrations: [Sentry.captureConsoleIntegration({ levels: ["error"] })],
 });
 
 main();

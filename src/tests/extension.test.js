@@ -18,9 +18,9 @@ import {
 
 test.describe("Renders input elements", () => {
   for (const language of [null, "English (US)", "Ελληνικά"]) {
-    test(`Coming from home page and refresh - language: ${
-      language ?? "default"
-    }`, async ({ page }) => {
+    test(`Coming from home page and refresh - language: ${language ?? "default"}`, async ({
+      page,
+    }) => {
       await visitPage(page, youtubeLandingPage);
 
       await rejectCookies(page);

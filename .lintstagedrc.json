@@ -1,4 +1,3 @@
 {
-  "src/**/*.js": "eslint",
-  "src/**/*": "prettier --check"
+  "**/*": ["npm run format", "npm run lint"]
 }
