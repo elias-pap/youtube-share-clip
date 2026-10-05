@@ -23,19 +23,20 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"], browserName: "chromium" },
+      use: { ...devices["Desktop Chrome"], channel: "chromium" },
     },
-    {
-      name: "Google Chrome",
-      use: {
-        ...devices["Desktop Chrome"],
-        channel: "chrome",
-        browserName: "chrome",
-      },
-    },
+    // https://playwright.dev/docs/chrome-extensions
+    // https://groups.google.com/a/chromium.org/g/chromium-extensions/c/1-g8EFx2BBY/m/S0ET5wPjCAAJ
+    // {
+    //   name: "Google Chrome",
+    //   use: {
+    //     ...devices["Desktop Chrome"],
+    //     channel: "chrome",
+    //   },
+    // },
     {
       name: "Microsoft Edge",
-      use: { ...devices["Desktop Edge"], browserName: "edge" },
+      use: { ...devices["Desktop Edge"], channel: "msedge" },
     },
   ],
 });

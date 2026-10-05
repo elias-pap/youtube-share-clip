@@ -1,4 +1,3 @@
-import { sleep } from "./other.js";
 import {
   endAtContainerID,
   pollingTimeoutInSeconds,
@@ -8,6 +7,7 @@ import {
   sleepTime,
   startAtContainerID,
 } from "../constants/utils/queries.js";
+import { sleep } from "./other.js";
 
 /**
  * @typedef {import("../types/utils/queries.js").InputElementGetter} InputElementGetter
@@ -150,8 +150,3 @@ export const getShareButton = async () =>
     () => document.querySelector(shareButtonSelector2),
     () => document.querySelector(shareButtonSelector3),
   ]);
-
-/**
- * @type {ElementGetter}
- */
-export const getBody = async () => await pollForElement([() => document.querySelector("body")]);

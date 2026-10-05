@@ -15,7 +15,6 @@ import {
   timeToSeconds,
 } from "./utils/other.js";
 import {
-  getBody,
   getEndAtCheckboxContainerElements,
   getEndAtCheckboxElement,
   getEndAtInputElement,
@@ -291,17 +290,34 @@ const addOnShareButtonClickListener = async () => {
   let shareButton = await getShareButton();
   if (!shareButton) return logElementNotFoundError("share button");
 
+  // @ts-ignore
+  if (shareButton._youtubeShareClip_hasOnShareButtonClickListener) return;
+
   shareButton.addEventListener("click", onShareButtonClick);
+  // @ts-ignore
+  shareButton._youtubeShareClip_hasOnShareButtonClickListener = true;
 };
 
 /**
  * @param {string} href
  */
-const addListenerOnVideoPage = async (href) => {
+const addListenerOnWatchPage = async (href) => {
   let url = new URL(href);
-  if (url.pathname === "/watch") {
-    await addOnShareButtonClickListener();
-  }
+  if (url.pathname !== "/watch") return;
+  await addOnShareButtonClickListener();
+};
+
+const handleLoadEvent = async () => {
+  let href = getCurrentURL();
+  await addListenerOnWatchPage(href);
+};
+
+/**
+ * @param {NavigateEvent} e
+ */
+const handleNavigateEvent = async (e) => {
+  let href = e.destination.url;
+  await addListenerOnWatchPage(href);
 };
 
 // /**
@@ -402,32 +418,9 @@ const addListenerOnVideoPage = async (href) => {
 //   playedProgressBarRangeElement.after(sharedProgressBarRangeElement);
 // };
 
-const onPageLoad = async () => {
-  await addListenerOnVideoPage(getCurrentURL());
-  // await colorSharedProgressBarSection();
-};
-
-const observeURLChange = async () => {
-  let oldURL = getCurrentURL();
-  let body = await getBody();
-  if (!body) return logElementNotFoundError("body");
-
-  let observer = new MutationObserver((mutations) => {
-    mutations.forEach(async () => {
-      let newURL = getCurrentURL();
-      if (oldURL !== newURL) {
-        oldURL = newURL;
-        await addListenerOnVideoPage(newURL);
-      }
-    });
-  });
-
-  observer.observe(body, { childList: true, subtree: true });
-};
-
 const main = () => {
-  observeURLChange();
-  window.addEventListener("load", onPageLoad);
+  window.addEventListener("load", handleLoadEvent);
+  window.navigation.addEventListener("navigate", handleNavigateEvent);
 };
 
 Sentry.init({

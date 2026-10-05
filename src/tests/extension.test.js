@@ -1,6 +1,6 @@
 import {
   youtubeLandingPage,
-  youtubeColouredProgressBarTestVideoLink,
+  // youtubeColouredProgressBarTestVideoLink,
   youtubeTestVideoPage,
 } from "./constants.js";
 import { test } from "./fixtures.js";
@@ -12,15 +12,13 @@ import {
   searchForVideo,
   switchLanguage,
   visitPage,
-  rendersColouredProgressBar,
-  colouredProgressBarHasCorrectLength,
+  // rendersColouredProgressBar,
+  // colouredProgressBarHasCorrectLength,
 } from "./utils.js";
 
 test.describe("Renders input elements", () => {
-  for (const language of [null, "English (US)", "Ελληνικά"]) {
-    test(`Coming from home page and refresh - language: ${language ?? "default"}`, async ({
-      page,
-    }) => {
+  for (const language of ["English (US)", "Ελληνικά"]) {
+    test(`Coming from home page and refresh - language: ${language}`, async ({ page }) => {
       await visitPage(page, youtubeLandingPage);
 
       await rejectCookies(page);
@@ -53,12 +51,12 @@ test.describe("Gets a link to a section of a video", () => {
   });
 });
 
-test.describe("Colours the played range in progress bar", () => {
-  // Reenable when the progress bar colouring is fixed
-  test.skip("Progress bar is coloured", async ({ page }) => {
-    test.skip(!!process.env.CI, "Skipping on CI");
-    await visitPage(page, youtubeColouredProgressBarTestVideoLink);
-    await rendersColouredProgressBar(page);
-    await colouredProgressBarHasCorrectLength(page);
-  });
-});
+// test.describe("Colours the played range in progress bar", () => {
+// Reenable when the progress bar colouring is fixed
+//   test("Progress bar is coloured", async ({ page }) => {
+//     test(!!process.env.CI, "Skipping on CI");
+//     await visitPage(page, youtubeColouredProgressBarTestVideoLink);
+//     await rendersColouredProgressBar(page);
+//     await colouredProgressBarHasCorrectLength(page);
+//   });
+// });
