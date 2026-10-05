@@ -38,9 +38,7 @@ const pollForElementOrElements = async (getters) => {
  * @returns {Promise<Element?>}
  */
 const pollForElement = async (elementGetters) => {
-  return /** @type {Promise<Element?>} */ (
-    pollForElementOrElements(elementGetters)
-  );
+  return /** @type {Promise<Element?>} */ (pollForElementOrElements(elementGetters));
 };
 
 /**
@@ -48,9 +46,7 @@ const pollForElement = async (elementGetters) => {
  * @returns {Promise<NodeListOf<Element>?>}
  */
 const pollForElements = async (elementsGetters) => {
-  return /** @type {Promise<NodeListOf<Element>?>} */ (
-    pollForElementOrElements(elementsGetters)
-  );
+  return /** @type {Promise<NodeListOf<Element>?>} */ (pollForElementOrElements(elementsGetters));
 };
 
 /**
@@ -70,9 +66,7 @@ export const getPlayedProgressBarRangeElement = async () =>
  */
 export const getStartAtInputElement = async () =>
   /** @type {HTMLInputElement?} */ (
-    await pollForElement([
-      () => document.querySelector(`#${startAtContainerID} input`),
-    ])
+    await pollForElement([() => document.querySelector(`#${startAtContainerID} input`)])
   );
 
 /**
@@ -80,26 +74,20 @@ export const getStartAtInputElement = async () =>
  */
 export const getEndAtInputElement = async () =>
   /** @type {HTMLInputElement?} */ (
-    await pollForElement([
-      () => document.querySelector(`#${endAtContainerID} input`),
-    ])
+    await pollForElement([() => document.querySelector(`#${endAtContainerID} input`)])
   );
 
 /**
  * @type {CheckboxElementGetter}
  */
 export const getStartAtCheckboxElement = async () =>
-  await pollForElement([
-    () => document.querySelector(`#${startAtContainerID} #start-at-checkbox`),
-  ]);
+  await pollForElement([() => document.querySelector(`#${startAtContainerID} #start-at-checkbox`)]);
 
 /**
  * @type {CheckboxElementGetter}
  */
 export const getEndAtCheckboxElement = async () =>
-  await pollForElement([
-    () => document.querySelector(`#${endAtContainerID} #start-at-checkbox`),
-  ]);
+  await pollForElement([() => document.querySelector(`#${endAtContainerID} #start-at-checkbox`)]);
 
 /**
  * @type {InputElementGetter}
@@ -107,8 +95,7 @@ export const getEndAtCheckboxElement = async () =>
 export const getShareURLElement = async () =>
   /** @type {HTMLInputElement?} */ (
     await pollForElement([
-      () =>
-        /** @type {HTMLInputElement} */ (document.getElementById("share-url")),
+      () => /** @type {HTMLInputElement} */ (document.getElementById("share-url")),
     ])
   );
 
@@ -117,10 +104,7 @@ export const getShareURLElement = async () =>
  */
 export const getStartAtContainer = async () =>
   await pollForElement([
-    () =>
-      document.querySelector(
-        `ytd-popup-container #contents #${startAtContainerID}`,
-      ),
+    () => document.querySelector(`ytd-popup-container #contents #${startAtContainerID}`),
   ]);
 
 /**
@@ -128,18 +112,14 @@ export const getStartAtContainer = async () =>
  * @returns {Promise<Element?>}
  */
 export const getEndAtLabelElement = async (nextElement) =>
-  await pollForElement([
-    () => nextElement.querySelector("#checkboxLabel yt-formatted-string"),
-  ]);
+  await pollForElement([() => nextElement.querySelector("#checkboxLabel yt-formatted-string")]);
 
 /**
  * @param {Element} nextElement
  * @returns {Promise<NodeListOf<Element>?>}
  */
 export const getEndAtCheckboxContainerElements = async (nextElement) =>
-  await pollForElements([
-    () => nextElement.querySelectorAll("#checkboxContainer"),
-  ]);
+  await pollForElements([() => nextElement.querySelectorAll("#checkboxContainer")]);
 
 /**
  * @param {Element} nextElement
@@ -159,9 +139,7 @@ export const getEndAtLabelWrapperElement = async (nextElement) =>
  * @type {ElementGetter}
  */
 export const getShareDialog = async () =>
-  await pollForElement([
-    () => document.querySelector("ytd-popup-container #contents"),
-  ]);
+  await pollForElement([() => document.querySelector("ytd-popup-container #contents")]);
 
 /**
  * @type {ElementGetter}
@@ -176,5 +154,4 @@ export const getShareButton = async () =>
 /**
  * @type {ElementGetter}
  */
-export const getBody = async () =>
-  await pollForElement([() => document.querySelector("body")]);
+export const getBody = async () => await pollForElement([() => document.querySelector("body")]);

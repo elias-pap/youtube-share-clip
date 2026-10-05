@@ -37,20 +37,13 @@ const __dirname = path.dirname(__filename);
  * @returns {boolean?}
  */
 export const isCoverageEntriesValid = (entries, title) => {
-  if (!entries)
-    return logError(`"${title}" test entries not found. Skipping coverage.`);
+  if (!entries) return logError(`"${title}" test entries not found. Skipping coverage.`);
   if (entries.length !== 1)
-    return logError(
-      `"${title}" test entries has invalid length. Skipping coverage.`,
-    );
+    return logError(`"${title}" test entries has invalid length. Skipping coverage.`);
   let entry = entries[0];
-  if (!entry)
-    return logError(`"${title}" test entry not found. Skipping coverage.`);
+  if (!entry) return logError(`"${title}" test entry not found. Skipping coverage.`);
   let { source } = entry;
-  if (!source)
-    return logError(
-      `"${title}" test entry source not found. Skipping coverage.`,
-    );
+  if (!source) return logError(`"${title}" test entry source not found. Skipping coverage.`);
   return true;
 };
 
@@ -85,9 +78,7 @@ export const startCoverage = async (page, browserName) => {
 export const collectCoverage = async (page, browserName, title) => {
   if (!isCoverageSupported(browserName)) return;
   const coverage = await page.coverage.stopJSCoverage();
-  let entries = coverage.filter(({ url }) =>
-    url.includes("youtube-share-clip"),
-  );
+  let entries = coverage.filter(({ url }) => url.includes("youtube-share-clip"));
   if (!isCoverageEntriesValid(entries, title)) return;
   let entry = entries[0];
   let { source, functions } = entry;
@@ -98,10 +89,7 @@ export const collectCoverage = async (page, browserName, title) => {
   converter.applyCoverage(functions);
   let coverageData = converter.toIstanbul();
   let rootParentFolder = path.join(__dirname, "../../../");
-  let coverageDataWithCorrectPaths = JSON.stringify(coverageData).replaceAll(
-    rootParentFolder,
-    "",
-  );
+  let coverageDataWithCorrectPaths = JSON.stringify(coverageData).replaceAll(rootParentFolder, "");
   writeFileSync(
     `test-results/coverage/tmp/${title.replaceAll(" ", "-")}`,
     coverageDataWithCorrectPaths,
@@ -171,8 +159,7 @@ export const rejectCookies = async (page) => {
   try {
     await rejectButton.click({ timeout: singleActionTimeout });
   } catch (error) {
-    if (error instanceof errors.TimeoutError)
-      console.info("Reject cookies button not found.");
+    if (error instanceof errors.TimeoutError) console.info("Reject cookies button not found.");
   }
 };
 
@@ -265,9 +252,7 @@ const clickShareButton = async (page) => {
 export const colouredProgressBarHasCorrectLength = async (page) => {
   // await for the page to load
   await expect(
-    page.locator(
-      ".ytp-cued-thumbnail-overlay > .ytp-cued-thumbnail-overlay-image",
-    ),
+    page.locator(".ytp-cued-thumbnail-overlay > .ytp-cued-thumbnail-overlay-image"),
   ).toBeVisible();
 
   await expect(page).toHaveScreenshot({
@@ -280,9 +265,7 @@ export const colouredProgressBarHasCorrectLength = async (page) => {
  */
 export const rendersColouredProgressBar = async (page) => {
   await expect(
-    page
-      .locator(".ytp-play-progress")
-      .and(page.locator('[style*="background-color: #0f0"]')),
+    page.locator(".ytp-play-progress").and(page.locator('[style*="background-color: #0f0"]')),
   ).toBeVisible();
 };
 
@@ -290,9 +273,7 @@ export const rendersColouredProgressBar = async (page) => {
  * @param {Page} page
  */
 const rendersStartAtCheckboxAndInput = async (page) => {
-  await expect(
-    page.locator(`#${startAtContainerID} #start-at-checkbox`),
-  ).toBeVisible();
+  await expect(page.locator(`#${startAtContainerID} #start-at-checkbox`)).toBeVisible();
   await expect(page.locator("#input-1").getByRole("textbox")).toBeVisible();
 };
 
@@ -300,9 +281,7 @@ const rendersStartAtCheckboxAndInput = async (page) => {
  * @param {Page} page
  */
 const rendersEndAtCheckboxAndInput = async (page) => {
-  await expect(
-    page.locator(`#${endAtContainerID} #start-at-checkbox`),
-  ).toBeVisible();
+  await expect(page.locator(`#${endAtContainerID} #start-at-checkbox`)).toBeVisible();
   await expect(page.locator("#input-2").getByRole("textbox")).toBeVisible();
 };
 
@@ -340,9 +319,7 @@ export const switchLanguage = async (page, language) => {
  * @param {Page} page
  */
 const clickStartAtCheckbox = async (page) => {
-  let startAtCheckbox = page.locator(
-    `#${startAtContainerID} #checkboxContainer`,
-  );
+  let startAtCheckbox = page.locator(`#${startAtContainerID} #checkboxContainer`);
   await startAtCheckbox.click();
 };
 
@@ -350,9 +327,7 @@ const clickStartAtCheckbox = async (page) => {
  * @param {Page} page
  */
 const fillStartAtInput = async (page) => {
-  let startAtInput = page.locator(
-    `#${startAtContainerID} #start-at-timestamp input`,
-  );
+  let startAtInput = page.locator(`#${startAtContainerID} #start-at-timestamp input`);
   await startAtInput.fill(testStartAtTime);
 };
 
@@ -368,9 +343,7 @@ const clickEndAtCheckbox = async (page) => {
  * @param {Page} page
  */
 const fillEndAtInput = async (page) => {
-  let endAtInput = page.locator(
-    `#${endAtContainerID} #start-at-timestamp input`,
-  );
+  let endAtInput = page.locator(`#${endAtContainerID} #start-at-timestamp input`);
   await endAtInput.fill(testEndAtTime);
 };
 
@@ -386,8 +359,7 @@ const clickCopyLinkButton = async (page) => {
  * @param {Page} page
  * @returns {Promise<string>}
  */
-const readClipboard = async (page) =>
-  page.evaluate(() => navigator.clipboard.readText());
+const readClipboard = async (page) => page.evaluate(() => navigator.clipboard.readText());
 
 /**
  * @param {Page} page

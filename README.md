@@ -1,5 +1,6 @@
 # youtube-share-clip
-[![CI](https://github.com/elias-pap/youtube-share-clip/actions/workflows/ci.yml/badge.svg)](https://github.com/elias-pap/youtube-share-clip/actions/workflows/ci.yml) [![codecov](https://codecov.io/github/elias-pap/youtube-share-clip/graph/badge.svg?token=45Y1H2RJS1)](https://codecov.io/github/elias-pap/youtube-share-clip) [![](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![](https://img.shields.io/badge/linting-eslint-yellowgreen)](https://eslint.org/) [![](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
+
+[![CI](https://github.com/elias-pap/youtube-share-clip/actions/workflows/ci.yml/badge.svg)](https://github.com/elias-pap/youtube-share-clip/actions/workflows/ci.yml) [![codecov](https://codecov.io/github/elias-pap/youtube-share-clip/graph/badge.svg?token=45Y1H2RJS1)](https://codecov.io/github/elias-pap/youtube-share-clip) [![](https://img.shields.io/badge/linting-oxlint-yellowgreen)](https://oxc.rs/docs/guide/usage/linter.html) [![](https://img.shields.io/badge/code_style-oxfmt-ff69b4.svg)](https://oxc.rs/docs/guide/usage/formatter.html)
 
 Share sections of Youtube videos.
 

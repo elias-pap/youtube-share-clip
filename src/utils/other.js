@@ -1,8 +1,4 @@
-import {
-  secondsPerDay,
-  secondsPerHour,
-  secondsPerMinute,
-} from "../constants/utils/other.js";
+import { secondsPerDay, secondsPerHour, secondsPerMinute } from "../constants/utils/other.js";
 
 /**
  * @param {number} ms sleep time in milliseconds
@@ -31,8 +27,7 @@ export const timeToSeconds = (timestamp) => {
 
   return digitsArray.reduceRight(
     (prev, curr, idx) =>
-      prev +
-      curr * secondsPerDigit[idx + secondsPerDigit.length - digitsArray.length],
+      prev + curr * secondsPerDigit[idx + secondsPerDigit.length - digitsArray.length],
   );
 };
 
@@ -40,8 +35,7 @@ export const timeToSeconds = (timestamp) => {
  * @param {string} elementName
  * @returns {null}
  */
-export const logElementNotFoundError = (elementName) =>
-  logNotFoundError(`${elementName} element`);
+export const logElementNotFoundError = (elementName) => logNotFoundError(`${elementName} element`);
 
 /**
  * @param {string} elementsName

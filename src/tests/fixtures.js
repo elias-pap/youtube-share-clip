@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const test = baseTest.extend({
-  // eslint-disable-next-line no-empty-pattern
+  // oxlint-disable-next-line no-empty-pattern
   context: async ({}, use) => {
     const pathToExtension = path.join(__dirname, "../../build");
     const browser = await chromium.launchPersistentContext("", {
