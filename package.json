@@ -24,7 +24,7 @@
     "bundle:test": "npm run bundle:clean && esbuild youtube-share-clip=src/extension.js popup=src/popup.html images/icon-16.png images/icon-32.png images/icon-48.png images/icon-128.png manifest.json --bundle --loader:.html=copy --loader:.png=copy --loader:.json=copy --target=es6 --outdir=build --sourcemap=inline",
     "bundle:dev": "npm run bundle:code -- --watch",
     "bundle:prod": "npm run bundle:code -- --minify",
-    "bundle:release": "npm run bundle:prod && ./scripts/create-artifact.js",
+    "bundle:release": "npm run bundle:prod && ./src/scripts/create-artifact.js",
     "lint": "oxlint",
     "format": "oxfmt",
     "format:check": "oxfmt --check"
