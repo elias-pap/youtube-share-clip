@@ -29,7 +29,6 @@ test.beforeAll(({ browserName }) => {
 
 test.beforeEach(async ({ page, browserName }, { title }) => {
   console.info(`Test "${title}" started...`);
-  page.on("console", (msg) => console.info(msg.text()));
   await startCoverage(page, browserName);
 });
 

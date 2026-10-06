@@ -1,4 +1,11 @@
-import * as Sentry from "@sentry/browser";
+import {
+  BrowserClient,
+  captureConsoleIntegration,
+  defaultStackParser,
+  getDefaultIntegrations,
+  makeFetchTransport,
+  Scope,
+} from "@sentry/browser";
 import {
   defaultEndAtLabelText,
   langToEndAtStringMap,
@@ -15,7 +22,6 @@ import {
   timeToSeconds,
 } from "./utils/other.js";
 import {
-  getBody,
   getEndAtCheckboxContainerElements,
   getEndAtCheckboxElement,
   getEndAtInputElement,
@@ -291,17 +297,34 @@ const addOnShareButtonClickListener = async () => {
   let shareButton = await getShareButton();
   if (!shareButton) return logElementNotFoundError("share button");
 
+  // @ts-ignore
+  if (shareButton._youtubeShareClip_hasOnShareButtonClickListener) return;
+
   shareButton.addEventListener("click", onShareButtonClick);
+  // @ts-ignore
+  shareButton._youtubeShareClip_hasOnShareButtonClickListener = true;
 };
 
 /**
  * @param {string} href
  */
-const addListenerOnVideoPage = async (href) => {
+const addListenerOnWatchPage = async (href) => {
   let url = new URL(href);
-  if (url.pathname === "/watch") {
-    await addOnShareButtonClickListener();
-  }
+  if (url.pathname !== "/watch") return;
+  await addOnShareButtonClickListener();
+};
+
+const handleLoadEvent = async () => {
+  let href = getCurrentURL();
+  await addListenerOnWatchPage(href);
+};
+
+/**
+ * @param {NavigateEvent} e
+ */
+const handleNavigateEvent = async (e) => {
+  let href = e.destination.url;
+  await addListenerOnWatchPage(href);
 };
 
 // /**
@@ -402,41 +425,44 @@ const addListenerOnVideoPage = async (href) => {
 //   playedProgressBarRangeElement.after(sharedProgressBarRangeElement);
 // };
 
-const onPageLoad = async () => {
-  await addListenerOnVideoPage(getCurrentURL());
-  // await colorSharedProgressBarSection();
+/**
+ * Setup according to https://docs.sentry.io/platforms/javascript/best-practices/shared-environments/
+ */
+const initSentry = () => {
+  const integrations = getDefaultIntegrations({}).filter((defaultIntegration) => {
+    return ![
+      "BrowserApiErrors",
+      "BrowserSession",
+      "Breadcrumbs",
+      "ConversationId",
+      "GlobalHandlers",
+      "FunctionToString",
+    ].includes(defaultIntegration.name);
+  });
+  integrations.push(captureConsoleIntegration({ levels: ["error"] }));
+  const client = new BrowserClient({
+    dsn: "https://ca0cb03d7d29fbb1b09c52fcba66144d@o4507045965660160.ingest.us.sentry.io/4507046846464000",
+    attachStacktrace: true,
+    enabled: process.env.NODE_ENV === "production",
+    release: "0.8.0",
+    environment: process.env.NODE_ENV,
+    transport: makeFetchTransport,
+    stackParser: defaultStackParser,
+    integrations,
+  });
+  const scope = new Scope();
+  scope.setClient(client);
+  client.init();
 };
 
-const observeURLChange = async () => {
-  let oldURL = getCurrentURL();
-  let body = await getBody();
-  if (!body) return logElementNotFoundError("body");
-
-  let observer = new MutationObserver((mutations) => {
-    mutations.forEach(async () => {
-      let newURL = getCurrentURL();
-      if (oldURL !== newURL) {
-        oldURL = newURL;
-        await addListenerOnVideoPage(newURL);
-      }
-    });
-  });
-
-  observer.observe(body, { childList: true, subtree: true });
+const setupListeners = () => {
+  window.addEventListener("load", handleLoadEvent);
+  window.navigation.addEventListener("navigate", handleNavigateEvent);
 };
 
 const main = () => {
-  observeURLChange();
-  window.addEventListener("load", onPageLoad);
+  initSentry();
+  setupListeners();
 };
-
-Sentry.init({
-  dsn: "https://ca0cb03d7d29fbb1b09c52fcba66144d@o4507045965660160.ingest.us.sentry.io/4507046846464000",
-  attachStacktrace: true,
-  enabled: process.env.NODE_ENV === "production",
-  release: "0.8.0",
-  environment: process.env.NODE_ENV,
-  integrations: [Sentry.captureConsoleIntegration({ levels: ["error"] })],
-});
 
 main();

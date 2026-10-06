@@ -1,13 +1,14 @@
-import { sleep } from "./other.js";
 import {
   endAtContainerID,
   pollingTimeoutInSeconds,
   shareButtonSelector,
   shareButtonSelector2,
   shareButtonSelector3,
+  shareButtonSelector4,
   sleepTime,
   startAtContainerID,
 } from "../constants/utils/queries.js";
+import { sleep } from "./other.js";
 
 /**
  * @typedef {import("../types/utils/queries.js").InputElementGetter} InputElementGetter
@@ -146,12 +147,8 @@ export const getShareDialog = async () =>
  */
 export const getShareButton = async () =>
   await pollForElement([
-    () => document.querySelector(shareButtonSelector),
-    () => document.querySelector(shareButtonSelector2),
+    () => document.querySelector(shareButtonSelector4),
     () => document.querySelector(shareButtonSelector3),
+    () => document.querySelector(shareButtonSelector2),
+    () => document.querySelector(shareButtonSelector),
   ]);
-
-/**
- * @type {ElementGetter}
- */
-export const getBody = async () => await pollForElement([() => document.querySelector("body")]);

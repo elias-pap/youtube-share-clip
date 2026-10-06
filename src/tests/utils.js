@@ -9,6 +9,7 @@ import {
   shareButtonSelector,
   shareButtonSelector2,
   shareButtonSelector3,
+  shareButtonSelector4,
   startAtContainerID,
 } from "../constants/utils/queries.js";
 import { logError, sleep } from "../utils/other.js";
@@ -234,9 +235,10 @@ export const clickOnAVideo = async (page) => {
  */
 const clickShareButton = async (page) => {
   let selector = await pollForSelector(page, [
-    shareButtonSelector,
-    shareButtonSelector2,
+    shareButtonSelector4,
     shareButtonSelector3,
+    shareButtonSelector2,
+    shareButtonSelector,
   ]);
   if (!selector) {
     console.error("Could not find share button");
