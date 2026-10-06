@@ -1,4 +1,11 @@
-import * as Sentry from "@sentry/browser";
+import {
+  BrowserClient,
+  captureConsoleIntegration,
+  defaultStackParser,
+  getDefaultIntegrations,
+  makeFetchTransport,
+  Scope,
+} from "@sentry/browser";
 import {
   defaultEndAtLabelText,
   langToEndAtStringMap,
@@ -418,18 +425,44 @@ const handleNavigateEvent = async (e) => {
 //   playedProgressBarRangeElement.after(sharedProgressBarRangeElement);
 // };
 
-const main = () => {
+/**
+ * Setup according to https://docs.sentry.io/platforms/javascript/best-practices/shared-environments/
+ */
+const initSentry = () => {
+  const integrations = getDefaultIntegrations({}).filter((defaultIntegration) => {
+    return ![
+      "BrowserApiErrors",
+      "BrowserSession",
+      "Breadcrumbs",
+      "ConversationId",
+      "GlobalHandlers",
+      "FunctionToString",
+    ].includes(defaultIntegration.name);
+  });
+  integrations.push(captureConsoleIntegration({ levels: ["error"] }));
+  const client = new BrowserClient({
+    dsn: "https://ca0cb03d7d29fbb1b09c52fcba66144d@o4507045965660160.ingest.us.sentry.io/4507046846464000",
+    attachStacktrace: true,
+    enabled: process.env.NODE_ENV === "production",
+    release: "0.8.0",
+    environment: process.env.NODE_ENV,
+    transport: makeFetchTransport,
+    stackParser: defaultStackParser,
+    integrations,
+  });
+  const scope = new Scope();
+  scope.setClient(client);
+  client.init();
+};
+
+const setupListeners = () => {
   window.addEventListener("load", handleLoadEvent);
   window.navigation.addEventListener("navigate", handleNavigateEvent);
 };
 
-Sentry.init({
-  dsn: "https://ca0cb03d7d29fbb1b09c52fcba66144d@o4507045965660160.ingest.us.sentry.io/4507046846464000",
-  attachStacktrace: true,
-  enabled: process.env.NODE_ENV === "production",
-  release: "0.8.0",
-  environment: process.env.NODE_ENV,
-  integrations: [Sentry.captureConsoleIntegration({ levels: ["error"] })],
-});
+const main = () => {
+  initSentry();
+  setupListeners();
+};
 
 main();
