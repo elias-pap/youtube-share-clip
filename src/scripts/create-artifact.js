@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-import archiver from "archiver";
+import { ZipArchive } from "archiver";
 import { createWriteStream } from "fs";
 
 /**
  * @param {string} sourceDir /some/folder/to/compress
  * @param {string} outPath /path/to/created.zip
- * @returns {Promise}
+ * @returns {Promise<void>}
  */
 const zipDirectory = (sourceDir, outPath) => {
-  const archive = archiver("zip", { zlib: { level: 9 } });
+  const archive = new ZipArchive({ zlib: { level: 9 } });
   const stream = createWriteStream(outPath);
 
   return new Promise((resolve, reject) => {
