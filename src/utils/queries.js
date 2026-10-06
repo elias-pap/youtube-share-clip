@@ -4,6 +4,7 @@ import {
   shareButtonSelector,
   shareButtonSelector2,
   shareButtonSelector3,
+  shareButtonSelector4,
   sleepTime,
   startAtContainerID,
 } from "../constants/utils/queries.js";
@@ -146,7 +147,8 @@ export const getShareDialog = async () =>
  */
 export const getShareButton = async () =>
   await pollForElement([
-    () => document.querySelector(shareButtonSelector),
-    () => document.querySelector(shareButtonSelector2),
+    () => document.querySelector(shareButtonSelector4),
     () => document.querySelector(shareButtonSelector3),
+    () => document.querySelector(shareButtonSelector2),
+    () => document.querySelector(shareButtonSelector),
   ]);
