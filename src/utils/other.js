@@ -55,7 +55,7 @@ export const logNotFoundError = (name) => logError(`${name} not found.`);
  * @returns {null}
  */
 export const logError = (error) => {
-  console.error(error);
+  console.error(`[YSC] ${error}`);
   return null;
 };
 
