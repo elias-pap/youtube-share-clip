@@ -1,3 +1,10 @@
+import {
+  BrowserClient,
+  defaultStackParser,
+  getDefaultIntegrations,
+  makeFetchTransport,
+  Scope,
+} from "@sentry/browser";
 import { secondsPerDay, secondsPerHour, secondsPerMinute } from "../constants/utils/other.js";
 
 /**
@@ -51,11 +58,47 @@ export const logElementsNotFoundError = (elementsName) =>
 export const logNotFoundError = (name) => logError(`${name} not found.`);
 
 /**
+ * @type {Scope}
+ */
+let sentryScope;
+
+/**
+ * Setup according to https://docs.sentry.io/platforms/javascript/best-practices/shared-environments/
+ */
+export const initSentry = () => {
+  const integrations = getDefaultIntegrations({}).filter((defaultIntegration) => {
+    return ![
+      "BrowserApiErrors",
+      "BrowserSession",
+      "Breadcrumbs",
+      "ConversationId",
+      "GlobalHandlers",
+      "FunctionToString",
+    ].includes(defaultIntegration.name);
+  });
+  const client = new BrowserClient({
+    dsn: "https://ca0cb03d7d29fbb1b09c52fcba66144d@o4507045965660160.ingest.us.sentry.io/4507046846464000",
+    attachStacktrace: true,
+    enabled: process.env.NODE_ENV === "production",
+    release: "0.8.2",
+    environment: process.env.NODE_ENV,
+    transport: makeFetchTransport,
+    stackParser: defaultStackParser,
+    integrations,
+  });
+  sentryScope = new Scope();
+  sentryScope.setClient(client);
+  client.init();
+};
+
+/**
  * @param {string} error
  * @returns {null}
  */
 export const logError = (error) => {
-  console.error(`[YSC] ${error}`);
+  const errorString = `[YSC] ${error}`;
+  console.error(errorString);
+  sentryScope.captureException(new Error(errorString));
   return null;
 };
 
