@@ -143,12 +143,19 @@ export const getShareDialog = async () =>
   await pollForElement([() => document.querySelector("ytd-popup-container #contents")]);
 
 /**
- * @type {ElementGetter}
+ * @param {MouseEvent} e
+ * @returns {boolean}
  */
-export const getShareButton = async () =>
-  await pollForElement([
-    () => document.querySelector(shareButtonSelector4),
-    () => document.querySelector(shareButtonSelector3),
-    () => document.querySelector(shareButtonSelector2),
-    () => document.querySelector(shareButtonSelector),
-  ]);
+export const isShareButtonClicked = (e) => {
+  const target = /** @type {Element?} */ (e.target);
+  if (!target || !target.closest) return false;
+
+  const shareButtonSelectors = [
+    shareButtonSelector4,
+    shareButtonSelector3,
+    shareButtonSelector2,
+    shareButtonSelector,
+  ];
+
+  return shareButtonSelectors.some((selector) => !!target.closest(selector));
+};

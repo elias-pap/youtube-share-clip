@@ -13,7 +13,7 @@ import {
 } from "./constants/extension.js";
 import { endAtContainerID } from "./constants/utils/queries.js";
 import {
-  getCurrentURL,
+  // getCurrentURL,
   logElementNotFoundError,
   logElementsNotFoundError,
   // logError,
@@ -28,12 +28,12 @@ import {
   getEndAtInputWrapperElement,
   getEndAtLabelElement,
   getEndAtLabelWrapperElement,
-  getShareButton,
   getShareDialog,
   getShareURLElement,
   getStartAtCheckboxElement,
   getStartAtContainer,
   getStartAtInputElement,
+  isShareButtonClicked,
 } from "./utils/queries.js";
 
 /**
@@ -293,38 +293,12 @@ const onShareButtonClick = async () => {
   await addOnStateChangeListeners(onStateChange);
 };
 
-const addOnShareButtonClickListener = async () => {
-  let shareButton = await getShareButton();
-  if (!shareButton) return logElementNotFoundError("share button");
-
-  // @ts-ignore
-  if (shareButton._youtubeShareClip_hasOnShareButtonClickListener) return;
-
-  shareButton.addEventListener("click", onShareButtonClick);
-  // @ts-ignore
-  shareButton._youtubeShareClip_hasOnShareButtonClickListener = true;
-};
-
 /**
- * @param {string} href
+ * @param {MouseEvent} e
  */
-const addListenerOnWatchPage = async (href) => {
-  let url = new URL(href);
-  if (url.pathname !== "/watch") return;
-  await addOnShareButtonClickListener();
-};
-
-const handleLoadEvent = async () => {
-  let href = getCurrentURL();
-  await addListenerOnWatchPage(href);
-};
-
-/**
- * @param {NavigateEvent} e
- */
-const handleNavigateEvent = async (e) => {
-  let href = e.destination.url;
-  await addListenerOnWatchPage(href);
+const onElementClick = (e) => {
+  if (!isShareButtonClicked(e)) return;
+  onShareButtonClick();
 };
 
 // /**
@@ -456,8 +430,7 @@ const initSentry = () => {
 };
 
 const setupListeners = () => {
-  window.addEventListener("load", handleLoadEvent);
-  window.navigation.addEventListener("navigate", handleNavigateEvent);
+  document.addEventListener("click", onElementClick);
 };
 
 const main = () => {
