@@ -59,4 +59,4 @@ export const logError = (error) => {
   return null;
 };
 
-export const getCurrentURL = () => window.location.href;
+// export const getCurrentURL = () => window.location.href;
