@@ -1,18 +1,11 @@
 import {
-  BrowserClient,
-  captureConsoleIntegration,
-  defaultStackParser,
-  getDefaultIntegrations,
-  makeFetchTransport,
-  Scope,
-} from "@sentry/browser";
-import {
   defaultEndAtLabelText,
   langToEndAtStringMap,
   syncSleepTime,
 } from "./constants/extension.js";
 import { endAtContainerID } from "./constants/utils/queries.js";
 import {
+  initSentry,
   // getCurrentURL,
   logElementNotFoundError,
   logElementsNotFoundError,
@@ -398,36 +391,6 @@ const onElementClick = (e) => {
 //   await setSharedProgressBarStyle(sharedProgressBarRangeElement);
 //   playedProgressBarRangeElement.after(sharedProgressBarRangeElement);
 // };
-
-/**
- * Setup according to https://docs.sentry.io/platforms/javascript/best-practices/shared-environments/
- */
-const initSentry = () => {
-  const integrations = getDefaultIntegrations({}).filter((defaultIntegration) => {
-    return ![
-      "BrowserApiErrors",
-      "BrowserSession",
-      "Breadcrumbs",
-      "ConversationId",
-      "GlobalHandlers",
-      "FunctionToString",
-    ].includes(defaultIntegration.name);
-  });
-  integrations.push(captureConsoleIntegration({ levels: ["error"] }));
-  const client = new BrowserClient({
-    dsn: "https://ca0cb03d7d29fbb1b09c52fcba66144d@o4507045965660160.ingest.us.sentry.io/4507046846464000",
-    attachStacktrace: true,
-    enabled: process.env.NODE_ENV === "production",
-    release: "0.8.2",
-    environment: process.env.NODE_ENV,
-    transport: makeFetchTransport,
-    stackParser: defaultStackParser,
-    integrations,
-  });
-  const scope = new Scope();
-  scope.setClient(client);
-  client.init();
-};
 
 const setupListeners = () => {
   document.addEventListener("click", onElementClick);
