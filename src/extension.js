@@ -6,6 +6,7 @@ import {
 import { endAtContainerID } from "./constants/utils/queries.js";
 import {
   initSentry,
+  isOnWatchPage,
   // getCurrentURL,
   logElementNotFoundError,
   logElementsNotFoundError,
@@ -290,6 +291,7 @@ const onShareButtonClick = async () => {
  * @param {MouseEvent} e
  */
 const onElementClick = (e) => {
+  if (!isOnWatchPage()) return;
   if (!isShareButtonClicked(e)) return;
   onShareButtonClick();
 };

@@ -102,4 +102,10 @@ export const logError = (error) => {
   return null;
 };
 
-// export const getCurrentURL = () => window.location.href;
+export const isOnWatchPage = () => {
+  let currentURL = getCurrentURL();
+  let url = new URL(currentURL);
+  return url.pathname === "/watch";
+};
+
+const getCurrentURL = () => window.location.href;
