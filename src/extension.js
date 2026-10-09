@@ -9,14 +9,12 @@ import {
   isOnWatchPage,
   // getCurrentURL,
   logElementNotFoundError,
-  logElementsNotFoundError,
   // logError,
   logNotFoundError,
   sleep,
   timeToSeconds,
 } from "./utils/other.js";
 import {
-  getEndAtCheckboxContainerElements,
   getEndAtCheckboxElement,
   getEndAtInputElement,
   getEndAtInputWrapperElement,
@@ -236,11 +234,6 @@ const addEndAtCheckboxAndInput = async (startAtContainer) => {
   let endAtLabelElement = await getEndAtLabelElement(nextElement);
   if (!endAtLabelElement) return logElementNotFoundError("start at clone label");
   createEndAtLabelElement(endAtLabelElement);
-
-  let endAtCheckboxContainerElements = await getEndAtCheckboxContainerElements(nextElement);
-  if (!endAtCheckboxContainerElements)
-    return logElementsNotFoundError("start at clone checkbox container");
-  if (endAtCheckboxContainerElements.length < 2) return;
 
   let endAtInputElement = await getEndAtInputWrapperElement(nextElement);
   if (!endAtInputElement) return logElementNotFoundError("start at clone input");
