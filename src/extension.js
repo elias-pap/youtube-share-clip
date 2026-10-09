@@ -22,7 +22,6 @@ import {
   getEndAtInputWrapperElement,
   getEndAtLabelElement,
   getEndAtLabelWrapperElement,
-  getShareDialog,
   getShareURLElement,
   getStartAtCheckboxElement,
   getStartAtContainer,
@@ -271,9 +270,6 @@ const onShareButtonClick = async () => {
   // This delay is used because this part of the DOM is changed by YouTube as well.
   // Allow some time for Youtube's changes to be applied first.
   await sleep(syncSleepTime);
-
-  let shareDialog = await getShareDialog();
-  if (!shareDialog) return logElementNotFoundError("share dialog");
 
   let startAtContainer = await getStartAtContainer();
   if (!startAtContainer) return logElementNotFoundError("start at container");

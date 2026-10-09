@@ -104,9 +104,7 @@ export const getShareURLElement = async () =>
  * @type {ElementGetter}
  */
 export const getStartAtContainer = async () =>
-  await pollForElement([
-    () => document.querySelector(`ytd-popup-container #contents #${startAtContainerID}`),
-  ]);
+  await pollForElement([() => document.querySelector(`#${startAtContainerID}`)]);
 
 /**
  * @param {Element} nextElement
@@ -135,12 +133,6 @@ export const getEndAtInputWrapperElement = async (nextElement) =>
  */
 export const getEndAtLabelWrapperElement = async (nextElement) =>
   await pollForElement([() => nextElement.querySelector("#checkboxLabel")]);
-
-/**
- * @type {ElementGetter}
- */
-export const getShareDialog = async () =>
-  await pollForElement([() => document.querySelector("ytd-popup-container #contents")]);
 
 /**
  * @param {MouseEvent} e
