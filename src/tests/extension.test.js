@@ -33,6 +33,21 @@ test.describe("Renders input elements", () => {
     });
   }
 
+  test("Coming from home page and back and forth", async ({ page }) => {
+    await visitPage(page, youtubeLandingPage);
+
+    await rejectCookies(page);
+    await switchLanguage(page, "English (US)");
+
+    await searchForVideo(page);
+    await clickOnAVideo(page);
+    await rendersInputElements(page);
+
+    await page.goBack();
+    await page.goForward();
+    await rendersInputElements(page);
+  });
+
   test("On video page", async ({ page }) => {
     await visitPage(page, youtubeTestVideoPage);
     await rejectCookies(page);

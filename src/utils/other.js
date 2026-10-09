@@ -44,12 +44,12 @@ export const timeToSeconds = (timestamp) => {
  */
 export const logElementNotFoundError = (elementName) => logNotFoundError(`${elementName} element`);
 
-/**
- * @param {string} elementsName
- * @returns {null}
- */
-export const logElementsNotFoundError = (elementsName) =>
-  logNotFoundError(`${elementsName} elements`);
+// /**
+//  * @param {string} elementsName
+//  * @returns {null}
+//  */
+// export const logElementsNotFoundError = (elementsName) =>
+//   logNotFoundError(`${elementsName} elements`);
 
 /**
  * @param {string} name

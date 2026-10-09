@@ -9,20 +9,17 @@ import {
   isOnWatchPage,
   // getCurrentURL,
   logElementNotFoundError,
-  logElementsNotFoundError,
   // logError,
   logNotFoundError,
   sleep,
   timeToSeconds,
 } from "./utils/other.js";
 import {
-  getEndAtCheckboxContainerElements,
   getEndAtCheckboxElement,
   getEndAtInputElement,
   getEndAtInputWrapperElement,
   getEndAtLabelElement,
   getEndAtLabelWrapperElement,
-  getShareDialog,
   getShareURLElement,
   getStartAtCheckboxElement,
   getStartAtContainer,
@@ -238,11 +235,6 @@ const addEndAtCheckboxAndInput = async (startAtContainer) => {
   if (!endAtLabelElement) return logElementNotFoundError("start at clone label");
   createEndAtLabelElement(endAtLabelElement);
 
-  let endAtCheckboxContainerElements = await getEndAtCheckboxContainerElements(nextElement);
-  if (!endAtCheckboxContainerElements)
-    return logElementsNotFoundError("start at clone checkbox container");
-  if (endAtCheckboxContainerElements.length < 2) return;
-
   let endAtInputElement = await getEndAtInputWrapperElement(nextElement);
   if (!endAtInputElement) return logElementNotFoundError("start at clone input");
   createEndAtInputElement(endAtInputElement);
@@ -271,9 +263,6 @@ const onShareButtonClick = async () => {
   // This delay is used because this part of the DOM is changed by YouTube as well.
   // Allow some time for Youtube's changes to be applied first.
   await sleep(syncSleepTime);
-
-  let shareDialog = await getShareDialog();
-  if (!shareDialog) return logElementNotFoundError("share dialog");
 
   let startAtContainer = await getStartAtContainer();
   if (!startAtContainer) return logElementNotFoundError("start at container");

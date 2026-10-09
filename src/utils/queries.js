@@ -42,13 +42,13 @@ const pollForElement = async (elementGetters) => {
   return /** @type {Promise<Element?>} */ (pollForElementOrElements(elementGetters));
 };
 
-/**
- * @param {(() => NodeListOf<Element>?)[]} elementsGetters
- * @returns {Promise<NodeListOf<Element>?>}
- */
-const pollForElements = async (elementsGetters) => {
-  return /** @type {Promise<NodeListOf<Element>?>} */ (pollForElementOrElements(elementsGetters));
-};
+// /**
+//  * @param {(() => NodeListOf<Element>?)[]} elementsGetters
+//  * @returns {Promise<NodeListOf<Element>?>}
+//  */
+// const pollForElements = async (elementsGetters) => {
+//   return /** @type {Promise<NodeListOf<Element>?>} */ (pollForElementOrElements(elementsGetters));
+// };
 
 /**
  * @returns {Promise<Element?>}
@@ -104,9 +104,7 @@ export const getShareURLElement = async () =>
  * @type {ElementGetter}
  */
 export const getStartAtContainer = async () =>
-  await pollForElement([
-    () => document.querySelector(`ytd-popup-container #contents #${startAtContainerID}`),
-  ]);
+  await pollForElement([() => document.querySelector(`#${startAtContainerID}`)]);
 
 /**
  * @param {Element} nextElement
@@ -114,13 +112,6 @@ export const getStartAtContainer = async () =>
  */
 export const getEndAtLabelElement = async (nextElement) =>
   await pollForElement([() => nextElement.querySelector("#checkboxLabel yt-formatted-string")]);
-
-/**
- * @param {Element} nextElement
- * @returns {Promise<NodeListOf<Element>?>}
- */
-export const getEndAtCheckboxContainerElements = async (nextElement) =>
-  await pollForElements([() => nextElement.querySelectorAll("#checkboxContainer")]);
 
 /**
  * @param {Element} nextElement
@@ -135,12 +126,6 @@ export const getEndAtInputWrapperElement = async (nextElement) =>
  */
 export const getEndAtLabelWrapperElement = async (nextElement) =>
   await pollForElement([() => nextElement.querySelector("#checkboxLabel")]);
-
-/**
- * @type {ElementGetter}
- */
-export const getShareDialog = async () =>
-  await pollForElement([() => document.querySelector("ytd-popup-container #contents")]);
 
 /**
  * @param {MouseEvent} e
