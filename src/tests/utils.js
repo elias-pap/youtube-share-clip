@@ -276,7 +276,9 @@ export const rendersColouredProgressBar = async (page) => {
  */
 const rendersStartAtCheckboxAndInput = async (page) => {
   await expect(page.locator(`#${startAtContainerID} #start-at-checkbox`)).toBeVisible();
-  await expect(page.locator("#input-1").getByRole("textbox")).toBeVisible();
+  await expect(page.locator(`#${startAtContainerID} #checkboxContainer`)).toBeVisible();
+  await expect(page.locator(`#${startAtContainerID} #checkboxLabel`)).toBeVisible();
+  await expect(page.locator(`#${startAtContainerID} input`)).toBeVisible();
 };
 
 /**
@@ -284,7 +286,9 @@ const rendersStartAtCheckboxAndInput = async (page) => {
  */
 const rendersEndAtCheckboxAndInput = async (page) => {
   await expect(page.locator(`#${endAtContainerID} #start-at-checkbox`)).toBeVisible();
-  await expect(page.locator("#input-2").getByRole("textbox")).toBeVisible();
+  await expect(page.locator(`#${endAtContainerID} #checkboxContainer`)).toBeVisible();
+  await expect(page.locator(`#${endAtContainerID} #checkboxLabel`)).toBeVisible();
+  await expect(page.locator(`#${endAtContainerID} input`)).toBeVisible();
 };
 
 /**
